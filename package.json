@@ -2,11 +2,11 @@
   "name": "webapp",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main.js",
+  "main": "src/electron/entry.js",
   "types": "./src",
   "scripts": {
     "release": "webpack --config-name release",
-    "dev": "webpack-dev-server --open --config-name dev",
+    "dev": "webpack --config-name dev",
     "test": "jest --collect-coverage --config ./jest.config.json",
     "build": "webpack --config-name release",
     "start": "electron ."
@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^10.1.0",
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
     "@babel/plugin-transform-async-to-generator": "^7.8.3",
@@ -36,6 +35,8 @@
     "babel-plugin-import": "^1.13.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.4.2",
+    "electron": "^10.1.0",
+    "electron-reload": "^1.5.0",
     "empty": "^0.10.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",

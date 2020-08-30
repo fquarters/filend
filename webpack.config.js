@@ -30,14 +30,20 @@ const getModuleRules = function () {
 
 const getEntry = () => path.resolve(__dirname, 'src/index.tsx');
 
-const getOutput = dir => ({
-    path: path.resolve(__dirname, dir),
+const getOutput = () => ({
+    path: path.resolve(__dirname, './build'),
     filename: '[name].js'
 });
 
 const getVersion = function () {
     return childProcess.execSync('git rev-list HEAD --count').toString();
 };
+
+const htmlPluginConfig = new HtmlWebpackPlugin({
+    hash: true,
+    filename: path.resolve(__dirname, 'build/index.html'),
+    template: path.resolve(__dirname, 'src/index.html')
+});
 
 module.exports = [
     {
@@ -49,17 +55,13 @@ module.exports = [
             port: 9001
         },
         entry: getEntry(),
-        output: getOutput('./dist'),
+        output: getOutput(),
         module: {
             rules: getModuleRules()
         },
         devtool: 'eval-source-map',
         plugins: [
-            new HtmlWebpackPlugin({
-                hash: true,
-                filename: path.resolve(__dirname, 'dist/index.html'),
-                template: path.resolve(__dirname, 'src/index.html')
-            }),
+            htmlPluginConfig,
             new webpack.DefinePlugin({
                 CONTEXT_ROOT: JSON.stringify('http://localhost:8080'),
                 VERSION: JSON.stringify(getVersion())
@@ -67,18 +69,20 @@ module.exports = [
         ],
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-        }
+        },
+        watch: true
     },
     {
         name: 'release',
         mode: 'production',
         entry: getEntry(),
-        output: getOutput('../static'),
+        output: getOutput(),
         module: {
             rules: getModuleRules()
         },
         devtool: 'source-map',
         plugins: [
+            htmlPluginConfig,
             // new BundleAnalyzerPlugin(), // uncomment to analyze bundle content
             new webpack.DefinePlugin({
                 CONTEXT_ROOT: JSON.stringify('http://localhost:8080'),

@@ -1,6 +1,8 @@
-const { app, BrowserWindow } = require('electron')
+const electron = require('electron')
 
-function createWindow () {
+const { app, BrowserWindow } = electron
+
+function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
@@ -11,7 +13,7 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  win.loadFile('./index.html')
+  win.loadFile('build/index.html')
 
   // Open the DevTools.
   win.webContents.openDevTools()

@@ -21,6 +21,7 @@
   },
   "exclude": [
     "**/*.spec.js",
+    "**/electron/*.js",
     "./dist/**",
     "./webpack.config.js"
   ]

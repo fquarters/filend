@@ -1,0 +1,19 @@
+
+.app-label-grow-1 .field-label {
+    flex-grow: 1;
+}
+.app-label-grow-2 .field-label {
+    flex-grow: 2;
+}
+.app-label-grow-3 .field-label {
+    flex-grow: 3;
+}
+.app-label-grow-4 .field-label {
+    flex-grow: 4;
+}
+.app-label-grow-5 .field-label {
+    flex-grow: 5;
+}
+.app-label-grow-6 .field-label {
+    flex-grow: 6;
+}

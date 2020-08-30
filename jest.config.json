@@ -1,0 +1,22 @@
+{
+    "testRegex": "((\\.|/*.)(spec))\\.js?$",
+    "setupFilesAfterEnv": [
+        "jest-extended"
+    ],
+    "collectCoverageFrom": [
+        "src/**/*.js",
+        "!<rootDir>/node_modules/",
+        "!src/test/**"
+    ],
+    "moduleNameMapper": {
+        "\\.(css|less|scss|sss|styl)$": "jest-css-modules"
+    },
+    "globals": {
+        "VERSION": "some version",
+        "CONTEXT_ROOT": "CONTEXT_ROOT"
+    },
+    "snapshotSerializers": [
+        "enzyme-to-json/serializer"
+    ],
+    "preset": "ts-jest/presets/js-with-babel"
+}

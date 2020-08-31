@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useMemo, useRef, useState } from "react"
-import { Closure, Consumer, MapFunction } from "../../common/types"
+import { Closure, Consumer, MapFunction } from "../../../common/types"
 import SearchInput from "./search-input"
 import "./dropdown.css"
 import { Row as Row, Column } from "./bulma-wrappers"

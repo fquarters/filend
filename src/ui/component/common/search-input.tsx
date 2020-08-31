@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react"
-import { Consumer } from "../../common/types"
+import { Consumer } from "../../../common/types"
 import { DropdownComponentContext } from "./dropdown"
 
 type Props = {

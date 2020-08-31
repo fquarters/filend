@@ -1,4 +1,4 @@
-import { MapFunction } from "../../common/types";
+import { MapFunction } from "../../../common/types";
 import { State } from "../data/state";
 import { PatchRoot } from "./actions";
 

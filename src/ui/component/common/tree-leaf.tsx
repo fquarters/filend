@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useCallback, useContext, useMemo } from "react"
-import { BiConsumer } from "../../common/types"
+import { BiConsumer } from "../../../common/types"
 import { DropdownComponentContext } from "./dropdown"
-import { all } from "../../common/collections"
+import { all } from "../../../common/collections"
 import { Row, Column } from "./bulma-wrappers"
 
 export type TreeNode<K extends React.Key> = {

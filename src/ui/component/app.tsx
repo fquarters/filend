@@ -9,7 +9,7 @@ const App = () => {
     return <div className={'content mx-2'}>
         <Switch>
             <Route path={"/"}>
-                henlo
+                henlo!
             </Route>
         </Switch>
     </div>

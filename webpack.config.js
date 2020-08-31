@@ -4,6 +4,10 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const childProcess = require('child_process');
 
+const tsConfig = {
+    configFile: 'tsconfig.ui.json'
+}
+
 const getModuleRules = function () {
     return [
         {
@@ -22,13 +26,14 @@ const getModuleRules = function () {
         },
         {
             test: /\.(ts|tsx)$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
+            loader: 'ts-loader',
+            exclude: /node_modules/,
+            options: tsConfig
         }
     ]
 };
 
-const getEntry = () => path.resolve(__dirname, 'src/index.tsx');
+const getEntry = () => path.resolve(__dirname, 'src/ui/index.tsx');
 
 const getOutput = () => ({
     path: path.resolve(__dirname, './build'),
@@ -42,7 +47,7 @@ const getVersion = function () {
 const htmlPluginConfig = new HtmlWebpackPlugin({
     hash: true,
     filename: path.resolve(__dirname, 'build/index.html'),
-    template: path.resolve(__dirname, 'src/index.html')
+    template: path.resolve(__dirname, 'src/ui/index.html')
 });
 
 module.exports = [

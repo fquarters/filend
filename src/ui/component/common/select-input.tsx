@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useContext, useState } from "react"
-import { Consumer } from "../../common/types"
+import { Consumer } from "../../../common/types"
 import { DropdownComponentContext } from "./dropdown"
 import "./select-input.css"
 

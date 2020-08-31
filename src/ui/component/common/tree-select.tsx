@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react"
-import { union } from "../../common/collections"
-import { BiConsumer } from "../../common/types"
+import { union } from "../../../common/collections"
+import { BiConsumer } from "../../../common/types"
 import { Dropdown } from "./dropdown"
 import SelectInput from "./select-input"
 import TreeLeaf, { TreeNode } from "./tree-leaf"

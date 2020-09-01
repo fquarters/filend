@@ -1,23 +1,9 @@
 import electron from 'electron'
+import { createWindow } from './create-window'
+import readDir from './read-dir'
+import { handleInvoke } from './ipc'
 
 const { app, BrowserWindow } = electron
-
-function createWindow() {
-    // Create the browser window.
-    const win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true
-        }
-    })
-
-    // and load the index.html of the app.
-    win.loadFile('../index.html')
-
-    // Open the DevTools.
-    win.webContents.openDevTools()
-}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -40,3 +26,5 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+handleInvoke('READ_DIR', readDir)

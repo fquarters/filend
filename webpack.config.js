@@ -75,6 +75,7 @@ module.exports = [
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
         },
+        target: 'electron-main',
         watch: true
     },
     {
@@ -94,6 +95,7 @@ module.exports = [
                 VERSION: JSON.stringify(getVersion())
             })
         ],
+        target: 'electron-main',
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
         }

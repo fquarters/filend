@@ -27,16 +27,18 @@ const Field = ({
 }
 
 type ColumnProps = {
+    size?: number,
     narrow?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Column = ({
+    size = 12,
     className = '',
     narrow = false,
     children,
     ...props
 }: ColumnProps) => <div {...props}
-    className={`column ${className} ${narrow ? "is-narrow" : ""}`}>
+    className={`column ${className} ${narrow ? "is-narrow" : ""} is-${size}`}>
         {children}
     </div>
 

@@ -17,6 +17,11 @@ export type State = {
     right: SideState
 };
 
+export type TabId = {
+    side: Side,
+    index: number
+}
+
 export type Side = 'left' | 'right'
 
 const defaultTabState: TabState = {

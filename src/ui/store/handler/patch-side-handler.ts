@@ -1,7 +1,7 @@
 import { PatchSide } from "../action/actions"
 import { State, SideState } from "../data/state"
 
-const patchSide = ({
+const handlePatchSide = ({
     data
 }: PatchSide, state: State): State => {
 
@@ -20,4 +20,4 @@ const patchSide = ({
     }
 }
 
-export default patchSide
+export default handlePatchSide

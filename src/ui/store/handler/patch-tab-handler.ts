@@ -1,7 +1,7 @@
 import { PatchTab } from "../action/actions"
 import { State, TabState, SideState } from "../data/state"
 
-const patchTab = ({
+const handlePatchTab = ({
     data
 }: PatchTab, state: State): State => {
 
@@ -38,4 +38,4 @@ const patchTab = ({
     }
 }
 
-export default patchTab
+export default handlePatchTab

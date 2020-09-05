@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { State, Side, TabState, SideState } from "../data/state";
+import { State, Side, TabState, SideState, TabId } from "../data/state";
 
 export type ActionType = 'PATCH_ROOT'
     | 'PATCH_SIDE'
@@ -10,9 +10,7 @@ export type SidePatch = {
     patch: Partial<SideState>
 }
 
-export type TabPatch = {
-    side: Side,
-    index: number,
+export type TabPatch = TabId & {
     patch: Partial<TabState>
 }
 

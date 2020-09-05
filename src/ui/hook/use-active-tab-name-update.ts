@@ -23,8 +23,6 @@ const useActiveTabNameUpdate = ({
 
     useEffect(() => {
 
-        console.log(newName)
-
         if (newName
             && !named
             && newName !== name) {

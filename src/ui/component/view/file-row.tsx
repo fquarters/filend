@@ -10,7 +10,7 @@ const FileRow = ({
             {name}
         </td>
         <td>
-            {stats.isFile && !stats.isFile() ? 'DIR' : name.split('.').pop()}
+            {stats.isDirectory ? 'DIR' : name.split('.').pop()}
         </td>
         <td>
             {moment(stats.ctime).format()}

@@ -1,6 +1,12 @@
-import { readdir, stat } from 'fs'
+import { readdir, stat, Stats } from 'fs'
 import path from 'path'
 import { FileInfo, DirInfo } from '../common/protocol'
+
+const getFileInfoStats = (stats: Stats) => ({
+    ...stats,
+    isFile: stats.isFile(),
+    isDirectory: stats.isDirectory()
+})
 
 const readDir = (dirPath: string): Promise<DirInfo> =>
 
@@ -27,7 +33,7 @@ const readDir = (dirPath: string): Promise<DirInfo> =>
                         resolve({
                             name: fileName,
                             path: filePath,
-                            stats
+                            stats: getFileInfoStats(stats)
                         })
                     })
                 })
@@ -44,7 +50,7 @@ const readDir = (dirPath: string): Promise<DirInfo> =>
                     resolve({
                         name: path.basename(path.resolve(dirPath)),
                         path: dirPath,
-                        stats,
+                        stats: getFileInfoStats(stats),
                         files
                     })
                 })

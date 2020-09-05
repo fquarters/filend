@@ -1,8 +1,8 @@
 import { readdir, stat } from 'fs'
 import path from 'path'
-import { FileInfo } from '../common/protocol'
+import { FileInfo, DirInfo } from '../common/protocol'
 
-const readDir = (dirPath: string): Promise<FileInfo[]> =>
+const readDir = (dirPath: string): Promise<DirInfo> =>
 
     new Promise((resolve, reject) => {
 
@@ -12,7 +12,7 @@ const readDir = (dirPath: string): Promise<FileInfo[]> =>
                 reject(err)
             }
 
-            const promises = files.map((fileName) => {
+            const filePromises = files.map((fileName) => {
 
                 const filePath = path.resolve(dirPath, fileName)
 
@@ -33,7 +33,23 @@ const readDir = (dirPath: string): Promise<FileInfo[]> =>
                 })
             })
 
-            resolve(Promise.all(promises))
+            stat(dirPath, (err, stats) => {
+
+                if (err != null) {
+                    reject(err)
+                }
+
+                Promise.all(filePromises).then((files) => {
+
+                    resolve({
+                        name: path.basename(path.resolve(dirPath)),
+                        path: dirPath,
+                        stats,
+                        files
+                    })
+                })
+
+            })
         })
     })
 

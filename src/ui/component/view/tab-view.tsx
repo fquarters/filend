@@ -1,21 +1,13 @@
 import React from "react"
-import { useSelector } from "react-redux"
-import Selectors from "../../store/data/selectors"
-import { Side } from "../../store/data/state"
 
 type TabViewProps = {
-    side: Side,
-    index: number,
+    name: string,
     active: boolean
 }
 
-const TabView = ({ side, index, active }: TabViewProps) => {
+const TabView = ({ name, active }: TabViewProps) => {
 
-    const {
-        path
-    } = useSelector(Selectors.tab({ side, index }))
-
-    return <span>{path}</span>
+    return <span>{name}</span>
 }
 
 export default TabView

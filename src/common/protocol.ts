@@ -6,6 +6,11 @@ type FileInfo = {
     stats: Stats
 }
 
+type DirInfo = {
+    files: FileInfo[]
+} & FileInfo
+
 export type {
-    FileInfo
+    FileInfo,
+    DirInfo
 }

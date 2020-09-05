@@ -1,15 +1,20 @@
 import React, { useContext, useCallback } from "react"
-import ActiveTabContext from "../context/active-tab-context"
-import { useDispatch } from "react-redux"
+import SideContext from "../context/side-context"
+import { useDispatch, useSelector } from "react-redux"
 import { patchTab } from "../../store/action/action-creators"
+import Selectors from "../../store/data/selectors"
 
 const useChangeDirToParent = () => {
 
     const {
-        index,
+        side,
+        activeTab: index
+    } = useContext(SideContext)!
+
+    const {
         path,
-        side
-    } = useContext(ActiveTabContext)!
+        name
+    } = useSelector(Selectors.activeTab(side))
 
     const dispatch = useDispatch()
 
@@ -27,6 +32,7 @@ const useChangeDirToParent = () => {
         index,
         path,
         side,
+        name,
         dispatch
     ])
 }

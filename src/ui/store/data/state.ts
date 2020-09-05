@@ -4,7 +4,9 @@ export type PageResult<T> = {
 }
 
 export type TabState = {
-    path: string
+    path: string,
+    name: string,
+    named: boolean
 }
 
 export type SideState = {
@@ -25,7 +27,9 @@ export type TabId = {
 export type Side = 'left' | 'right'
 
 const defaultTabState: TabState = {
-    path: './'
+    path: './',
+    name: './',
+    named: false
 }
 
 const defaultSideState: SideState = {

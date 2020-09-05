@@ -7,14 +7,13 @@ const storeLogger = (api: MiddlewareAPI) =>
     (next: Dispatch<AnyAction>) =>
         (action: AnyAction) => {
 
-
             logger.debug('enter', action)
 
-            const state = next(action)
+            next(action)
 
-            logger.debug('exit', action)
+            logger.debug('exit', api.getState())
 
-            return state
+            return action
         }
 
 export default storeLogger

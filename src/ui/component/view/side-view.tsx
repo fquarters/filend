@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import { useSelector } from "react-redux"
-import useActiveTabNameUpdate from "../../hook/use-active-tab-name-update"
+import useActiveTabUpdate from "../../hook/use-active-tab-name-update"
 import useDirInfo from "../../hook/use-dir-info"
 import Selectors from "../../store/data/selectors"
 import { Side, TabState } from "../../store/data/state"
@@ -31,11 +31,9 @@ const SideView = ({ side }: SideViewProps) => {
     const dirInfo = useDirInfo(path)
     const activeTabState = tabs[activeTab]
 
-    useActiveTabNameUpdate({
+    useActiveTabUpdate({
         index: activeTab,
-        newName: dirInfo?.name,
-        name: activeTabState.name,
-        named: activeTabState.named,
+        dirInfo: dirInfo,
         side
     })
 

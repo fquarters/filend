@@ -1,49 +1,57 @@
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { patchTab } from "../store/action/action-creators"
-import { Side } from "../store/data/state"
+import { Side, TabState } from "../store/data/state"
+import { DirInfo } from "../../common/protocol"
+import Selectors from "../store/data/selectors"
 
-type ActiveTabNameUpdateArgs = {
+type ActiveTabUpdateArgs = {
     index: number,
-    named: boolean,
-    name: string,
-    newName?: string,
+    dirInfo: DirInfo | null,
     side: Side
 }
 
-const useActiveTabNameUpdate = ({
+const useActiveTabUpdate = ({
     index,
-    named,
-    name,
-    newName,
+    dirInfo,
     side
-}: ActiveTabNameUpdateArgs) => {
+}: ActiveTabUpdateArgs) => {
 
     const dispatch = useDispatch()
 
+    const tabState = useSelector(Selectors.activeTab(side), shallowEqual)
+
     useEffect(() => {
 
-        if (newName
-            && !named
-            && newName !== name) {
+        if (dirInfo) {
 
-            dispatch(patchTab({
-                index,
-                patch: {
-                    name: newName
-                },
-                side
-            }))
+            const nameChanged = dirInfo.name !== tabState.name
+
+            if (dirInfo.name && nameChanged) {
+
+                const patch: Partial<TabState> = {
+                    path: dirInfo.path
+                }
+
+                if (!tabState.named) {
+                    patch.name = dirInfo.name
+                }
+    
+                dispatch(patchTab({
+                    index,
+                    patch,
+                    side
+                }))
+            }
         }
 
     }, [
-        newName,
-        name,
-        named,
+        dirInfo,
         dispatch,
         index,
-        side
+        side,
+        tabState
     ])
 }
 
-export default useActiveTabNameUpdate
+export default useActiveTabUpdate

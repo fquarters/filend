@@ -27,8 +27,8 @@ export type TabId = {
 export type Side = 'left' | 'right'
 
 const defaultTabState: TabState = {
-    path: './',
-    name: './',
+    path: '.',
+    name: '.',
     named: false
 }
 

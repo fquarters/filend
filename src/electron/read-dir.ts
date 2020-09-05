@@ -49,7 +49,7 @@ const readDir = (dirPath: string): Promise<DirInfo> =>
 
                     resolve({
                         name: path.basename(path.resolve(dirPath)),
-                        path: dirPath,
+                        path: path.resolve(dirPath),
                         stats: getFileInfoStats(stats),
                         files
                     })

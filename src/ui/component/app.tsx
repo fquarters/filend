@@ -1,7 +1,7 @@
 import Logger from "js-logger";
 import React from "react";
-import { Row, Column } from "./common/bulma-wrappers";
-import DirectoryView from "./directory-view";
+import { Column, Row } from "./common/bulma-wrappers";
+import SideView from "./view/side-view";
 
 Logger.useDefaults();
 
@@ -10,10 +10,10 @@ const App = () => {
     return <div className={'content mx-2'}>
         <Row>
             <Column size={6}>
-                <DirectoryView />
+                <SideView side={'left'} />
             </Column>
             <Column size={6}>
-                <DirectoryView />
+                <SideView side={'right'} />
             </Column>
         </Row>
     </div>

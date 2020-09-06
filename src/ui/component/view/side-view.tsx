@@ -7,6 +7,7 @@ import { Side, TabState } from "../../store/data/state"
 import SideContext, { SideContextType } from "../context/side-context"
 import DirectoryView from "./directory-view"
 import TabView from "./tab-view"
+import "./side-view.css"
 
 type SideViewProps = {
     side: Side
@@ -16,7 +17,8 @@ const SideView = ({ side }: SideViewProps) => {
 
     const {
         tabs,
-        activeTab
+        activeTab,
+        active
     } = useSelector(Selectors.side(side))
 
     const {
@@ -26,7 +28,8 @@ const SideView = ({ side }: SideViewProps) => {
     const sideContext = useMemo<SideContextType>(() => ({
         activeTab,
         side,
-    }), [activeTab, side])
+        active
+    }), [activeTab, side, active])
 
     const dirInfo = useDirInfo(path)
     const activeTabState = tabs[activeTab]
@@ -37,7 +40,7 @@ const SideView = ({ side }: SideViewProps) => {
         side
     })
 
-    return <React.Fragment>
+    return <div className={`side-view ${active? 'side-view--active' : ''}`}>
         <div>
             {
                 tabs.map(({ name }: TabState, index: number) => <TabView
@@ -49,7 +52,7 @@ const SideView = ({ side }: SideViewProps) => {
         <SideContext.Provider value={sideContext}>
             {dirInfo && <DirectoryView dirInfo={dirInfo} />}
         </SideContext.Provider>
-    </React.Fragment>
+    </div>
 }
 
 export default SideView

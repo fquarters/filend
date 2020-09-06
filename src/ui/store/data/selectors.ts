@@ -17,7 +17,8 @@ const Selectors = {
     tab: memoizedTabStateSelector(({ side, index }: TabSelectorArg) =>
         (state: State) => state[side].tabs[index]),
     activeTab: memoizedActiveTabStateSelector((side: Side) =>
-        (state: State) => state[side].tabs[state[side].activeTab])
+        (state: State) => state[side].tabs[state[side].activeTab]),
+    activeSide: (state: State): Side => state.left.active ? 'left' : 'right'
 }
 
 export default Selectors

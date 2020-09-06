@@ -1,0 +1,7 @@
+.side-view {
+
+}
+
+.side-view--active {
+    border: 1px solid aquamarine;
+}

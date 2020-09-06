@@ -2,7 +2,8 @@ import React from "react"
 import { Side } from "../../store/data/state"
 
 export type SideContextType = {
-    side: Side,
+    side: Side
+    active: boolean
     activeTab: number
 }
 

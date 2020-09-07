@@ -1,4 +1,4 @@
-type RendererIpcMessageType = 'READ_DIR'
+type RendererIpcMessageType = 'READ_DIR' | 'IS_DIR' | 'EXECUTE_FILE'
 
 type MainIpcMessageType = ''
 
@@ -15,8 +15,9 @@ type MainIpcMessage<T extends MainIpcMessageType> = {
 }
 
 type ReadDirMessage = RendererIpcMessage<'READ_DIR'> & MessageData<string>
+type ExecuteFileMessage = RendererIpcMessage<'EXECUTE_FILE'> & MessageData<string[]>
 
-type SomeRendererIpcMessage = RendererIpcMessage<any> & (ReadDirMessage)
+type SomeRendererIpcMessage = RendererIpcMessage<any> & (ReadDirMessage | ExecuteFileMessage)
 type SomeMainIpcMessage = MainIpcMessage<any>
 
 export type {
@@ -27,5 +28,6 @@ export type {
     MainIpcMessage,
     ReadDirMessage,
     SomeMainIpcMessage,
-    SomeRendererIpcMessage
+    SomeRendererIpcMessage,
+    ExecuteFileMessage
 }

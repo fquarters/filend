@@ -1,24 +1,25 @@
 import moment from "moment";
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { FileInfo } from "../../../../common/protocol";
-import { Consumer } from "../../../../common/types";
-import { RowProps } from "./types";
 import useRowInFocus from "../../../hook/use-row-in-focus";
+import openFileInFocus from "../../../store/thunks/open-file-in-focus";
+import { RowProps } from "./types";
 
 type FileRowProps = FileInfo
     & RowProps
-    & {
-        openFile: Consumer<string>
-    }
 
 const FileRow = ({
     name,
     stats,
-    openFile,
     inFocus
 }: FileRowProps) => {
 
-    const doOpenFile = useCallback(() => openFile(name), [openFile, name])
+    const dispatch = useDispatch()
+
+    const doOpenFile = useCallback(() => dispatch(openFileInFocus()), [
+        dispatch
+    ])
 
     const rowRef = useRef<HTMLTableRowElement | null>(null)
 

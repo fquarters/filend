@@ -1,6 +1,5 @@
-import React, { useCallback } from "react"
+import React from "react"
 import { useSelector } from "react-redux"
-import usePathOpen from "../../hook/use-path-open"
 import Selectors from "../../store/data/selectors"
 import { Side } from "../../store/data/state"
 import "./directory-view.css"
@@ -15,17 +14,10 @@ const DirectoryView = ({
     side
 }: DirectoryViewProps) => {
 
-    const openPath = usePathOpen()
-
     const {
         dirInfo,
         rowInFocus
     } = useSelector(Selectors.activeTabOfSide(side))
-
-    const openFile = useCallback((name: string) => openPath(`${dirInfo?.path}/${name}`), [
-        dirInfo?.path,
-        openPath
-    ])
 
     return <table className={'directory-view'}>
         <thead>
@@ -37,10 +29,9 @@ const DirectoryView = ({
             </tr>
         </thead>
         <tbody>
-            <TopRow inFocus={rowInFocus === 0}/>
+            <TopRow inFocus={rowInFocus === 0} />
             {
                 dirInfo?.files.map((file, index) => <FileRow key={file.name}
-                    openFile={openFile}
                     inFocus={rowInFocus - 1 === index}
                     {...file} />)
             }

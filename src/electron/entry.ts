@@ -1,7 +1,8 @@
 import electron from 'electron'
 import { createWindow } from './create-window'
-import readDir from './read-dir'
 import { handleInvoke } from './ipc'
+import executeFile from './ipc-handler/execute-file'
+import readDir from './ipc-handler/read-dir'
 
 const { app, BrowserWindow } = electron
 
@@ -28,3 +29,4 @@ app.on('activate', () => {
 })
 
 handleInvoke('READ_DIR', readDir)
+handleInvoke('EXECUTE_FILE', executeFile)

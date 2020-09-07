@@ -1,7 +1,8 @@
-import React, { useRef } from "react"
-import useChangeDirToParent from "../../../hook/use-change-dir-to-parent"
-import { RowProps } from "./types"
+import React, { useCallback, useRef } from "react"
+import { useDispatch } from "react-redux"
 import useRowInFocus from "../../../hook/use-row-in-focus"
+import openFileInFocus from "../../../store/thunks/open-file-in-focus"
+import { RowProps } from "./types"
 
 const TopRow = ({
     inFocus
@@ -11,10 +12,14 @@ const TopRow = ({
 
     const classInFocus = useRowInFocus(rowRef.current, inFocus)
 
-    const changeDirToParent = useChangeDirToParent()
+    const dispatch = useDispatch()
+
+    const changeDirToParent = useCallback(() => dispatch(openFileInFocus()), [
+        dispatch
+    ])
 
     return <tr ref={rowRef}
-    className={`${classInFocus}`}>
+        className={`${classInFocus}`}>
         <td colSpan={4}
             onDoubleClick={changeDirToParent}>
             ...

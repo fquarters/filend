@@ -11,14 +11,39 @@ const memoizedSideStateSelector = memoized<Side, MapFunction<State, SideState>>(
 const memoizedTabStateSelector = memoized<TabSelectorArg, MapFunction<State, TabState>>()
 const memoizedActiveTabStateSelector = memoized<Side, MapFunction<State, TabState>>()
 
+const activeSideName = (state: State): Side => state.left.active ? 'left' : 'right'
+const activeTabOfSide = memoizedActiveTabStateSelector((side: Side) =>
+    (state: State) => state[side].tabs[state[side].activeTab])
+const sideByName = memoizedSideStateSelector((side: Side) => (state: State) => state[side])
+const currentActiveTabState = (state: State) => activeTabOfSide(activeSideName(state))(state)
+const currentActiveSideState = (state: State) => sideByName(activeSideName(state))(state)
+
+type CurrentActiveState = {
+    side: Side,
+    tab: number,
+    row: number
+}
+
 const Selectors = {
-    side: memoizedSideStateSelector((side: Side) =>
-        (state: State) => state[side]),
-    tab: memoizedTabStateSelector(({ side, index }: TabSelectorArg) =>
+    sideByName,
+    tabByIndex: memoizedTabStateSelector(({ side, index }: TabSelectorArg) =>
         (state: State) => state[side].tabs[index]),
-    activeTab: memoizedActiveTabStateSelector((side: Side) =>
-        (state: State) => state[side].tabs[state[side].activeTab]),
-    activeSide: (state: State): Side => state.left.active ? 'left' : 'right'
+    activeTabOfSide,
+    activeSideName,
+    currentActiveTabState,
+    currentActiveSideState,
+    currentActiveState: (state: State): CurrentActiveState => {
+
+        const sideName = activeSideName(state)
+        const sideState = sideByName(sideName)(state)
+        const tabState = activeTabOfSide(sideName)(state)
+
+        return {
+            row: tabState.rowInFocus,
+            side: sideName,
+            tab: sideState.activeTab
+        }
+    }
 }
 
 export default Selectors

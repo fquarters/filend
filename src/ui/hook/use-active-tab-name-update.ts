@@ -19,7 +19,7 @@ const useActiveTabUpdate = ({
 
     const dispatch = useDispatch()
 
-    const tabState = useSelector(Selectors.activeTab(side), shallowEqual)
+    const tabState = useSelector(Selectors.activeTabOfSide(side), shallowEqual)
 
     useEffect(() => {
 
@@ -30,7 +30,8 @@ const useActiveTabUpdate = ({
             if (dirInfo.name && nameChanged) {
 
                 const patch: Partial<TabState> = {
-                    path: dirInfo.path
+                    path: dirInfo.path,
+                    dirInfo
                 }
 
                 if (!tabState.named) {

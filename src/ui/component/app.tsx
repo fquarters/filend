@@ -8,29 +8,39 @@ import { patchSide } from "../store/action/action-creators";
 import Selectors from "../store/data/selectors";
 import { Side } from "../store/data/state";
 import useSideSwitch from "../hook/use-side-switch";
+import useRowFocusChange from "../hook/use-row-focus-change";
 
 Logger.useDefaults();
 
 const App = () => {
 
     const switchSide = useSideSwitch()
+    const focusRow = useRowFocusChange()
 
-    const onKeyUp = useCallback((e: KeyboardEvent) => {
+    const onKeyDown = useCallback((e: KeyboardEvent) => {
 
         if (e.key === "Tab") {
 
            switchSide()
+
+        } else if (e.key === "ArrowUp") {
+
+            focusRow('up')
+
+        } else if (e.key === "ArrowDown") {
+
+            focusRow('down')
         }
 
-    }, [switchSide])
+    }, [switchSide, focusRow])
 
     useEffect(() => {
 
-        document.addEventListener('keyup', onKeyUp)
+        document.addEventListener('keydown', onKeyDown)
 
-        return () => document.removeEventListener('keyup', onKeyUp)
+        return () => document.removeEventListener('keydown', onKeyDown)
 
-    }, [onKeyUp])
+    }, [onKeyDown])
 
     return <div className={'content mx-2'}>
         <Row>

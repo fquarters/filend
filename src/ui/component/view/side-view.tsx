@@ -19,24 +19,23 @@ const SideView = ({ side }: SideViewProps) => {
         tabs,
         activeTab,
         active
-    } = useSelector(Selectors.side(side))
+    } = useSelector(Selectors.sideByName(side))
 
     const {
         path
-    } = useSelector(Selectors.tab({ index: activeTab, side }))
+    } = useSelector(Selectors.tabByIndex({ index: activeTab, side }))
 
     const sideContext = useMemo<SideContextType>(() => ({
         activeTab,
-        side,
-        active
+        active,
+        side
     }), [activeTab, side, active])
 
     const dirInfo = useDirInfo(path)
-    const activeTabState = tabs[activeTab]
 
     useActiveTabUpdate({
         index: activeTab,
-        dirInfo: dirInfo,
+        dirInfo,
         side
     })
 
@@ -50,7 +49,7 @@ const SideView = ({ side }: SideViewProps) => {
             }
         </div>
         <SideContext.Provider value={sideContext}>
-            {dirInfo && <DirectoryView dirInfo={dirInfo} />}
+            {dirInfo && <DirectoryView side={side} />}
         </SideContext.Provider>
     </div>
 }

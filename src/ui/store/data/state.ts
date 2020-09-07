@@ -1,3 +1,5 @@
+import { DirInfo } from "../../../common/protocol";
+
 export type PageResult<T> = {
     data: Array<T>,
     total: number
@@ -6,7 +8,9 @@ export type PageResult<T> = {
 export type TabState = {
     path: string,
     name: string,
-    named: boolean
+    named: boolean,
+    dirInfo: DirInfo | null,
+    rowInFocus: number
 }
 
 export type SideState = {
@@ -30,7 +34,9 @@ export type Side = 'left' | 'right'
 const defaultTabState: TabState = {
     path: '.',
     name: '.',
-    named: false
+    named: false,
+    rowInFocus: 0,
+    dirInfo: null
 }
 
 const defaultSideState: SideState = {

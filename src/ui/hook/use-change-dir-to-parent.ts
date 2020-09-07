@@ -12,7 +12,7 @@ const useChangeDirToParent = () => {
 
     const {
         path
-    } = useSelector(Selectors.activeTab(side))
+    } = useSelector(Selectors.activeTabOfSide(side))
 
     const openPath = usePathOpen()
 

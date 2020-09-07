@@ -5,7 +5,7 @@ import Selectors from "../store/data/selectors"
 
 const useSideSwitch = () => {
 
-    const activeSide = useSelector(Selectors.activeSide)
+    const activeSide = useSelector(Selectors.activeSideName)
 
     const dispatch = useDispatch()
 

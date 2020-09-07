@@ -7,13 +7,14 @@ import { patchTab } from "../store/action/action-creators"
 const usePathOpen = () => {
 
     const {
-        side,
         activeTab: index
     } = useContext(SideContext)!
 
+    const side = useSelector(Selectors.activeSideName)
+
     const {
         name
-    } = useSelector(Selectors.activeTab(side))
+    } = useSelector(Selectors.currentActiveTabState)
 
     const dispatch = useDispatch()
 

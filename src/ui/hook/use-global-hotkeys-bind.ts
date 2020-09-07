@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import changeRowInFocus from "../store/thunks/change-row-in-focus"
 import switchActiveSide from "../store/thunks/switch-active-side"
 import openFileInFocus from "../store/thunks/open-file-in-focus"
+import openParentDirInCurrentTab from "../store/thunks/open-parent-dir-in-current-tab"
 
 const useGlobalHotkeysBind = () => {
 
@@ -25,6 +26,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "Enter") {
 
             dispatch(openFileInFocus())
+
+        } else if (e.key === "Backspace") {
+
+            dispatch(openParentDirInCurrentTab())
         }
 
     }, [dispatch])

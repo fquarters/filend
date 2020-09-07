@@ -1,13 +1,15 @@
-import { AnyAction, Dispatch } from "redux";
-import { Supplier } from "../../../common/types";
-import { State } from "../data/state";
-import Selectors from "../data/selectors";
-import { ipcInvoke } from "../../common/ipc";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { executeFile } from "../../../common/ipc-creators";
+import { Supplier } from "../../../common/types";
+import { ipcInvoke } from "../../common/ipc";
 import { patchTab } from "../action/action-creators";
+import Selectors from "../data/selectors";
+import { State } from "../data/state";
+import openParentDirInCurrentTab from "./open-parent-dir-in-current-tab";
 
 const openFileInFocus = () => (
-    dispatch: Dispatch<AnyAction>,
+    dispatch: ThunkDispatch<State, unknown, AnyAction>,
     getState: Supplier<State>
 ) => {
 
@@ -24,36 +26,32 @@ const openFileInFocus = () => (
 
     if (row === 0) {
 
-        dispatch(patchTab({
-            index: tab,
-            patch: {
-                path: `${currentDirPath}/..`
-            },
-            side
-        }))
-    }
-
-    const file = tabState.dirInfo?.files[row - 1]
-
-    if (!file) {
-        return
-    }
-
-    const fileName = file.name
-
-    if (file.stats.isFile) {
-
-        ipcInvoke(executeFile([currentDirPath, fileName]))
+        dispatch(openParentDirInCurrentTab())
 
     } else {
 
-        dispatch(patchTab({
-            index: tab,
-            patch: {
-                path: `${currentDirPath}/${fileName}`
-            },
-            side
-        }))
+        const file = tabState.dirInfo?.files[row - 1]
+
+        if (!file) {
+            return
+        }
+
+        const fileName = file.name
+
+        if (file.stats.isFile) {
+
+            ipcInvoke(executeFile([currentDirPath, fileName]))
+
+        } else {
+
+            dispatch(patchTab({
+                index: tab,
+                patch: {
+                    path: `${currentDirPath}/${fileName}`
+                },
+                side
+            }))
+        }
     }
 }
 

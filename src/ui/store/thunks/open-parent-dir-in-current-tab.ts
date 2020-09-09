@@ -22,7 +22,9 @@ const openParentDirInCurrentTab = () => (
     dispatch(patchTab({
         index: tab,
         patch: {
-            path: `${currentDirPath}/..`
+            path: `${currentDirPath}/..`,
+            rowInFocus: 0,
+            selectedRows: []
         },
         side
     }))

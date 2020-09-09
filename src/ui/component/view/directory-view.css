@@ -1,3 +1,12 @@
+.directory-view {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.directory-view table {
+    overflow-y: unset;
+}
+
 .directory-view__file--in-focus td {
     border: 1px solid black;
 }

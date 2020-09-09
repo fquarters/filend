@@ -39,8 +39,8 @@ const SideView = ({ side }: SideViewProps) => {
         side
     })
 
-    return <div className={`side-view ${active? 'side-view--active' : ''}`}>
-        <div>
+    return <div className={`side-view ${active ? 'side-view--active' : ''}`}>
+        <div className={"side-view__tabs"}>
             {
                 tabs.map(({ name }: TabState, index: number) => <TabView
                     name={name}
@@ -49,7 +49,9 @@ const SideView = ({ side }: SideViewProps) => {
             }
         </div>
         <SideContext.Provider value={sideContext}>
-            {dirInfo && <DirectoryView side={side} />}
+            <div className={"side-view__tab-content"}>
+                <DirectoryView side={side} />
+            </div>
         </SideContext.Provider>
     </div>
 }

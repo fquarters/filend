@@ -2,7 +2,7 @@
     display: grid;
     height: 100%;
     grid-template-columns: 49% 0.5rem auto;
-    grid-template-rows: 10rem auto 10rem;
+    grid-template-rows: 5rem calc(100vh - 10rem) 5rem;
     grid-template-areas: 
                         "header header header"
                         "left divider right"
@@ -19,6 +19,12 @@
     border-width: 0 1px;
 }
 
+.app__side-panel {
+    background-color: aqua;
+}
+
+
 .app__footer {
     grid-area: footer;
+    background-color: red;
 }

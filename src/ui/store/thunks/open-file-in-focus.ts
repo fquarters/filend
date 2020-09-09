@@ -47,7 +47,9 @@ const openFileInFocus = () => (
             dispatch(patchTab({
                 index: tab,
                 patch: {
-                    path: `${currentDirPath}/${fileName}`
+                    path: `${currentDirPath}/${fileName}`,
+                    rowInFocus: 0,
+                    selectedRows: []
                 },
                 side
             }))

@@ -1,5 +1,8 @@
 .side-view {
-
+    display: grid;
+    grid-template-rows: 2rem calc(100% - 2rem);
+    grid-template-columns: auto;
+    height: 100%;
 }
 
 .side-view--active {

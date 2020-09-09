@@ -20,25 +20,27 @@ const DirectoryView = ({
         selectedRows
     } = useSelector(Selectors.activeTabOfSide(side))
 
-    return <table className={'directory-view'}>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Extension</th>
-                <th>Date</th>
-                <th>Size</th>
-            </tr>
-        </thead>
-        <tbody>
-            <TopRow inFocus={rowInFocus === 0} />
-            {
-                dirInfo?.files.map((file, index) => <FileRow key={file.name}
-                    inFocus={rowInFocus - 1 === index}
-                    selected={selectedRows.indexOf(index + 1) > -1}
-                    {...file} />)
-            }
-        </tbody>
-    </table>
+    return <div className="directory-view">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Extension</th>
+                    <th>Date</th>
+                    <th>Size</th>
+                </tr>
+            </thead>
+            <tbody>
+                <TopRow inFocus={rowInFocus === 0} />
+                {
+                    dirInfo?.files.map((file, index) => <FileRow key={file.name}
+                        inFocus={rowInFocus - 1 === index}
+                        selected={selectedRows.indexOf(index + 1) > -1}
+                        {...file} />)
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 export default DirectoryView

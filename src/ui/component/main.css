@@ -30,6 +30,7 @@ body {
     background-color: white;
     font-family: "UbuntuMono-Regular", serif;
     height: 100%;
+    overflow: hidden;
 }
 
 html {

@@ -13,7 +13,19 @@ const useGlobalHotkeysBind = () => {
 
         if (e.key === "Tab") {
 
-            dispatch(switchActiveSide())
+            dispatch(switchActiveSide({}))
+
+        } else if (e.key === "ArrowLeft") {
+
+            dispatch(switchActiveSide({
+                to: 'left'
+            }))
+
+        } else if (e.key === "ArrowRight") {
+
+            dispatch(switchActiveSide({
+                to: 'right'
+            }))
 
         } else if (e.key === "ArrowUp") {
 

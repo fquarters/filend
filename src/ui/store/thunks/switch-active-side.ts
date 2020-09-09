@@ -4,15 +4,25 @@ import { AnyAction } from "redux"
 import { Supplier } from "../../../common/types"
 import { patchSide } from "../action/action-creators"
 import Selectors from "../data/selectors"
-import { State } from "../data/state"
+import { State, Side } from "../data/state"
 
-const switchActiveSide = () => (
+type SwitchSideArgs = {
+    to?: Side
+}
+
+const switchActiveSide = ({
+    to
+}: SwitchSideArgs) => (
     dispatch: Dispatch<AnyAction>,
     getState: Supplier<State>
 ) => {
 
     const state = getState()
     const activeSide = Selectors.activeSideName(state)
+
+    if (activeSide === to) {
+        return
+    }
 
     batch(() => {
 

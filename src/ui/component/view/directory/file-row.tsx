@@ -29,7 +29,10 @@ const FileRow = ({
 
     const rowRef = useRef<HTMLTableRowElement | null>(null)
 
-    const classInFocus = useRowInFocus(rowRef.current, inFocus)
+    const classInFocus = useRowInFocus({
+        row: rowRef.current, 
+        inFocus
+    })
 
     return <tr key={name}
         className={`${classInFocus} ${selected? selectedRowClass : ''}`}

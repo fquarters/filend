@@ -1,22 +1,34 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
+import { elementVisibleInScrollableContainer } from "../common/dom-utils"
+import DirectoryContext from "../component/context/directory-context"
 
 const activeRowClass = 'directory-view__file--in-focus'
 
-const useRowInFocus = (
+type RowInFocusHookArgs = {
     row: HTMLTableRowElement | null,
     inFocus: boolean
-) => {
+}
+
+const useRowInFocus = ({
+    row,
+    inFocus
+}: RowInFocusHookArgs) => {
+
+    const rowContainer = useContext(DirectoryContext)?.containerRef.current
 
     useEffect(() => {
 
-        if (inFocus && row) {
+        if (inFocus && row && rowContainer) {
 
-            row.scrollIntoView()
+            if (!elementVisibleInScrollableContainer(row, rowContainer)) {
+                row.scrollIntoView()
+            }
+
         }
 
-    }, [inFocus, row])
+    }, [inFocus, row, rowContainer])
 
-    return inFocus? activeRowClass : ''
+    return inFocus ? activeRowClass : ''
 }
 
 export default useRowInFocus

@@ -1,9 +1,5 @@
-table.directory-view td {
-    padding: 0 !important; 
-}
-
-.directory-view__file--in-focus {
-    border: 1px solid black !important;
+.directory-view__file--in-focus td {
+    border: 1px solid black;
 }
 
 .directory-view__file--selected {

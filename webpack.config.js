@@ -29,6 +29,12 @@ const getModuleRules = function () {
             loader: 'ts-loader',
             exclude: /node_modules/,
             options: tsConfig
+        },
+        {
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            use: [
+                'file-loader',
+            ],
         }
     ]
 };

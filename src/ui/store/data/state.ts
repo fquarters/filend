@@ -10,7 +10,8 @@ export type TabState = {
     name: string,
     named: boolean,
     dirInfo: DirInfo | null,
-    rowInFocus: number
+    rowInFocus: number,
+    selectedRows: number[]
 }
 
 export type SideState = {
@@ -36,7 +37,8 @@ const defaultTabState: TabState = {
     name: '.',
     named: false,
     rowInFocus: 0,
-    dirInfo: null
+    dirInfo: null,
+    selectedRows: []
 }
 
 const defaultSideState: SideState = {

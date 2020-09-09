@@ -4,6 +4,7 @@ import changeRowInFocus from "../store/thunks/change-row-in-focus"
 import switchActiveSide from "../store/thunks/switch-active-side"
 import openFileInFocus from "../store/thunks/open-file-in-focus"
 import openParentDirInCurrentTab from "../store/thunks/open-parent-dir-in-current-tab"
+import toggleRowInFocusSelection from "../store/thunks/toggle-row-in-focus-selection"
 
 const useGlobalHotkeysBind = () => {
 
@@ -42,7 +43,11 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "Backspace") {
 
             dispatch(openParentDirInCurrentTab())
-        }
+
+        } else if (e.key === " ") {
+
+            dispatch(toggleRowInFocusSelection())
+        } 
 
     }, [dispatch])
 

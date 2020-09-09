@@ -16,7 +16,8 @@ const DirectoryView = ({
 
     const {
         dirInfo,
-        rowInFocus
+        rowInFocus,
+        selectedRows
     } = useSelector(Selectors.activeTabOfSide(side))
 
     return <table className={'directory-view'}>
@@ -33,6 +34,7 @@ const DirectoryView = ({
             {
                 dirInfo?.files.map((file, index) => <FileRow key={file.name}
                     inFocus={rowInFocus - 1 === index}
+                    selected={selectedRows.indexOf(index + 1) > -1}
                     {...file} />)
             }
         </tbody>

@@ -8,11 +8,17 @@ import { RowProps } from "./types";
 
 type FileRowProps = FileInfo
     & RowProps
+    & {
+        selected: boolean
+    }
+
+const selectedRowClass = 'directory-view__file--selected'
 
 const FileRow = ({
     name,
     stats,
-    inFocus
+    inFocus,
+    selected
 }: FileRowProps) => {
 
     const dispatch = useDispatch()
@@ -26,7 +32,7 @@ const FileRow = ({
     const classInFocus = useRowInFocus(rowRef.current, inFocus)
 
     return <tr key={name}
-        className={`${classInFocus}`}
+        className={`${classInFocus} ${selected? selectedRowClass : ''}`}
         ref={rowRef}
         onDoubleClick={doOpenFile}>
         <td>

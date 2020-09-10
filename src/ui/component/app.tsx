@@ -1,14 +1,24 @@
 import Logger from "js-logger";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import useGlobalHotkeysBind from "../hook/use-global-hotkeys-bind";
-import SideView from "./view/side-view";
+import getInitInfo from "../store/thunks/get-init-info";
 import "./app.css";
+import SideView from "./view/side-view";
 
 Logger.useDefaults();
 
 const App = () => {
 
     useGlobalHotkeysBind()
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+
+        dispatch(getInitInfo())
+
+    }, [dispatch])
 
     return <div className={'app'}>
         <div className={'app__header'}></div>

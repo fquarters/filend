@@ -17,7 +17,12 @@ type DirInfo = {
     files: FileInfo[]
 } & FileInfo
 
+type InitInfo = {
+    locale: string
+}
+
 export type {
     FileInfo,
-    DirInfo
+    DirInfo,
+    InitInfo
 }

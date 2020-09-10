@@ -4,7 +4,7 @@
 }
 
 .directory-view table {
-    overflow-y: unset;
+    text-align: left;
 }
 
 .directory-view__file--in-focus td {

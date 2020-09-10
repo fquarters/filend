@@ -3,6 +3,7 @@ import { createWindow } from './create-window'
 import { handleInvoke } from './ipc'
 import executeFile from './ipc-handler/execute-file'
 import readDir from './ipc-handler/read-dir'
+import getInitInfo from './ipc-handler/init-info'
 
 const { app, BrowserWindow } = electron
 
@@ -30,3 +31,4 @@ app.on('activate', () => {
 
 handleInvoke('READ_DIR', readDir)
 handleInvoke('EXECUTE_FILE', executeFile)
+handleInvoke('GET_INIT_INFO', getInitInfo)

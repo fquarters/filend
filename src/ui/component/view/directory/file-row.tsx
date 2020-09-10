@@ -45,7 +45,7 @@ const FileRow = ({
             {stats.isDirectory ? 'DIR' : name.split('.').pop()}
         </td>
         <td>
-            {moment(stats.ctime).format()}
+            {moment(stats.ctime).format('L LTS')}
         </td>
         <td>
             {stats.size}

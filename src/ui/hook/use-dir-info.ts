@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { DirInfo } from "../../common/protocol"
 import { ipcInvoke } from "../common/ipc"
 import { readDir } from "../../common/ipc-creators"
+import { ReadDirMessage } from "../../common/ipc"
 
 const useDirInfo = (path: string) => {
 
@@ -11,7 +12,7 @@ const useDirInfo = (path: string) => {
 
         const getDirContent = async () => {
 
-            const content = await ipcInvoke<DirInfo>(readDir(path))
+            const content = await ipcInvoke<DirInfo, ReadDirMessage>(readDir(path))
 
             setDirInfo(content)
         }

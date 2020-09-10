@@ -1,13 +1,13 @@
 import React, { useMemo, useRef, useCallback } from "react"
 import { useSelector, useDispatch, batch } from "react-redux"
-import Selectors from "../../store/data/selectors"
-import { Side } from "../../store/data/state"
-import DirectoryContext, { DirectoryContextType } from "../context/directory-context"
+import { Side } from "../../../store/data/state"
+import Selectors from "../../../store/data/selectors"
+import DirectoryContext, { DirectoryContextType } from "../../context/directory-context"
+import switchActiveSide from "../../../store/thunks/switch-active-side"
+import { patchTab } from "../../../store/action/action-creators"
+import TopRow from "./top-row"
+import FileRow from "./file-row"
 import "./directory-view.css"
-import FileRow from "./directory/file-row"
-import TopRow from "./directory/top-row"
-import { patchTab } from "../../store/action/action-creators"
-import switchActiveSide from "../../store/thunks/switch-active-side"
 
 type DirectoryViewProps = {
     side: Side

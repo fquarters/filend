@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import useGlobalHotkeysBind from "../hook/use-global-hotkeys-bind";
 import getInitInfo from "../store/thunks/get-init-info";
 import "./app.css";
-import SideView from "./view/side-view";
+import SideView from "./view/side-panel/side-view";
 
 Logger.useDefaults();
 

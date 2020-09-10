@@ -18,6 +18,7 @@ const FileRow = ({
     name,
     stats,
     inFocus,
+    setFocus,
     selected
 }: FileRowProps) => {
 
@@ -37,6 +38,7 @@ const FileRow = ({
     return <tr key={name}
         className={`${classInFocus} ${selected? selectedRowClass : ''}`}
         ref={rowRef}
+        onClick={setFocus}
         onDoubleClick={doOpenFile}>
         <td>
             {name}

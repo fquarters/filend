@@ -5,13 +5,14 @@ import openFileInFocus from "../../../store/thunks/open-file-in-focus"
 import { RowProps } from "./types"
 
 const TopRow = ({
-    inFocus
+    inFocus,
+    setFocus
 }: RowProps) => {
 
     const rowRef = useRef<HTMLTableRowElement | null>(null)
 
     const classInFocus = useRowInFocus({
-        row: rowRef.current, 
+        row: rowRef.current,
         inFocus
     })
 
@@ -22,9 +23,10 @@ const TopRow = ({
     ])
 
     return <tr ref={rowRef}
+        onClick={setFocus}
+        onDoubleClick={changeDirToParent}
         className={`${classInFocus}`}>
-        <td colSpan={4}
-            onDoubleClick={changeDirToParent}>
+        <td colSpan={4}>
             ...
         </td>
     </tr>

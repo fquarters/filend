@@ -1,5 +1,6 @@
-import { MutableRefObject } from "react";
+import { Closure } from "../../../../common/types";
 
 export type RowProps = {
-    inFocus: boolean
+    inFocus: boolean,
+    setFocus: Closure
 }

@@ -7,6 +7,10 @@
     text-align: left;
 }
 
+.directory-view td {
+    cursor: default;
+}
+
 .directory-view__file--in-focus td {
     border: 1px solid black;
 }

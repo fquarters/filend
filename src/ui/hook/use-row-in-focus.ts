@@ -6,27 +6,32 @@ const activeRowClass = 'directory-view__file--in-focus'
 
 type RowInFocusHookArgs = {
     row: HTMLTableRowElement | null,
-    inFocus: boolean
+    index: number
 }
 
 const useRowInFocus = ({
     row,
-    inFocus
+    index
 }: RowInFocusHookArgs) => {
 
-    const rowContainer = useContext(DirectoryContext)?.containerRef.current
+    const {
+        containerRef,
+        rowInFocus
+    } = useContext(DirectoryContext)!
+
+    const inFocus = rowInFocus === index
 
     useEffect(() => {
 
-        if (inFocus && row && rowContainer) {
+        if (inFocus && row && containerRef.current) {
 
-            if (!elementVisibleInScrollableContainer(row, rowContainer)) {
+            if (!elementVisibleInScrollableContainer(row, containerRef.current)) {
                 row.scrollIntoView()
             }
 
         }
 
-    }, [inFocus, row, rowContainer])
+    }, [inFocus, row, containerRef.current])
 
     return inFocus ? activeRowClass : ''
 }

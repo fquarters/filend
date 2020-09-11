@@ -1,42 +1,45 @@
 import moment from "moment";
-import React, { useCallback, useRef } from "react";
-import { useDispatch } from "react-redux";
+import React, { useRef, useMemo, useContext } from "react";
 import { FileInfo } from "../../../../common/protocol";
+import useRowFileOpen from "../../../hook/use-row-file-open";
+import useRowFocusSet from "../../../hook/use-row-focus-set";
 import useRowInFocus from "../../../hook/use-row-in-focus";
-import openFileInFocus from "../../../store/thunks/open-file-in-focus";
 import { RowProps } from "./types";
+import DirectoryContext from "../../context/directory-context";
 
 type FileRowProps = FileInfo
     & RowProps
-    & {
-        selected: boolean
-    }
 
 const selectedRowClass = 'directory-view__file--selected'
 
 const FileRow = ({
     name,
     stats,
-    inFocus,
-    setFocus,
-    selected
+    index
 }: FileRowProps) => {
 
-    const dispatch = useDispatch()
-
-    const doOpenFile = useCallback(() => dispatch(openFileInFocus()), [
-        dispatch
-    ])
+    const doOpenFile = useRowFileOpen()
 
     const rowRef = useRef<HTMLTableRowElement | null>(null)
 
     const classInFocus = useRowInFocus({
-        row: rowRef.current, 
-        inFocus
+        row: rowRef.current,
+        index
     })
 
+    const {
+        selectedRows
+    } = useContext(DirectoryContext)!
+
+    const rowSelected = useMemo(() => selectedRows.indexOf(index) > -1, [
+        index,
+        selectedRows
+    ])
+
+    const setFocus = useRowFocusSet(index)
+
     return <tr key={name}
-        className={`directory-view__file ${classInFocus} ${selected? selectedRowClass : ''}`}
+        className={`directory-view__file ${classInFocus} ${rowSelected ? selectedRowClass : ''}`}
         ref={rowRef}
         onClick={setFocus}
         onDoubleClick={doOpenFile}>

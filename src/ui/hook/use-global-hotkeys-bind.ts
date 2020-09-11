@@ -47,6 +47,8 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === " ") {
 
             dispatch(toggleRowInFocusSelection())
+            e.preventDefault()
+
         } 
 
     }, [dispatch])

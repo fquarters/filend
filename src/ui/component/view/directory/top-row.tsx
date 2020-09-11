@@ -3,24 +3,23 @@ import { useDispatch } from "react-redux"
 import useRowInFocus from "../../../hook/use-row-in-focus"
 import openFileInFocus from "../../../store/thunks/open-file-in-focus"
 import { RowProps } from "./types"
+import useRowFocusSet from "../../../hook/use-row-focus-set"
+import useRowFileOpen from "../../../hook/use-row-file-open"
 
 const TopRow = ({
-    inFocus,
-    setFocus
+    index
 }: RowProps) => {
 
     const rowRef = useRef<HTMLTableRowElement | null>(null)
 
     const classInFocus = useRowInFocus({
         row: rowRef.current,
-        inFocus
+        index
     })
 
-    const dispatch = useDispatch()
+    const changeDirToParent = useRowFileOpen()
 
-    const changeDirToParent = useCallback(() => dispatch(openFileInFocus()), [
-        dispatch
-    ])
+    const setFocus = useRowFocusSet(index)
 
     return <tr ref={rowRef}
         onClick={setFocus}

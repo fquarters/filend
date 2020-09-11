@@ -13,6 +13,7 @@
 
 .directory-view__file td {
     cursor: default;
+    padding: 0 0.2rem;
 }
 
 .directory-view__file--in-focus td {

@@ -30,7 +30,8 @@ const updateTabDirInfo = ({
         const dirInfo = await ipcInvoke<DirInfo, ReadDirMessage>(readDir(tabState.path))
 
         const patch: Partial<TabState> = {
-            dirInfo: dirInfo
+            dirInfo: dirInfo,
+            path: dirInfo.path
         }
 
         if (!tabState.named) {

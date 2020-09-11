@@ -43,8 +43,10 @@ const ExecutePanel = () => {
     const globalContext = useContext(GlobalContext)!
 
     return <div className="execute-panel">
+        <label>
+            {path}/&gt;
+        </label>
         <input ref={globalContext.executeInputRef}
-            placeholder={'Execute'}
             onFocus={disableHotkeys}
             onBlur={enableHotkeys}
             onKeyUp={onKeyUp} />

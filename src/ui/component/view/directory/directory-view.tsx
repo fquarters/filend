@@ -48,6 +48,8 @@ const DirectoryView = ({
 
         if (dirInfoMissing) {
 
+            console.log('ddd')
+
             dispatch(updateTabDirInfo({
                 side,
                 tab: activeTab

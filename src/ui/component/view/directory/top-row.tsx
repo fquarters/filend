@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import useRowInFocus from "../../../hook/use-row-in-focus"
 import openFileInFocus from "../../../store/thunks/open-file-in-focus"
 import { RowProps } from "./types"
-import useRowFocusSet from "../../../hook/use-row-focus-set"
+import useRowClickHandler from "../../../hook/use-row-click-handler"
 import useRowFileOpen from "../../../hook/use-row-file-open"
 
 const TopRow = ({
@@ -19,10 +19,10 @@ const TopRow = ({
 
     const changeDirToParent = useRowFileOpen()
 
-    const setFocus = useRowFocusSet(index)
+    const handleClick = useRowClickHandler(index)
 
     return <tr ref={rowRef}
-        onClick={setFocus}
+        onPointerDown={handleClick}
         onDoubleClick={changeDirToParent}
         className={`${classInFocus}`}>
         <td colSpan={4}>

@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useRef, useMemo, useContext } from "react";
 import { FileInfo } from "../../../../common/ipc/protocol";
 import useRowFileOpen from "../../../hook/use-row-file-open";
-import useRowFocusSet from "../../../hook/use-row-focus-set";
+import useRowClickHandler from "../../../hook/use-row-click-handler";
 import useRowInFocus from "../../../hook/use-row-in-focus";
 import { RowProps } from "./types";
 import DirectoryContext from "../../context/directory-context";
@@ -36,12 +36,12 @@ const FileRow = ({
         selectedRows
     ])
 
-    const setFocus = useRowFocusSet(index)
+    const handleClick = useRowClickHandler(index)
 
     return <tr key={name}
         className={`directory-view__file ${classInFocus} ${rowSelected ? selectedRowClass : ''}`}
         ref={rowRef}
-        onClick={setFocus}
+        onPointerDown={handleClick}
         onDoubleClick={doOpenFile}>
         <td>
             {name}

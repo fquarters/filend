@@ -3,7 +3,6 @@
     grid-template-rows: 2rem calc(100% - 2rem);
     grid-template-columns: auto;
     height: 100%;
-    border: 1px solid yellow;
 }
 
 .side-view__tabs {

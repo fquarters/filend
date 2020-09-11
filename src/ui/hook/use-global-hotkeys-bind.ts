@@ -29,6 +29,7 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "Tab") {
 
             dispatch(switchActiveSide({}))
+            e.preventDefault()
 
         } else if (e.key === "ArrowLeft") {
 

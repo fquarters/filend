@@ -23,7 +23,8 @@ const DirectoryView = ({
     const {
         rowInFocus,
         selectedRows,
-        dirInfo
+        dirInfo,
+        path
     } = useSelector(Selectors.tabByIndex({
         index: activeTab,
         side
@@ -47,8 +48,6 @@ const DirectoryView = ({
     useEffect(() => {
 
         if (dirInfoMissing) {
-
-            console.log('ddd')
 
             dispatch(updateTabDirInfo({
                 side,
@@ -79,10 +78,19 @@ const DirectoryView = ({
         dirInfo?.files
     ])
 
-    return <div className="directory-view" ref={rowContainer} >
+    return <div className="directory-view"
+        ref={rowContainer}>
+        <div className="directory-view__path">
+            {path}
+        </div>
+        <div className="directory-view__table-container">
         <DirectoryContext.Provider value={context}>
             {fileTable}
         </DirectoryContext.Provider>
+        </div>
+        <div className="directory-view__stats">
+            stats
+        </div>
     </div>
 }
 

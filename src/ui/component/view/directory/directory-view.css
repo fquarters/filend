@@ -7,12 +7,30 @@
     text-align: left;
 }
 
-.directory-view td {
+.directory-view table tr {
+    border: 1px dashed rgba(0,0,0,0.0);
+}
+
+.directory-view__file td {
     cursor: default;
 }
 
 .directory-view__file--in-focus td {
-    border: 1px solid black;
+    border-style: dashed;
+    border-color: rgba(59, 59, 59, 0.501);
+    border-width: 1px;
+}
+
+.side-view--active .directory-view__file--in-focus td {
+    border-style: solid;
+}
+
+.directory-view__file--in-focus td:not(:first-child) {
+    border-left-width: 0;
+}
+
+.directory-view__file--in-focus td:not(:last-child) {
+    border-right-width: 0;
 }
 
 .directory-view__file--selected {

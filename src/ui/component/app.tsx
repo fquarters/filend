@@ -5,6 +5,7 @@ import useGlobalHotkeysBind from "../hook/use-global-hotkeys-bind";
 import getInitInfo from "../store/thunks/get-init-info";
 import "./app.css";
 import SideView from "./view/side-panel/side-view";
+import FooterView from "./view/footer/footer-view";
 
 Logger.useDefaults();
 
@@ -29,7 +30,9 @@ const App = () => {
         <div className={'app__side-panel'}>
             <SideView side={'right'} />
         </div>
-        <div className={'app__footer'}></div>
+        <div className={'app__footer'}>
+            <FooterView/>
+        </div>
     </div>
 };
 

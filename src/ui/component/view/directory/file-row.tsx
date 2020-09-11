@@ -36,7 +36,7 @@ const FileRow = ({
     })
 
     return <tr key={name}
-        className={`${classInFocus} ${selected? selectedRowClass : ''}`}
+        className={`directory-view__file ${classInFocus} ${selected? selectedRowClass : ''}`}
         ref={rowRef}
         onClick={setFocus}
         onDoubleClick={doOpenFile}>

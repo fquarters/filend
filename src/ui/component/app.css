@@ -19,12 +19,7 @@
     border-width: 0 1px;
 }
 
-.app__side-panel {
-    background-color: aqua;
-}
-
 
 .app__footer {
     grid-area: footer;
-    background-color: red;
 }

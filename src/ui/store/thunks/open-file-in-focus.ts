@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { executeFile } from "../../../common/ipc-creators";
+import { executeFile } from "../../../common/ipc/message-creators";
 import { Supplier } from "../../../common/types";
 import { ipcInvoke } from "../../common/ipc";
 import { patchTab } from "../action/action-creators";

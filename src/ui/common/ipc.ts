@@ -1,4 +1,4 @@
-import { SomeRendererIpcMessage } from "../../common/ipc";
+import { SomeRendererIpcMessage } from "../../common/ipc/messages";
 import { ipcRenderer } from "electron";
 
 const ipcInvoke = <T, M extends SomeRendererIpcMessage>({

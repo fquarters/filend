@@ -1,6 +1,6 @@
 import { readdir, stat, Stats } from 'fs'
 import path from 'path'
-import { FileInfo, DirInfo } from '../../common/protocol'
+import { FileInfo, DirInfo } from '../../common/ipc/protocol'
 
 const getFileInfoStats = (stats: Stats) => ({
     ...stats,

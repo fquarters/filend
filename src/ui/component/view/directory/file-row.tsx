@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useRef, useMemo, useContext } from "react";
-import { FileInfo } from "../../../../common/protocol";
+import { FileInfo } from "../../../../common/ipc/protocol";
 import useRowFileOpen from "../../../hook/use-row-file-open";
 import useRowFocusSet from "../../../hook/use-row-focus-set";
 import useRowInFocus from "../../../hook/use-row-in-focus";

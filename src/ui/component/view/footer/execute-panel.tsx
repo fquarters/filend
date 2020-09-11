@@ -1,8 +1,12 @@
 import React, { useCallback, useContext } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { patchRoot } from "../../../store/action/action-creators"
 import "./execute-panel.css"
 import GlobalContext from "../../context/global-context"
+import { ipcInvoke } from "../../../common/ipc"
+import { ExecuteCommandMessage } from "../../../../common/ipc/messages"
+import Selectors from "../../../store/data/selectors"
+import { executeCommand } from "../../../../common/ipc/message-creators"
 
 const ExecutePanel = () => {
 
@@ -16,7 +20,11 @@ const ExecutePanel = () => {
         hotkeysDisabled: false
     })), [dispatch])
 
-    const blurOnEscape = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    const {
+        path
+    } = useSelector(Selectors.currentActiveTabState)
+
+    const onKeyUp = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
 
         if (e.key === "Escape") {
 
@@ -24,10 +32,13 @@ const ExecutePanel = () => {
 
         } else if (e.key === "Enter") {
 
-            // execute
+            ipcInvoke<void, ExecuteCommandMessage>(executeCommand({
+                command: e.currentTarget.value,
+                path
+            }))
         }
 
-    }, [])
+    }, [path])
 
     const globalContext = useContext(GlobalContext)!
 
@@ -38,7 +49,7 @@ const ExecutePanel = () => {
         <input ref={globalContext.executeInputRef}
             onFocus={disableHotkeys}
             onBlur={enableHotkeys}
-            onKeyUp={blurOnEscape} />
+            onKeyUp={onKeyUp} />
     </div>
 }
 

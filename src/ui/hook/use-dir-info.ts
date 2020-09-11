@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
-import { DirInfo } from "../../common/protocol"
+import { DirInfo } from "../../common/ipc/protocol"
 import { ipcInvoke } from "../common/ipc"
-import { readDir } from "../../common/ipc-creators"
-import { ReadDirMessage } from "../../common/ipc"
+import { readDir } from "../../common/ipc/message-creators"
+import { ReadDirMessage } from "../../common/ipc/messages"
 
 const useDirInfo = (path: string) => {
 

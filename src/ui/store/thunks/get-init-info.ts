@@ -1,17 +1,15 @@
 import { ipcInvoke } from "../../common/ipc"
-import { InitInfo } from "../../../common/protocol"
-import { InitInfoMessage } from "../../../common/ipc"
+import { InitInfo } from "../../../common/ipc/protocol"
+import { InitInfoMessage } from "../../../common/ipc/messages"
 import moment from "moment"
+import { getInitInfo } from "../../../common/ipc/message-creators"
 
-const getInitInfo = () => async () => {
+const getInitInfoThunk = () => async () => {
 
-    const info = await ipcInvoke<InitInfo, InitInfoMessage>({
-        type: 'GET_INIT_INFO',
-        data: null
-    })
+    const info = await ipcInvoke<InitInfo, InitInfoMessage>(getInitInfo())
 
     moment.locale(info.locale)
 
 }
 
-export default getInitInfo
+export default getInitInfoThunk

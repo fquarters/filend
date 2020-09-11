@@ -1,4 +1,4 @@
-import { DirInfo } from "../../../common/protocol";
+import { DirInfo } from "../../../common/ipc/protocol";
 
 export type PageResult<T> = {
     data: Array<T>,

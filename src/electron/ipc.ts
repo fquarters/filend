@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { RendererIpcMessageType } from "../common/ipc";
+import { RendererIpcMessageType } from "../common/ipc/messages";
 import { MapFunction } from "../common/types";
 
 type IpcHandler = MapFunction<any, Promise<any>>

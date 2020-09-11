@@ -21,8 +21,14 @@ type InitInfo = {
     locale: string
 }
 
+type CommandData = {
+    path: string,
+    command: string
+}
+
 export type {
     FileInfo,
     DirInfo,
-    InitInfo
+    InitInfo,
+    CommandData
 }

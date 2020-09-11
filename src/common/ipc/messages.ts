@@ -1,4 +1,10 @@
-type RendererIpcMessageType = 'READ_DIR' | 'IS_DIR' | 'EXECUTE_FILE' | 'GET_INIT_INFO'
+import { CommandData as CommandData } from "./protocol"
+
+type RendererIpcMessageType = 'READ_DIR'
+    | 'IS_DIR'
+    | 'EXECUTE_FILE'
+    | 'GET_INIT_INFO'
+    | 'EXECUTE_COMMAND'
 
 type MainIpcMessageType = ''
 
@@ -18,12 +24,14 @@ type MainIpcMessage<T extends MainIpcMessageType> = {
 
 type ReadDirMessage = RendererIpcMessage<'READ_DIR'> & MessageData<string>
 type ExecuteFileMessage = RendererIpcMessage<'EXECUTE_FILE'> & MessageData<string[]>
+type ExecuteCommandMessage = RendererIpcMessage<'EXECUTE_COMMAND'> & MessageData<CommandData>
 type InitInfoMessage = RendererIpcMessage<'GET_INIT_INFO'> & EmptyMessage
 
 type SomeRendererIpcMessage = RendererIpcMessage<any> & (
-    ReadDirMessage 
+    ReadDirMessage
     | ExecuteFileMessage
     | InitInfoMessage
+    | ExecuteCommandMessage
 )
 
 type SomeMainIpcMessage = MainIpcMessage<any>
@@ -38,5 +46,6 @@ export type {
     InitInfoMessage,
     SomeMainIpcMessage,
     SomeRendererIpcMessage,
-    ExecuteFileMessage
+    ExecuteFileMessage,
+    ExecuteCommandMessage
 }

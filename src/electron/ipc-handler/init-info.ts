@@ -1,4 +1,4 @@
-import { InitInfo } from "../../common/protocol"
+import { InitInfo } from "../../common/ipc/protocol"
 import { app } from "electron"
 
 const getInitInfo = (): Promise<InitInfo> => new Promise((resolve, reject) => {

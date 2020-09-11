@@ -4,6 +4,10 @@ import { handleInvoke } from './ipc'
 import executeFile from './ipc-handler/execute-file'
 import readDir from './ipc-handler/read-dir'
 import getInitInfo from './ipc-handler/init-info'
+import executeCommand from './ipc-handler/execute-command'
+import Logger from 'js-logger'
+
+Logger.useDefaults();
 
 const { app, BrowserWindow } = electron
 
@@ -32,3 +36,4 @@ app.on('activate', () => {
 handleInvoke('READ_DIR', readDir)
 handleInvoke('EXECUTE_FILE', executeFile)
 handleInvoke('GET_INIT_INFO', getInitInfo)
+handleInvoke('EXECUTE_COMMAND', executeCommand)

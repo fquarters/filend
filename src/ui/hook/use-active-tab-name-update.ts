@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { patchTab } from "../store/action/action-creators"
 import { Side, TabState } from "../store/data/state"
-import { DirInfo } from "../../common/protocol"
+import { DirInfo } from "../../common/ipc/protocol"
 import Selectors from "../store/data/selectors"
 
 type ActiveTabUpdateArgs = {

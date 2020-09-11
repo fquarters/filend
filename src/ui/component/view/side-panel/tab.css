@@ -1,0 +1,13 @@
+.tab {
+    padding: 0 0.2rem;
+    border: 1px solid black;
+    border-bottom-style: inset;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.tab--active {
+    border-bottom-style: none;
+    font-weight: 600;
+    color: inherit;
+}

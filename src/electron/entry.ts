@@ -6,6 +6,7 @@ import readDir from './ipc-handler/read-dir'
 import getInitInfo from './ipc-handler/init-info'
 import executeCommand from './ipc-handler/execute-command'
 import Logger from 'js-logger'
+import resolvePath from './ipc-handler/resolve-path'
 
 Logger.useDefaults();
 
@@ -37,3 +38,4 @@ handleInvoke('READ_DIR', readDir)
 handleInvoke('EXECUTE_FILE', executeFile)
 handleInvoke('GET_INIT_INFO', getInitInfo)
 handleInvoke('EXECUTE_COMMAND', executeCommand)
+handleInvoke('RESOLVE_PATH', resolvePath)

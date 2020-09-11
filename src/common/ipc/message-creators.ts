@@ -1,4 +1,4 @@
-import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage } from "./messages";
+import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage } from "./messages";
 import { CommandData } from "./protocol";
 
 const readDir = (path: string): ReadDirMessage => ({
@@ -6,7 +6,7 @@ const readDir = (path: string): ReadDirMessage => ({
     type: 'READ_DIR'
 })
 
-const executeFile = (path: string[]): ExecuteFileMessage => ({
+const executeFile = (path: string): ExecuteFileMessage => ({
     data: path,
     type: 'EXECUTE_FILE'
 })
@@ -21,9 +21,15 @@ const getInitInfo = (): InitInfoMessage => ({
     type: 'GET_INIT_INFO'
 })
 
+const resolvePath = (path: string[]): ResolvePathMessage => ({
+    data: path,
+    type: 'RESOLVE_PATH'
+})
+
 export {
     readDir,
     executeFile,
     getInitInfo,
-    executeCommand
+    executeCommand,
+    resolvePath
 };

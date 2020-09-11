@@ -1,11 +1,5 @@
-import path from 'path'
 import { shell } from 'electron'
 
-const executeFile = (filePath: string[]): Promise<string> => {
-
-    const resolvedPath = path.resolve(...filePath)
-    
-    return shell.openPath(resolvedPath)
-}
+const executeFile = (filePath: string): Promise<string> => shell.openPath(filePath)
 
 export default executeFile

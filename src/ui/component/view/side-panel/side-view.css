@@ -6,3 +6,8 @@
     border: 1px solid yellow;
 }
 
+.side-view__tabs {
+    display: flex;
+    border-bottom: 1px solid black;
+    align-items: flex-end;
+}

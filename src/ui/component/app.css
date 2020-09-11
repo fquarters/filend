@@ -2,7 +2,7 @@
     display: grid;
     height: 100%;
     grid-template-columns: 1fr 0.5rem 1fr;
-    grid-template-rows: 5rem calc(100vh - 8rem) 3rem;
+    grid-template-rows: 2rem calc(100vh - 5rem) 3rem;
     grid-template-areas: 
                         "header header header"
                         "left divider right"

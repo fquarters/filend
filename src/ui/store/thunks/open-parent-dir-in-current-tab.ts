@@ -1,11 +1,17 @@
-import { AnyAction, Dispatch } from "redux"
+import { batch } from "react-redux"
+import { AnyAction } from "redux"
+import { ThunkDispatch } from "redux-thunk"
+import { resolvePath } from "../../../common/ipc/message-creators"
+import { ResolvePathMessage } from "../../../common/ipc/messages"
 import { Supplier } from "../../../common/types"
-import { State } from "../data/state"
-import Selectors from "../data/selectors"
+import { ipcInvoke } from "../../common/ipc"
 import { patchTab } from "../action/action-creators"
+import Selectors from "../data/selectors"
+import { State } from "../data/state"
+import updateTabDirInfo from "./update-tab-dir-info"
 
-const openParentDirInCurrentTab = () => (
-    dispatch: Dispatch<AnyAction>,
+const openParentDirInCurrentTab = () => async (
+    dispatch: ThunkDispatch<State, unknown, AnyAction>,
     getState: Supplier<State>
 ) => {
 
@@ -19,15 +25,30 @@ const openParentDirInCurrentTab = () => (
     const tabState = state[side].tabs[tab]
     const currentDirPath = tabState.path
 
-    dispatch(patchTab({
-        index: tab,
-        patch: {
-            path: `${currentDirPath}/..`,
-            rowInFocus: 0,
-            selectedRows: []
-        },
-        side
-    }))
+    const resolvedPath = await ipcInvoke<string, ResolvePathMessage>(
+        resolvePath([currentDirPath, ".."])
+    )
+
+    if (resolvedPath) {
+
+        batch(() => {
+
+            dispatch(patchTab({
+                index: tab,
+                patch: {
+                    path: resolvedPath,
+                    rowInFocus: 0,
+                    selectedRows: []
+                },
+                side
+            }))
+
+            dispatch(updateTabDirInfo({
+                side,
+                tab
+            }))
+        })
+    }
 }
 
 export default openParentDirInCurrentTab

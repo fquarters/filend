@@ -1,7 +1,8 @@
-import React, { useMemo, useRef } from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect, useMemo, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import Selectors from "../../../store/data/selectors"
 import { Side } from "../../../store/data/state"
+import updateTabDirInfo from "../../../store/thunks/update-tab-dir-info"
 import DirectoryContext, { DirectoryContextType } from "../../context/directory-context"
 import "./directory-view.css"
 import FileRow from "./file-row"
@@ -20,9 +21,9 @@ const DirectoryView = ({
     } = useSelector(Selectors.sideByName(side))
 
     const {
-        dirInfo,
         rowInFocus,
-        selectedRows
+        selectedRows,
+        dirInfo
     } = useSelector(Selectors.tabByIndex({
         index: activeTab,
         side
@@ -38,6 +39,22 @@ const DirectoryView = ({
         rowInFocus,
         selectedRows
     ])
+
+    const dispatch = useDispatch()
+
+    const dirInfoMissing = !dirInfo
+
+    useEffect(() => {
+
+        if (dirInfoMissing) {
+
+            dispatch(updateTabDirInfo({
+                side,
+                tab: activeTab
+            }))
+        }
+
+    }, [dirInfoMissing, dispatch, side, activeTab])
 
     const fileTable = useMemo(() => <table>
         <thead>

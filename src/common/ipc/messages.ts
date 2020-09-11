@@ -5,6 +5,7 @@ type RendererIpcMessageType = 'READ_DIR'
     | 'EXECUTE_FILE'
     | 'GET_INIT_INFO'
     | 'EXECUTE_COMMAND'
+    | 'RESOLVE_PATH'
 
 type MainIpcMessageType = ''
 
@@ -22,8 +23,9 @@ type MainIpcMessage<T extends MainIpcMessageType> = {
     type: T
 }
 
+type ResolvePathMessage = RendererIpcMessage<'RESOLVE_PATH'> & MessageData<string[]>
 type ReadDirMessage = RendererIpcMessage<'READ_DIR'> & MessageData<string>
-type ExecuteFileMessage = RendererIpcMessage<'EXECUTE_FILE'> & MessageData<string[]>
+type ExecuteFileMessage = RendererIpcMessage<'EXECUTE_FILE'> & MessageData<string>
 type ExecuteCommandMessage = RendererIpcMessage<'EXECUTE_COMMAND'> & MessageData<CommandData>
 type InitInfoMessage = RendererIpcMessage<'GET_INIT_INFO'> & EmptyMessage
 
@@ -32,6 +34,7 @@ type SomeRendererIpcMessage = RendererIpcMessage<any> & (
     | ExecuteFileMessage
     | InitInfoMessage
     | ExecuteCommandMessage
+    | ResolvePathMessage
 )
 
 type SomeMainIpcMessage = MainIpcMessage<any>
@@ -47,5 +50,6 @@ export type {
     SomeMainIpcMessage,
     SomeRendererIpcMessage,
     ExecuteFileMessage,
-    ExecuteCommandMessage
+    ExecuteCommandMessage,
+    ResolvePathMessage
 }

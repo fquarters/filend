@@ -1,14 +1,17 @@
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { executeFile } from "../../../common/ipc/message-creators";
+import { executeFile, resolvePath } from "../../../common/ipc/message-creators";
 import { Supplier } from "../../../common/types";
 import { ipcInvoke } from "../../common/ipc";
 import { patchTab } from "../action/action-creators";
 import Selectors from "../data/selectors";
 import { State } from "../data/state";
 import openParentDirInCurrentTab from "./open-parent-dir-in-current-tab";
+import { ResolvePathMessage } from "../../../common/ipc/messages";
+import { batch } from "react-redux";
+import updateTabDirInfo from "./update-tab-dir-info";
 
-const openFileInFocus = () => (
+const openFileInFocus = () => async (
     dispatch: ThunkDispatch<State, unknown, AnyAction>,
     getState: Supplier<State>
 ) => {
@@ -38,22 +41,38 @@ const openFileInFocus = () => (
 
         const fileName = file.name
 
-        if (file.stats.isFile) {
+        const resolvedPath = await ipcInvoke<string, ResolvePathMessage>(
+            resolvePath([currentDirPath, fileName])
+        )
 
-            ipcInvoke(executeFile([currentDirPath, fileName]))
+        if (resolvedPath) {
 
-        } else {
+            if (file.stats.isFile) {
 
-            dispatch(patchTab({
-                index: tab,
-                patch: {
-                    path: `${currentDirPath}/${fileName}`,
-                    rowInFocus: 0,
-                    selectedRows: []
-                },
-                side
-            }))
+                ipcInvoke(executeFile(resolvedPath))
+
+            } else {
+
+                batch(() => {
+
+                    dispatch(patchTab({
+                        index: tab,
+                        patch: {
+                            path: resolvedPath,
+                            rowInFocus: 0,
+                            selectedRows: []
+                        },
+                        side
+                    }))
+                    dispatch(updateTabDirInfo({
+                        side,
+                        tab
+                    }))
+                })
+
+            }
         }
+
     }
 }
 

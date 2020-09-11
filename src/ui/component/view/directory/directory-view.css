@@ -14,6 +14,8 @@
 .directory-view__file td {
     cursor: default;
     padding: 0 0.2rem;
+    word-break: keep-all;
+    white-space: nowrap;
 }
 
 .directory-view__file--in-focus td {

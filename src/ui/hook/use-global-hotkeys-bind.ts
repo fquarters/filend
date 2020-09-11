@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useContext } from "react"
+import { useCallback, useEffect, useContext, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import changeRowInFocus from "../store/thunks/change-row-in-focus"
 import switchActiveSide from "../store/thunks/switch-active-side"
@@ -7,14 +7,14 @@ import openParentDirInCurrentTab from "../store/thunks/open-parent-dir-in-curren
 import toggleRowInFocusSelection from "../store/thunks/toggle-row-in-focus-selection"
 import Selectors from "../store/data/selectors"
 import GlobalContext from "../component/context/global-context"
+import addTabOnActiveSide from "../store/thunks/add-tab-on-active-side"
 
 const useGlobalHotkeysBind = () => {
 
     const dispatch = useDispatch()
-
     const hotkeysDisabled = useSelector(Selectors.hotkeysDisabled)
-
     const executeInputRef = useContext(GlobalContext)!.executeInputRef
+    const metaKeyPressed = useRef<boolean>(false)
 
     const onKeyDown = useCallback((e: KeyboardEvent) => {
 
@@ -22,7 +22,11 @@ const useGlobalHotkeysBind = () => {
             return
         }
 
-        if (e.key === "Tab") {
+        if (e.key === "Meta") {
+
+            metaKeyPressed.current = true
+
+        } else if (e.key === "Tab") {
 
             dispatch(switchActiveSide({}))
 
@@ -62,9 +66,22 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "/") {
 
             executeInputRef.current?.focus()
+
+        } else if (e.key === "t" && (e.ctrlKey || metaKeyPressed.current)) {
+
+            dispatch(addTabOnActiveSide())
         }
 
     }, [dispatch, hotkeysDisabled, executeInputRef])
+
+    const onKeyUp = useCallback((e: KeyboardEvent) => {
+
+        if (e.key === "Meta") {
+
+            metaKeyPressed.current = false
+        }
+
+    }, [])
 
     useEffect(() => {
 
@@ -73,6 +90,14 @@ const useGlobalHotkeysBind = () => {
         return () => document.removeEventListener('keydown', onKeyDown)
 
     }, [onKeyDown])
+
+    useEffect(() => {
+
+        document.addEventListener('keyup', onKeyUp)
+
+        return () => document.removeEventListener('keydown', onKeyUp)
+
+    }, [onKeyUp])
 }
 
 export default useGlobalHotkeysBind

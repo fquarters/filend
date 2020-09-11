@@ -22,7 +22,8 @@ export type SideState = {
 
 export type State = {
     left: SideState,
-    right: SideState
+    right: SideState,
+    hotkeysDisabled: boolean
 };
 
 export type TabId = {
@@ -52,5 +53,6 @@ export const initialState: State = {
         ...defaultSideState,
         active: true
     },
-    right: defaultSideState
+    right: defaultSideState,
+    hotkeysDisabled: false
 };

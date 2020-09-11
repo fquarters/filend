@@ -43,7 +43,8 @@ const Selectors = {
             side: sideName,
             tab: sideState.activeTab
         }
-    }
+    },
+    hotkeysDisabled: (state: State) => state.hotkeysDisabled
 }
 
 export default Selectors

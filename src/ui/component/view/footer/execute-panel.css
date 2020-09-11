@@ -1,0 +1,16 @@
+.execute-panel {
+    display: flex;
+    height: 1.5rem;
+    align-items: center;
+}
+
+.execute-panel label {
+    padding-right: 0.5rem;
+}
+
+.execute-panel input {
+    flex: 1;
+    height: 100%;
+    font-size: 1.2rem;
+    font-family: "UbuntuMono", monospace;
+}

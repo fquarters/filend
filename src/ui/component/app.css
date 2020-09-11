@@ -1,8 +1,8 @@
 .app {
     display: grid;
     height: 100%;
-    grid-template-columns: 49% 0.5rem auto;
-    grid-template-rows: 5rem calc(100vh - 10rem) 5rem;
+    grid-template-columns: 1fr 0.5rem 1fr;
+    grid-template-rows: 5rem calc(100vh - 8rem) 3rem;
     grid-template-areas: 
                         "header header header"
                         "left divider right"
@@ -19,7 +19,7 @@
     border-width: 0 1px;
 }
 
-
 .app__footer {
     grid-area: footer;
+    border: 1px solid green;
 }

@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React, { useMemo, useRef } from "react"
+import { useSelector } from "react-redux"
+import useDirInfoUpdate from "../../../hook/use-dir-info-update"
 import Selectors from "../../../store/data/selectors"
 import { Side } from "../../../store/data/state"
-import updateTabDirInfo from "../../../store/thunks/update-tab-dir-info"
 import DirectoryContext, { DirectoryContextType } from "../../context/directory-context"
 import "./directory-view.css"
-import FileRow from "./file-row"
-import TopRow from "./top-row"
+import FileTable from "./file-table"
 
 type DirectoryViewProps = {
     side: Side
@@ -41,40 +40,12 @@ const DirectoryView = ({
         selectedRows
     ])
 
-    const dispatch = useDispatch()
+    useDirInfoUpdate({
+        side,
+        updateRequired: !dirInfo
+    })
 
-    const dirInfoMissing = !dirInfo
-
-    useEffect(() => {
-
-        if (dirInfoMissing) {
-
-            dispatch(updateTabDirInfo({
-                side,
-                tab: activeTab
-            }))
-        }
-
-    }, [dirInfoMissing, dispatch, side, activeTab])
-
-    const fileTable = useMemo(() => <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Extension</th>
-                <th>Date</th>
-                <th>Size</th>
-            </tr>
-        </thead>
-        <tbody>
-            <TopRow index={0} />
-            {
-                dirInfo?.files.map((file, index) => <FileRow key={file.name}
-                    index={index + 1}
-                    {...file} />)
-            }
-        </tbody>
-    </table>, [
+    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo} />, [
         dirInfo?.files
     ])
 
@@ -84,9 +55,9 @@ const DirectoryView = ({
             {path}
         </div>
         <div className="directory-view__table-container">
-        <DirectoryContext.Provider value={context}>
-            {fileTable}
-        </DirectoryContext.Provider>
+            <DirectoryContext.Provider value={context}>
+                {fileTable}
+            </DirectoryContext.Provider>
         </div>
         <div className="directory-view__stats">
             stats

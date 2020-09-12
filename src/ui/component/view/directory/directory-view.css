@@ -18,6 +18,17 @@
 
 .directory-view table {
     text-align: left;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.directory-view__file-table__col {
+    width: 25%;
+}
+
+.directory-view table th {
+    width: 25%;
+    border: 1px solid black;
 }
 
 .directory-view table tr {
@@ -29,6 +40,15 @@
     padding: 0 0.2rem;
     word-break: keep-all;
     white-space: nowrap;
+    overflow: hidden;
+}
+
+.directory-view__file td:not(:last-child) {
+    border-right: 1px solid black;
+}
+
+.directory-view__file td:not(:first-child) {
+    border-left: 1px solid black;
 }
 
 .directory-view__file--in-focus td {
@@ -39,14 +59,6 @@
 
 .side-view--active .directory-view__file--in-focus td {
     border-style: solid;
-}
-
-.directory-view__file--in-focus td:not(:first-child) {
-    border-left-width: 0;
-}
-
-.directory-view__file--in-focus td:not(:last-child) {
-    border-right-width: 0;
 }
 
 .directory-view__file--selected {

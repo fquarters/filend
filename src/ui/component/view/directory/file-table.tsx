@@ -18,6 +18,12 @@ const FileTable = ({
                 <th>Size</th>
             </tr>
         </thead>
+        <colgroup>
+            <col className="directory-view__file-table__col"/>
+            <col className="directory-view__file-table__col"/>
+            <col className="directory-view__file-table__col"/>
+            <col className="directory-view__file-table__col"/>
+        </colgroup>
         <tbody>
             <TopRow index={0} />
             {dirInfo.files.map((file, index) => <FileRow key={file.name}

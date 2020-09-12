@@ -24,10 +24,13 @@ const TopRow = ({
     return <tr ref={rowRef}
         onPointerDown={handleClick}
         onDoubleClick={changeDirToParent}
-        className={`${classInFocus}`}>
-        <td colSpan={4}>
+        className={`directory-view__file ${classInFocus}`}>
+        <td>
             ...
         </td>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
 }
 

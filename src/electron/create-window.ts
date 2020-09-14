@@ -1,4 +1,5 @@
 import { BrowserWindow } from "electron"
+import holder from "./common/renderer-holder"
 
 const createWindow = () => {
     // Create the browser window.
@@ -17,6 +18,8 @@ const createWindow = () => {
     win.webContents.openDevTools({
         mode: 'bottom'
     })
+
+    holder.value = win.webContents
 }
 
 export {

@@ -7,6 +7,8 @@ import getInitInfo from './ipc-handler/init-info'
 import executeCommand from './ipc-handler/execute-command'
 import Logger from 'js-logger'
 import resolvePath from './ipc-handler/resolve-path'
+import copyFiles from './ipc-handler/copy-files'
+import generateNextId from './ipc-handler/next-id'
 
 Logger.useDefaults();
 
@@ -39,3 +41,5 @@ handleInvoke('EXECUTE_FILE', executeFile)
 handleInvoke('GET_INIT_INFO', getInitInfo)
 handleInvoke('EXECUTE_COMMAND', executeCommand)
 handleInvoke('RESOLVE_PATH', resolvePath)
+handleInvoke('COPY_FILES', copyFiles)
+handleInvoke('NEXT_ID', generateNextId)

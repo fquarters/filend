@@ -8,6 +8,7 @@ import toggleRowInFocusSelection from "../store/thunks/toggle-row-in-focus-selec
 import Selectors from "../store/data/selectors"
 import GlobalContext from "../component/context/global-context"
 import addTabOnActiveSide from "../store/thunks/add-tab-on-active-side"
+import copySelectedFiles from "../store/thunks/copy-selected-files"
 
 const useGlobalHotkeysBind = () => {
 
@@ -71,6 +72,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "t" && (e.ctrlKey || metaKeyPressed.current)) {
 
             dispatch(addTabOnActiveSide())
+
+        } else if (e.key === "F5") {
+
+            dispatch(copySelectedFiles())
         }
 
     }, [dispatch, hotkeysDisabled, executeInputRef])

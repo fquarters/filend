@@ -35,6 +35,10 @@
     border: 1px dashed rgba(0,0,0,0.0);
 }
 
+.directory-view table tr:last-child {
+    border-bottom: 1px solid black;
+}
+
 .directory-view__file td {
     cursor: default;
     padding: 0 0.2rem;

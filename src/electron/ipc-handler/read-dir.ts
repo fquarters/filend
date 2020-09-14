@@ -1,71 +1,25 @@
-import { readdir, stat, Stats } from 'fs'
 import path from 'path'
-import { FileInfo, DirInfo } from '../../common/ipc/protocol'
+import { DirInfo } from '../../common/ipc/protocol'
+import collectFileInfos from '../fs/collect-file-info'
+import getDirFiles from '../fs/get-dir-files'
+import getStats from '../fs/get-stats'
+import mapStatsToFileInfoStats from '../fs/map-file-stats'
 
-const getFileInfoStats = (stats: Stats) => ({
-    ...stats,
-    isFile: stats.isFile(),
-    isDirectory: stats.isDirectory()
-})
+const readDir = async (dirPath: string): Promise<DirInfo> => {
 
-const collectFileInfos = (files: string[], dirPath: string): Promise<FileInfo>[] =>
-    files.map((fileName) => {
+    const filePaths = await getDirFiles(dirPath)
+    const stats = await getStats(dirPath)
 
-        const filePath = path.resolve(dirPath, fileName)
+    const files = await collectFileInfos(filePaths.map((filename) =>
+        path.resolve(dirPath, filename)))
 
-        return new Promise<FileInfo>((resolve, reject) => {
-
-            stat(filePath, (err, stats) => {
-
-                if (err != null) {
-                    reject(err)
-                }
-
-                resolve({
-                    name: fileName,
-                    path: filePath,
-                    stats: getFileInfoStats(stats)
-                })
-            })
-        })
+    return Promise.resolve({
+        name: path.basename(path.resolve(dirPath)),
+        path: path.resolve(dirPath),
+        stats: mapStatsToFileInfoStats(stats),
+        files
     })
-
-const readDir = (dirPath: string): Promise<DirInfo> => new Promise((resolve, reject) => {
-
-    readdir(dirPath, (err, files) => {
-
-        if (err != null) {
-            reject(err)
-        }
-
-        const filePromises = collectFileInfos(files, dirPath)
-
-        new Promise<Stats>((resolve, reject) =>
-            stat(dirPath, (err, stats) => {
-
-                if (err != null) {
-                    reject(err)
-                }
-
-                resolve(stats)
-            })
-        ).then((stats: Stats) => {
-
-            Promise.all(filePromises)
-                .then((files) => {
-
-                    resolve({
-                        name: path.basename(path.resolve(dirPath)),
-                        path: path.resolve(dirPath),
-                        stats: getFileInfoStats(stats),
-                        files
-                    })
-                })
-        })
-
-
-    })
-})
+}
 
 export default readDir
 

@@ -1,23 +1,13 @@
-import { exists } from "fs"
 import path from "path"
+import checkFileExists from "../fs/check-file-exists"
 
-const resolvePath = (pathSegments: string[]): Promise<string> =>
-    new Promise<string>((resolve, reject) => {
+const resolvePath = async (pathSegments: string[]): Promise<string | null> => {
 
-        const resolvedPath = path.resolve(...pathSegments)
+    const resolvedPath = path.resolve(...pathSegments)
 
-        exists(resolvedPath, (doesExist) => {
+    const exists = await checkFileExists(resolvedPath)
 
-            if (doesExist) {
-
-                resolve(resolvedPath)
-
-            } else {
-
-                resolve('')
-            }
-
-        })
-    })
+    return Promise.resolve(exists ? resolvedPath : null)
+}
 
 export default resolvePath

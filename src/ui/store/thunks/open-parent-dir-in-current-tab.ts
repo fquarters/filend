@@ -25,7 +25,7 @@ const openParentDirInCurrentTab = () => async (
     const tabState = state[side].tabs[tab]
     const currentDirPath = tabState.path
 
-    const resolvedPath = await ipcInvoke<string, ResolvePathMessage>(
+    const resolvedPath = await ipcInvoke<string | null, ResolvePathMessage>(
         resolvePath([currentDirPath, ".."])
     )
 

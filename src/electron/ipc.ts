@@ -10,4 +10,4 @@ const handleInvoke = (type: RendererIpcMessageType, handler: IpcHandler) =>
 
 export {
     handleInvoke
-}
+};

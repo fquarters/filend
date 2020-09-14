@@ -6,6 +6,7 @@ import SideContext, { SideContextType } from "../../context/side-context"
 import DirectoryView from "../directory/directory-view"
 import "./side-view.scss"
 import Tab from "./tab"
+import TabsPanel from "./tabs-panel"
 
 type SideViewProps = {
     side: Side
@@ -25,18 +26,9 @@ const SideView = ({ side }: SideViewProps) => {
         side
     }), [activeTab, side, active])
 
-    const tabPanel = useMemo(() => <div className={"side-view__tabs"}>
-        {
-            tabs.map(({ name }: TabState, index: number) => <Tab
-                name={name}
-                index={index}
-                key={index} />)
-        }
-    </div>, [tabs])
-
     return <div className={`side-view ${active ? 'side-view--active' : ''}`}>
         <SideContext.Provider value={sideContext}>
-            {tabPanel}
+            <TabsPanel/>
             <div className={"side-view__tab-content"}>
                 <DirectoryView side={side} />
             </div>

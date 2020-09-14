@@ -30,6 +30,9 @@ $main-border: $border-width solid theme.$directory-view__border-color;
     }
 
     .directory-view__file {
+
+        color: theme.$directory-view__row__color;
+
         td {
             cursor: default;
             padding: 0 0.2rem;
@@ -57,10 +60,6 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         &.directory-view__file--selected {
             color: theme.$directory-view__row--selected__color;
         }
-    }
-
-    @at-root .side-view--active .directory-view__file--in-focus td {
-        border-style: solid;
     }
 
     table {

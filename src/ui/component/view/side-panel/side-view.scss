@@ -12,4 +12,10 @@
         align-items: flex-end;
         border-bottom: 1px solid theme.$tabs__border-color;
     }
+
+    &.side-view--active {
+        .directory-view__file--in-focus td {
+            border-style: solid;
+        }
+    }
 }

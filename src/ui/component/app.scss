@@ -1,3 +1,5 @@
+@use "./theme";
+
 .app {
     display: grid;
     height: 100%;
@@ -12,11 +14,12 @@
  
     .app__header {
         grid-area: header;
+        border-bottom: 1px solid theme.$fg-color;
     }
 
     .app__divider {
         cursor: col-resize;
-        border: 1px solid black;
+        border: 1px solid theme.$divider__border-color;
         border-width: 0 1px;
     }
 

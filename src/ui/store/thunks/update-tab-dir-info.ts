@@ -1,6 +1,5 @@
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { readDir } from "../../../common/ipc/message-creators";
 import { ReadDirMessage } from "../../../common/ipc/messages";
 import { DirInfo } from "../../../common/ipc/protocol";
 import { Supplier } from "../../../common/types";
@@ -8,6 +7,7 @@ import { ipcInvoke } from "../../common/ipc";
 import { patchTab } from "../action/action-creators";
 import Selectors from "../data/selectors";
 import { Side, State, TabState } from "../data/state";
+import Message from "../../../common/ipc/message-creators";
 
 type UpdateTabDirInfoArgs = {
     side: Side,
@@ -27,7 +27,7 @@ const updateTabDirInfo = ({
             side
         })(state)
 
-        const dirInfo = await ipcInvoke<DirInfo, ReadDirMessage>(readDir(tabState.path))
+        const dirInfo = await ipcInvoke<DirInfo, ReadDirMessage>(Message.readDir(tabState.path))
 
         const patch: Partial<TabState> = {
             dirInfo: dirInfo,

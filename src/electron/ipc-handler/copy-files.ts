@@ -3,7 +3,6 @@ import { once } from 'events';
 import { createReadStream, createWriteStream } from "original-fs";
 import path from "path";
 import { copyCancelEvent, copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent } from "../../common/ipc/dynamic-event";
-import { copyConflict, copyProgress } from "../../common/ipc/message-creators";
 import { CopyArgs, CopyConflict, CopyConflictResult } from "../../common/ipc/protocol";
 import nextId from "../common/id-generator";
 import { ipcEmitDynamic } from "../common/ipc";
@@ -14,6 +13,7 @@ import makeDir from "../fs/make-dir";
 import streamFinish from "../fs/stream-finish";
 import readDir from "./read-dir";
 import Logger from "js-logger";
+import Message from "../../common/ipc/message-creators";
 
 type CopyDestination = {
     destination: string
@@ -57,7 +57,7 @@ const resolveConflict = ({
 
         ipcEmitDynamic(
             copyConflictEmitEvent(id),
-            copyConflict({
+            Message.copyConflict({
                 id,
                 conflictId,
                 ...args
@@ -127,7 +127,7 @@ const getCopier = (id: string) => {
                 break
             }
 
-            ipcEmitDynamic(copyProgressEvent(id), copyProgress({
+            ipcEmitDynamic(copyProgressEvent(id), Message.copyProgress({
                 id,
                 currentCopied: writer.bytesWritten,
                 currentFile: source,

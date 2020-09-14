@@ -1,15 +1,15 @@
-import { ThunkDispatch } from "redux-thunk"
-import { State } from "../data/state"
-import { AnyAction } from "redux"
-import { Supplier } from "../../../common/types"
-import Selectors from "../data/selectors"
-import { ipcInvoke } from "../../common/ipc"
-import { copyFiles, nextId } from "../../../common/ipc/message-creators"
-import updateTabDirInfo from "./update-tab-dir-info"
-import { NextIdMessage, CopyConflictMessage, CopyProgressMessage } from "../../../common/ipc/messages"
 import { ipcRenderer } from "electron"
+import { AnyAction } from "redux"
+import { ThunkDispatch } from "redux-thunk"
 import { copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent } from "../../../common/ipc/dynamic-event"
-import { CopyConflict, CopyConflictResult } from "../../../common/ipc/protocol"
+import { CopyConflictMessage, CopyProgressMessage, NextIdMessage } from "../../../common/ipc/messages"
+import { CopyConflictResult } from "../../../common/ipc/protocol"
+import { Supplier } from "../../../common/types"
+import { ipcInvoke } from "../../common/ipc"
+import Selectors from "../data/selectors"
+import { State } from "../data/state"
+import updateTabDirInfo from "./update-tab-dir-info"
+import Message from "../../../common/ipc/message-creators"
 
 const copySelectedFiles = () => async (
     dispatch: ThunkDispatch<State, unknown, AnyAction>,
@@ -34,11 +34,9 @@ const copySelectedFiles = () => async (
     const selectedFiles = dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
     const otherSide = side === 'left' ? 'right' : 'left'
 
-    const operationId = await ipcInvoke<string, NextIdMessage>(nextId())
+    const operationId = await ipcInvoke<string, NextIdMessage>(Message.nextId())
 
-    const onConflict: (...args: any[]) => void = (_, args: CopyConflictMessage) => {
-
-        console.log('conflict:', args)
+    const onConflict = (_: unknown, args: CopyConflictMessage) => {
 
         const {
             conflictId,
@@ -56,15 +54,14 @@ const copySelectedFiles = () => async (
         }), response)
     }
 
-    const onProgress: (...args: any[]) => void = (_, args: CopyProgressMessage) => {
+    const onProgress = (_: unknown, args: CopyProgressMessage) => {
 
-        console.log('copy progress:', args)
     }
 
     ipcRenderer.on(copyConflictEmitEvent(operationId), onConflict)
     ipcRenderer.on(copyProgressEvent(operationId), onProgress)
 
-    await ipcInvoke(copyFiles({
+    await ipcInvoke(Message.copyFiles({
         destination: Selectors.activeTabOfSide(otherSide)(state).path,
         id: operationId,
         source: selectedFiles.map((file) => file.path)

@@ -1,6 +1,5 @@
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { executeFile, resolvePath } from "../../../common/ipc/message-creators";
 import { Supplier } from "../../../common/types";
 import { ipcInvoke } from "../../common/ipc";
 import { patchTab } from "../action/action-creators";
@@ -10,6 +9,7 @@ import openParentDirInCurrentTab from "./open-parent-dir-in-current-tab";
 import { ResolvePathMessage } from "../../../common/ipc/messages";
 import { batch } from "react-redux";
 import updateTabDirInfo from "./update-tab-dir-info";
+import Message from "../../../common/ipc/message-creators";
 
 const openFileInFocus = () => async (
     dispatch: ThunkDispatch<State, unknown, AnyAction>,
@@ -42,14 +42,14 @@ const openFileInFocus = () => async (
         const fileName = file.name
 
         const resolvedPath = await ipcInvoke<string | null, ResolvePathMessage>(
-            resolvePath([currentDirPath, fileName])
+            Message.resolvePath([currentDirPath, fileName])
         )
 
         if (resolvedPath) {
 
             if (file.stats.isFile) {
 
-                ipcInvoke(executeFile(resolvedPath))
+                ipcInvoke(Message.executeFile(resolvedPath))
 
             } else {
 

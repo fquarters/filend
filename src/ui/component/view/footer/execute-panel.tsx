@@ -6,7 +6,7 @@ import GlobalContext from "../../context/global-context"
 import { ipcInvoke } from "../../../common/ipc"
 import { ExecuteCommandMessage } from "../../../../common/ipc/messages"
 import Selectors from "../../../store/data/selectors"
-import { executeCommand } from "../../../../common/ipc/message-creators"
+import Message from "../../../../common/ipc/message-creators"
 
 const ExecutePanel = () => {
 
@@ -32,7 +32,7 @@ const ExecutePanel = () => {
 
         } else if (e.key === "Enter") {
 
-            ipcInvoke<void, ExecuteCommandMessage>(executeCommand({
+            ipcInvoke<void, ExecuteCommandMessage>(Message.executeCommand({
                 command: e.currentTarget.value,
                 path
             }))

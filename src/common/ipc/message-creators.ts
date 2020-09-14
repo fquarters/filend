@@ -50,8 +50,8 @@ const nextId = (): NextIdMessage => ({
     data: null,
     type: 'NEXT_ID'
 })
- 
-export {
+
+const Message = {
     readDir,
     executeFile,
     getInitInfo,
@@ -62,4 +62,6 @@ export {
     copyConflict,
     operationError,
     nextId
-};
+}
+ 
+export default Message;

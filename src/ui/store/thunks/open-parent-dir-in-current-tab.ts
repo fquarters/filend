@@ -1,7 +1,6 @@
 import { batch } from "react-redux"
 import { AnyAction } from "redux"
 import { ThunkDispatch } from "redux-thunk"
-import { resolvePath } from "../../../common/ipc/message-creators"
 import { ResolvePathMessage } from "../../../common/ipc/messages"
 import { Supplier } from "../../../common/types"
 import { ipcInvoke } from "../../common/ipc"
@@ -9,6 +8,7 @@ import { patchTab } from "../action/action-creators"
 import Selectors from "../data/selectors"
 import { State } from "../data/state"
 import updateTabDirInfo from "./update-tab-dir-info"
+import Message from "../../../common/ipc/message-creators"
 
 const openParentDirInCurrentTab = () => async (
     dispatch: ThunkDispatch<State, unknown, AnyAction>,
@@ -26,7 +26,7 @@ const openParentDirInCurrentTab = () => async (
     const currentDirPath = tabState.path
 
     const resolvedPath = await ipcInvoke<string | null, ResolvePathMessage>(
-        resolvePath([currentDirPath, ".."])
+        Message.resolvePath([currentDirPath, ".."])
     )
 
     if (resolvedPath) {

@@ -146,35 +146,36 @@ const getCopier = (id: string) => {
     const copyDir = async ({
         destination,
         source,
-        ...args
+        name
     }: CopyFileArgs): Promise<void> => {
 
-        logger.debug('copyDir start', source, destination, args)
+        logger.debug('copyDir start', source, destination, name)
 
         if (cancelled) {
 
             return
         }
 
-        const destinationDir = path.resolve(destination, source)
+        const destinationDir = path.resolve(destination, name)
+
+        logger.debug('copyDir will copy to', destinationDir)
 
         await makeDir(destinationDir)
 
-        const dirInfo = await readDir(destinationDir)
+        const dirInfo = await readDir(source)
 
         return copyFileList({
             source: dirInfo.files.map((file) => file.path),
-            destination: destinationDir,
-            ...args
+            destination: destinationDir
         })
     }
 
     const copyFileList = async ({
         source,
-        ...args
+        destination
     }: CopyFilesArgs): Promise<void> => {
 
-        logger.debug('copyFileList start', source, args)
+        logger.debug('copyFileList start', source, destination)
 
         const fileInfos = await collectFileInfos(source)
 
@@ -188,7 +189,7 @@ const getCopier = (id: string) => {
             const nextArgs: CopyFileArgs = {
                 source: src.path,
                 name: src.name,
-                ...args
+                destination
             }
 
             if (src.stats.isFile) {
@@ -205,7 +206,7 @@ const getCopier = (id: string) => {
 
         }
 
-        logger.debug('copyFileList end', source, args)
+        logger.debug('copyFileList end', source, destination)
     }
 
     return {

@@ -1,0 +1,15 @@
+@use "../../theme";
+
+.action-panel {
+    height: 1.5rem;
+    display: flex;
+    flex-flow: row wrap;
+
+    button {
+        display: block;
+        flex: 1;
+        font-family: theme.$font-family;
+        font-weight: 600;
+        font-size: 1.05rem;
+    }
+}

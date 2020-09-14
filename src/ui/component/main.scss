@@ -1,9 +1,22 @@
+@use "./theme";
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     border-collapse: collapse;
     outline: 0;
+}
+
+body {
+    background-color: theme.$bg-color;
+    font-family: theme.$font-family;
+    height: 100%;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
 }
 
 @font-face {
@@ -28,15 +41,4 @@
     font-family: "UbuntuMono";
     src: ("../resources/Ubuntu_Mono/UbuntuMono-Italic.ttf");
     font-style: italic;
-}
-
-body {
-    background-color: white;
-    font-family: "UbuntuMono", monospace;
-    height: 100%;
-    overflow: hidden;
-}
-
-html {
-    height: 100%;
 }

@@ -4,7 +4,7 @@ import useDirInfoUpdate from "../../../hook/use-dir-info-update"
 import Selectors from "../../../store/data/selectors"
 import { Side } from "../../../store/data/state"
 import DirectoryContext, { DirectoryContextType } from "../../context/directory-context"
-import "./directory-view.css"
+import "./directory-view.scss"
 import FileTable from "./file-table"
 
 type DirectoryViewProps = {

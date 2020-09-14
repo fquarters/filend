@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { patchRoot } from "../../../store/action/action-creators"
-import "./execute-panel.css"
+import "./execute-panel.scss"
 import GlobalContext from "../../context/global-context"
 import { ipcInvoke } from "../../../common/ipc"
 import { ExecuteCommandMessage } from "../../../../common/ipc/messages"

@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import configureStore from "../store/store-configuration";
 import App from "./app";
 import GlobalContext, { GlobalContextType } from "./context/global-context";
-import './main.css';
+import './main.scss';
 
 export default () => {
 

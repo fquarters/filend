@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from "react"
 import { useDispatch } from "react-redux"
 import switchActiveTab from "../../../store/thunks/switch-active-tab"
 import SideContext from "../../context/side-context"
-import "./tab.css"
+import "./tab.scss"
 
 type TabProps = {
     name: string,

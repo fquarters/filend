@@ -1,5 +1,5 @@
 import React from "react"
-import "./action-panel.css"
+import "./action-panel.scss"
 
 const ActionPanel = () => {
 

@@ -1,0 +1,26 @@
+.app {
+    display: grid;
+    height: 100%;
+    grid: {
+        template-columns: 1fr 0.5rem 1fr;
+        template-rows: 2rem calc(100vh - 5rem) 3rem;
+        template-areas:
+            "header header header"
+            "left divider right"
+            "footer footer footer";
+    }
+ 
+    .app__header {
+        grid-area: header;
+    }
+
+    .app__divider {
+        cursor: col-resize;
+        border: 1px solid black;
+        border-width: 0 1px;
+    }
+
+    .app__footer {
+        grid-area: footer;
+    }
+}

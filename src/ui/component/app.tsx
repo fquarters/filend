@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useGlobalHotkeysBind from "../hook/use-global-hotkeys-bind";
 import getInitInfoThunk from "../store/thunks/get-init-info";
-import "./app.css";
+import "./app.scss";
 import FooterView from "./view/footer/footer-view";
 import SideView from "./view/side-panel/side-view";
 

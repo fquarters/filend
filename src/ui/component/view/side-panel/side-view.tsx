@@ -4,7 +4,7 @@ import Selectors from "../../../store/data/selectors"
 import { Side, TabState } from "../../../store/data/state"
 import SideContext, { SideContextType } from "../../context/side-context"
 import DirectoryView from "../directory/directory-view"
-import "./side-view.css"
+import "./side-view.scss"
 import Tab from "./tab"
 
 type SideViewProps = {
@@ -18,7 +18,7 @@ const SideView = ({ side }: SideViewProps) => {
         activeTab,
         active
     } = useSelector(Selectors.sideByName(side))
-    
+
     const sideContext = useMemo<SideContextType>(() => ({
         activeTab,
         active,

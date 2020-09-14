@@ -1,0 +1,83 @@
+@use "../../theme";
+
+$border-width: 1px;
+$main-border: $border-width solid theme.$directory-view__border-color;
+
+.directory-view {
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: column;
+
+    .directory-view__path,
+    .directory-view__stats {
+        padding: 0.2rem 0;
+    }
+
+    .directory-view__stats {
+        border-bottom: $main-border;
+    }
+
+    .directory-view__table-container {
+        flex: 1;
+        border: $main-border;
+        border-width: $border-width 0;
+    }
+
+    .directory-view__file-table__col {
+        width: 25%;
+    }
+
+    .directory-view__file {
+        td {
+            cursor: default;
+            padding: 0 0.2rem;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+
+            &:not(:last-child) {
+                border-right: $main-border;
+            }
+
+            &:not(:first-child) {
+                border-left: $main-border;
+            }
+        }
+    }
+
+    .directory-view__file--in-focus {
+        td {
+            border-style: dashed;
+            border-color: theme.$directory-view__row--in-focus__border-color;
+            border-width: $border-width;
+        }
+    }
+
+    .side-view--active .directory-view__file--in-focus td {
+        border-style: solid;
+    }
+
+    .directory-view__file--selected {
+        color: theme.$directory-view__row--selected__color;
+    }
+
+    table {
+        text-align: left;
+        table-layout: fixed;
+        width: 100%;
+
+        th {
+            width: 25%;
+            border: $main-border;
+        }
+
+        tr {
+            border: $border-width dashed rgba(0, 0, 0, 0);
+
+            &:last-child {
+                border-bottom: $main-border;
+            }
+        }
+    }
+}

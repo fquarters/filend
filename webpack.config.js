@@ -20,9 +20,10 @@ const getModuleRules = function () {
         {
             use: [
                 'style-loader',
-                'css-loader'
+                'css-loader',
+                'sass-loader'
             ],
-            test: /\.css$/
+            test: /\.scss$/
         },
         {
             test: /\.(ts|tsx)$/,

@@ -1,7 +1,7 @@
 import React from "react"
 import ActionPanel from "./action-panel"
 import ExecutePanel from "./execute-panel"
-import "./footer-view.css"
+import "./footer-view.scss"
 
 const FooterView = () => {
 

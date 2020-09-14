@@ -1,13 +1,17 @@
+@use "../../theme";
+
 .tab {
-    padding: 0 0.2rem;
-    border: 1px solid black;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid theme.$tabs__border-color;
     border-bottom-style: inset;
     cursor: pointer;
-    color: rgba(0, 0, 0, 0.7);
+    color: theme.$tabs__tab__fg-color;
+    border-radius: 0.2rem;
+
+    &.tab--active {
+        border-bottom-style: none;
+        font-weight: 600;
+        color: theme.$tabs__tab--active__fg-color;
+    }
 }
 
-.tab--active {
-    border-bottom-style: none;
-    font-weight: 600;
-    color: inherit;
-}

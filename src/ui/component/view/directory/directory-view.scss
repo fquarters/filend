@@ -5,7 +5,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
 
 .directory-view {
     height: 100%;
-    overflow-y: scroll;
+    overflow: hidden;
     display: flex;
     flex-flow: column;
 
@@ -22,6 +22,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         flex: 1;
         border: $main-border;
         border-width: $border-width 0;
+        overflow-y: scroll;
     }
 
     .directory-view__file-table__col {
@@ -44,28 +45,30 @@ $main-border: $border-width solid theme.$directory-view__border-color;
                 border-left: $main-border;
             }
         }
-    }
 
-    .directory-view__file--in-focus {
-        td {
-            border-style: dashed;
-            border-color: theme.$directory-view__row--in-focus__border-color;
-            border-width: $border-width;
+        &.directory-view__file--in-focus {
+            td {
+                border-style: dashed;
+                border-color: theme.$directory-view__row--in-focus__border-color;
+                border-width: $border-width;
+            }
+        }
+
+        &.directory-view__file--selected {
+            color: theme.$directory-view__row--selected__color;
         }
     }
 
-    .side-view--active .directory-view__file--in-focus td {
+    @at-root .side-view--active .directory-view__file--in-focus td {
         border-style: solid;
-    }
-
-    .directory-view__file--selected {
-        color: theme.$directory-view__row--selected__color;
     }
 
     table {
         text-align: left;
         table-layout: fixed;
         width: 100%;
+        background-color: theme.$directory-view__files__bg-color;
+        height: 100%;
 
         th {
             width: 25%;

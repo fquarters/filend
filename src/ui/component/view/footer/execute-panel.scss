@@ -13,5 +13,9 @@
         flex: 1;
         height: 100%;
         font-family: theme.$font-family;
+        font-size: 1.2rem;
+        background-color: theme.$execute-panel__input__bg-color;
+        color: theme.$fg-color;
+        border: none;
     }
 }

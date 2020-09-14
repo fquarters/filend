@@ -1,12 +1,15 @@
+@use "../../theme";
+
 .side-view {
     display: grid;
     grid-template-rows: 2rem calc(100% - 2rem);
     grid-template-columns: auto;
     height: 100%;
-}
 
-.side-view__tabs {
-    display: flex;
-    border-bottom: 1px solid black;
-    align-items: flex-end;
+    .side-view__tabs {
+        display: flex;
+        border-bottom: 1px solid black;
+        align-items: flex-end;
+        border-bottom: 1px solid theme.$tabs__border-color;
+    }
 }

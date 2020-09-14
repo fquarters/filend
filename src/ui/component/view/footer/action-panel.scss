@@ -11,5 +11,13 @@
         font-family: theme.$font-family;
         font-weight: 600;
         font-size: 1.05rem;
+        background-color: theme.$bg-color;
+        border: 1px solid theme.$button__border-color;
+        color: theme.$fg-color;
+
+        &:hover {
+            background-color: theme.$button--hover__bg-color;
+            color: theme.$button--hover__fg-color;
+        }
     }
 }

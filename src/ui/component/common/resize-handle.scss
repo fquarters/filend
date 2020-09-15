@@ -1,0 +1,34 @@
+$align-values: top left right bottom;
+
+.resize-handle__container {
+    position: relative;
+}
+
+.resize-handle {
+    display: block;
+    user-select: none;
+
+    @each $align in $align-values {
+        @if (#{$align} == left or #{$align} == right) {
+            &.resize-handle--#{$align} {
+                float: #{$align};
+                height: 100%;
+                cursor: ew-resize;
+                width: 0.1rem;
+            }
+        } @else {
+            &.resize-handle--#{$align} {
+                position: absolute;
+                width: 100%;
+                cursor: ns-resize;
+                height: 0.1rem;
+
+                @if #{$align} == top {
+                    top: 0;
+                } @else {
+                    bottom: 0;
+                }
+            }
+        }
+    }
+}

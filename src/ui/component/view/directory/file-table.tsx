@@ -1,5 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import { DirInfo } from "../../../../common/ipc/protocol"
+import TableHeader from "../../common/table-header"
+import { ColumnMeta } from "../../common/types"
 import FileRow from "./file-row"
 import TopRow from "./top-row"
 
@@ -9,21 +11,32 @@ type FileTableProps = {
 
 const FileTable = ({
     dirInfo
-}: FileTableProps) => <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Extension</th>
-                <th>Date</th>
-                <th>Size</th>
-            </tr>
-        </thead>
-        <colgroup>
-            <col className="directory-view__file-table__col"/>
-            <col className="directory-view__file-table__col"/>
-            <col className="directory-view__file-table__col"/>
-            <col className="directory-view__file-table__col"/>
-        </colgroup>
+}: FileTableProps) => {
+
+    const [columns, setColumns] = useState<ColumnMeta[]>([
+        {
+            title: 'Name',
+            key: 'name',
+            resizable: true
+        },
+        {
+            title: 'Extension',
+            key: 'ext',
+            resizable: true
+        },
+        {
+            title: 'Date',
+            key: 'date',
+            resizable: true
+        },
+        {
+            title: 'Size',
+            key: 'size'
+        }
+    ])
+
+    return <table>
+        <TableHeader columns={columns} setColumns={setColumns} />
         <tbody>
             <TopRow index={0} />
             {dirInfo.files.map((file, index) => <FileRow key={file.name}
@@ -31,5 +44,6 @@ const FileTable = ({
                 {...file} />)}
         </tbody>
     </table>
+}
 
 export default FileTable

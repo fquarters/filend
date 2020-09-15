@@ -44,7 +44,11 @@ const Selectors = {
             tab: sideState.activeTab
         }
     },
-    hotkeysDisabled: (state: State) => state.hotkeysDisabled
+    hotkeysDisabled: (state: State) => state.hotkeysDisabled,
+    sidePanelWidths: (state: State) => ({
+        left: state.left.width,
+        right: state.right.width
+    })
 }
 
 export default Selectors

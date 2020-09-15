@@ -17,7 +17,8 @@ export type TabState = {
 export type SideState = {
     tabs: TabState[],
     activeTab: number,
-    active: boolean
+    active: boolean,
+    width: number | null
 }
 
 export type State = {
@@ -45,7 +46,8 @@ const defaultTabState: TabState = {
 const defaultSideState: SideState = {
     tabs: [defaultTabState],
     activeTab: 0,
-    active: false
+    active: false,
+    width: null
 }
 
 export const initialState: State = {

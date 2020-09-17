@@ -8,7 +8,6 @@
 
     .side-view__tabs {
         display: flex;
-        border-bottom: 1px solid black;
         align-items: flex-end;
         border-bottom: 1px solid theme.$tabs__border-color;
     }

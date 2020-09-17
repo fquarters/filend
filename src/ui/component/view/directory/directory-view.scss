@@ -23,6 +23,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         border: $main-border;
         border-width: $border-width 0;
         overflow-y: scroll;
+        background-color: theme.$directory-view__files__bg-color;
     }
 
     .directory-view__file-table__col {
@@ -39,6 +40,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
             word-break: keep-all;
             white-space: nowrap;
             overflow: hidden;
+            transition: color theme.$transition__color;
 
             &:not(:last-child) {
                 border-right: $main-border;
@@ -67,7 +69,6 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         table-layout: fixed;
         width: 100%;
         background-color: theme.$directory-view__files__bg-color;
-        height: 100%;
 
         th {
             width: 25%;

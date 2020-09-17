@@ -1,4 +1,4 @@
-import { DirInfo } from "../../../common/ipc/protocol";
+import { CopyArgs, DeleteArgs, DirInfo, HasId, MoveArgs } from "../../../common/ipc/protocol";
 
 export type PageResult<T> = {
     data: Array<T>,
@@ -21,10 +21,28 @@ export type SideState = {
     width: number | null
 }
 
+export type TaskType = 'COPY' | 'MOVE' | 'DELETE'
+
+export type TaskArgs = CopyArgs | MoveArgs | DeleteArgs
+
+type Task<T extends TaskType, A extends TaskArgs> = {
+    type: T,
+    args: A,
+    currentProgress: number,
+    description: string
+} & HasId
+
+type CopyTask = Task<'COPY', CopyArgs>
+type MoveTask = Task<'MOVE', MoveArgs>
+type DeleteTask = Task<'DELETE', DeleteArgs>
+
+export type TaskState = CopyTask | MoveTask | DeleteTask
+
 export type State = {
     left: SideState,
     right: SideState,
-    hotkeysDisabled: boolean
+    hotkeysDisabled: boolean,
+    tasks: TaskState[]
 };
 
 export type TabId = {
@@ -56,5 +74,6 @@ export const initialState: State = {
         active: true
     },
     right: defaultSideState,
-    hotkeysDisabled: false
+    hotkeysDisabled: false,
+    tasks: []
 };

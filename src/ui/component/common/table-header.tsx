@@ -1,5 +1,6 @@
 import React, { CSSProperties, MutableRefObject, useEffect, useMemo, useRef } from "react"
 import { Consumer, MapFunction } from "../../../common/types"
+import useHeaderCellRefs from "../../hook/use-header-cell-refs"
 import TableHeaderCell from "./table-header-cell"
 import { ColumnMeta } from "./types"
 
@@ -25,33 +26,6 @@ type ReversedCellsAccumulator = {
     prevRef: MutableRefObject<HTMLTableCellElement | null>
 }
 
-type CellRefsMap = Record<string, MutableRefObject<HTMLTableCellElement | null>>
-
-const useHeaderCellRefs = (columns: ColumnMeta[]) => {
-
-    const cellRefs = useRef<CellRefsMap>(columns.reduce((memo, column) => {
-        memo[column.key] = {
-            current: null
-        }
-        return memo
-    }, {} as CellRefsMap))
-
-    useEffect(() => {
-
-        columns.forEach((column) => {
-
-            if (!cellRefs.current[column.key]) {
-                cellRefs.current[column.key] = {
-                    current: null
-                }
-            }
-        })
-
-    }, [columns])
-
-    return cellRefs
-}
-
 const TableHeader = ({
     columns,
     setColumns
@@ -60,9 +34,7 @@ const TableHeader = ({
     const cellRefs = useHeaderCellRefs(columns)
 
     const headerCells = useMemo(() => columns
-        .slice()
-        .reverse()
-        .reduce((memo, column) => {
+        .reduceRight((memo, column) => {
 
             const cell = <TableHeaderCell column={column}
                 key={column.key}

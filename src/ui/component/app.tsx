@@ -1,12 +1,13 @@
-import React, { CSSProperties, useEffect, MutableRefObject, useRef } from "react";
-import { shallowEqual, useSelector, useDispatch, batch } from "react-redux";
+import React, { CSSProperties, MutableRefObject, useLayoutEffect, useRef } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import useAppInit from "../hook/use-app-init";
 import useMouseDragTracking from "../hook/use-mouse-drag-tracking";
+import { patchSide } from "../store/action/action-creators";
 import Selectors from "../store/data/selectors";
 import "./app.scss";
 import FooterView from "./view/footer/footer-view";
+import TaskCarouselView from "./view/header/task-carousel-view";
 import SideView from "./view/side-panel/side-view";
-import { patchSide } from "../store/action/action-creators";
 
 const dividerWidth = "0.5rem"
 
@@ -37,7 +38,7 @@ const Divider = ({
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         const leftSide = leftRef.current
 
@@ -69,7 +70,9 @@ const App = () => {
 
     return <div className={'app'}
         style={getOverriddenTemplateColumns(left)}>
-        <div className={'app__header'}></div>
+        <div className={'app__header'}>
+            <TaskCarouselView />
+        </div>
         <div className={'app__side-panel'}
             ref={leftRef}>
             <SideView side={'left'} />

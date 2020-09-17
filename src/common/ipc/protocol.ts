@@ -30,10 +30,21 @@ type HasId = {
     id: string
 }
 
-type CopyArgs = {
-    source: string[],
+type HasSourceFiles = {
+    source: string[]
+}
+
+type HasDestination = {
     destination: string
-} & HasId
+}
+
+type CopyArgs =  HasId
+ & HasSourceFiles
+ & HasDestination
+
+type MoveArgs = CopyArgs
+
+type DeleteArgs = HasId & HasSourceFiles
 
 type CopyResult = {
     finished: boolean,
@@ -64,10 +75,14 @@ export type {
     InitInfo,
     CommandData,
     CopyArgs,
+    MoveArgs,
+    DeleteArgs,
     CopyProgress,
     CopyConflict,
     CopyResult,
     HasId,
+    HasDestination,
+    HasSourceFiles,
     FileInfoStats,
     OperationError,
     CopyConflictResult

@@ -1,0 +1,61 @@
+@use "../../theme";
+
+.task-carousel {
+    height: 100%;
+
+    .task-carousel__current {
+        height: 100%;
+        position: relative;
+
+        .task-carousel__current__progress-bar-back {
+            height: 0.2em;
+            z-index: -2;
+            width: 100%;
+            background: rgb(255, 31, 0);
+            background: linear-gradient(
+                to right,
+                #d93c26 0%,
+                #d3d926 51%,
+                #26d951 100%
+            );
+            position: absolute;
+        }
+
+        .task-carousel__current__progress-bar-front {
+            height: 100%;
+            z-index: -1;
+            position: absolute;
+            right: 0;
+            background: theme.$bg-color;
+            transition: width 200ms;
+        }
+
+        .task-carousel__current__description {
+            vertical-align: middle;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            text-align: center;
+
+
+            .task-carousel__current__description__text {
+                flex-grow: 1;
+                cursor: pointer;
+                font-size: 0.8rem;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .task-carousel__current__description__button {
+                cursor: pointer;
+                user-select: none;
+            }
+
+            span {
+                padding: 0 0.6em;
+            }
+        }
+    }
+}

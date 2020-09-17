@@ -48,7 +48,8 @@ const Selectors = {
     sidePanelWidths: (state: State) => ({
         left: state.left.width,
         right: state.right.width
-    })
+    }),
+    tasks: (state: State) => state.tasks
 }
 
 export default Selectors

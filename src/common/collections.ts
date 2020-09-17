@@ -1,34 +1,34 @@
-import {BiFunction, MapFunction} from "./types";
+import { BiFunction, MapFunction } from "./types";
 
 /**
  * returns true if all elements match predicate
  */
-const all = <T>(elements: Array<T>, predicate: MapFunction<T, boolean>): boolean => elements
+const all = <T>(elements: T[], predicate: MapFunction<T, boolean>): boolean => elements
     .reduce((previousValue: boolean, currentValue: T) => previousValue && predicate(currentValue), true);
 
 /**
  * returns true if any of the elements match predicate
  */
-const any = <T>(elements: Array<T>, predicate: MapFunction<T, boolean>): boolean => elements
+const any = <T>(elements: T[], predicate: MapFunction<T, boolean>): boolean => elements
     .reduce((previousValue: boolean, currentValue: T) => previousValue || predicate(currentValue), false);
 
 /**
  * returns first item from array that matches predicate
  */
-const first = <T>(elements: Array<T>, predicate: MapFunction<T, boolean>): T | null => elements
+const first = <T>(elements: T[], predicate: MapFunction<T, boolean>): T | null => elements
     .reduce((previousValue: T | null, currentValue: T) => previousValue || (predicate(currentValue) ? currentValue : null), null);
 
 /**
  * returns true if none of the elements in array match predicate
  */
-const none = <T>(elements: Array<T>, predicate: MapFunction<T, boolean>): boolean => !any(elements, predicate);
+const none = <T>(elements: T[], predicate: MapFunction<T, boolean>): boolean => !any(elements, predicate);
 
 /**
  * returns array of unique elements present in either one of given arrays
  */
-const union = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<T, T, boolean>): Array<T> => left
+const union = <T>(left: T[], right: T[], equalCheck?: BiFunction<T, T, boolean>): T[] => left
     .concat(right)
-    .reduce((previousValue: Array<T>, currentValue: T) => {
+    .reduce((previousValue: T[], currentValue: T) => {
 
         const present = equalCheck ? any(previousValue, (prev: T) => equalCheck(prev, currentValue))
             : previousValue.indexOf(currentValue) > -1;
@@ -44,8 +44,8 @@ const union = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<T, T,
 /**
  * returns array of unique elements that are present in the first array and not present in the second array
  */
-const difference = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<T, T, boolean>): Array<T> => left
-    .reduce((previousValue: Array<T>, currentValue: T) => {
+const difference = <T>(left: T[], right: T[], equalCheck?: BiFunction<T, T, boolean>): T[] => left
+    .reduce((previousValue: T[], currentValue: T) => {
 
         const alreadyAdded = equalCheck ? any(previousValue, (prev: T) => equalCheck(prev, currentValue))
             : previousValue.indexOf(currentValue) > -1;
@@ -64,7 +64,7 @@ const difference = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<
 /**
  * returns array of unique elements that are present in both given arrays
  */
-const intersection = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<T, T, boolean>): Array<T> => union(
+const intersection = <T>(left: T[], right: T[], equalCheck?: BiFunction<T, T, boolean>): T[] => union(
     left.filter((currentValue: T) => equalCheck ?
         any(right, (prev: T) => equalCheck(prev, currentValue))
         : right.indexOf(currentValue) > -1),
@@ -78,7 +78,7 @@ const intersection = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunctio
 /**
  * returns true if arrays are the same or of the same length and contain equivalent elements (in no particular order)
  */
-const equalSets = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<T, T, boolean>): boolean => {
+const equalSets = <T>(left: T[], right: T[], equalCheck?: BiFunction<T, T, boolean>): boolean => {
 
     if (left === right) {
         return true;
@@ -94,7 +94,7 @@ const equalSets = <T>(left: Array<T>, right: Array<T>, equalCheck?: BiFunction<T
 /**
  * returns array of non null and non undefined elements
  */
-const nonNull = <T>(elements: Array<T>): Array<T> => elements
+const nonNull = <T>(elements: T[]): T[] => elements
     .filter((currentValue: T) => !(currentValue === null || typeof currentValue === "undefined"));
 
 /**
@@ -102,7 +102,7 @@ const nonNull = <T>(elements: Array<T>): Array<T> => elements
  * @param elements
  * @param keySelector
  */
-const arrayToObject = <T, K extends string>(elements: Array<T>, keySelector: MapFunction<T, K>) => elements
+const arrayToObject = <T, K extends string>(elements: T[], keySelector: MapFunction<T, K>) => elements
     .reduce<Record<K, T>>((memo: Record<K, T>, item: T) => {
 
         const key = keySelector(item);
@@ -115,6 +115,35 @@ const arrayToObject = <T, K extends string>(elements: Array<T>, keySelector: Map
 
     }, {} as Record<K, T>);
 
+const indexOfElement = <T>(elements: T[], predicate: MapFunction<T, boolean>): number => {
+
+    const byEquality = first(elements, predicate)
+
+    if (byEquality) {
+
+        return elements.indexOf(byEquality)
+    }
+
+    return -1
+}
+
+const replacingElement = <T>(elements: T[], element: T, predicate: MapFunction<T, boolean>) => {
+
+    const index = indexOfElement(elements, predicate)
+
+    if (index >= 0) {
+
+        const withReplaced = [
+            ...elements.slice(0, index),
+            element,
+            ...elements.slice(index + 1, elements.length)
+        ]
+
+        return withReplaced
+    }
+
+    return elements
+}
 
 export {
     all,
@@ -126,5 +155,7 @@ export {
     intersection,
     nonNull,
     equalSets,
-    arrayToObject
+    arrayToObject,
+    indexOfElement,
+    replacingElement
 }

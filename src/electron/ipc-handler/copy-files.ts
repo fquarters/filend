@@ -3,7 +3,7 @@ import { once } from 'events';
 import { createReadStream, createWriteStream } from "original-fs";
 import path from "path";
 import { copyCancelEvent, copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent } from "../../common/ipc/dynamic-event";
-import { CopyArgs, CopyConflict, CopyConflictResult } from "../../common/ipc/protocol";
+import { CopyArgs, CopyConflict, CopyConflictResult, HasDestination } from "../../common/ipc/protocol";
 import nextId from "../common/id-generator";
 import { ipcEmitDynamic } from "../common/ipc";
 import { notifyOperationError } from "../common/operation";
@@ -15,14 +15,10 @@ import readDir from "./read-dir";
 import Logger from "js-logger";
 import Message from "../../common/ipc/message-creators";
 
-type CopyDestination = {
-    destination: string
-}
-
 type CopyFileArgs = {
     source: string,
     name: string,
-} & CopyDestination
+} & HasDestination
 
 type CopySingleFileArgs = {
     size: number
@@ -30,7 +26,7 @@ type CopySingleFileArgs = {
 
 type CopyFilesArgs = {
     source: string[],
-} & CopyDestination
+} & HasDestination
 
 const logger = Logger.get('copy-files')
 

@@ -4,20 +4,36 @@ type CopyConflictReplyEventArgs = {
     conflictId: string
 } & HasId
 
-const copyCancelEvent = (id: string) => `COPY_CANCEL_${id}`
+type DirRemovalConfirmReplyEventArgs = {
+    confirmId: string   
+} & HasId
 
-const copyConflictEmitEvent = (id: string) => `COPY_CONFLICT_${id}`
+const operationCancelEvent = (id: string) => `OPERATION_CANCEL/${id}`
+
+const copyConflictEmitEvent = (id: string) => `COPY_CONFLICT/${id}`
 
 const copyConflictReplyEvent = ({
     id,
     conflictId
-}: CopyConflictReplyEventArgs) => `COPY_CONFLICT_${id}_${conflictId}`
+}: CopyConflictReplyEventArgs) => `COPY_CONFLICT/${id}/${conflictId}`
 
-const copyProgressEvent = (id: string) => `COPY_PROGRESS_${id}` 
+const copyProgressEvent = (id: string) => `COPY_PROGRESS/${id}` 
+
+const dirRemovalConfirmEmitEvent = (id: string) => `CONFIRM_DIR_REMOVAL/${id}`
+
+const dirRemovalConfirmReplyEvent = ({
+    id,
+    confirmId
+}: DirRemovalConfirmReplyEventArgs) => `CONFIRM_DIR_REMOVAL/${id}/${confirmId}`
+
+const deleteProgressEvent = (id: string) => `DELETE_PROGRESS/${id}` 
 
 export {
-    copyCancelEvent,
+    operationCancelEvent,
     copyConflictEmitEvent,
     copyConflictReplyEvent,
-    copyProgressEvent
+    copyProgressEvent,
+    dirRemovalConfirmEmitEvent,
+    dirRemovalConfirmReplyEvent,
+    deleteProgressEvent
 }

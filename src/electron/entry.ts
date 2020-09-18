@@ -1,6 +1,5 @@
 import electron from 'electron'
 import { createWindow } from './create-window'
-import { handleInvoke } from './ipc'
 import executeFile from './ipc-handler/execute-file'
 import readDir from './ipc-handler/read-dir'
 import getInitInfo from './ipc-handler/init-info'
@@ -9,6 +8,8 @@ import Logger from 'js-logger'
 import resolvePath from './ipc-handler/resolve-path'
 import copyFiles from './ipc-handler/copy-files'
 import generateNextId from './ipc-handler/next-id'
+import deleteFiles from './ipc-handler/delete-files'
+import { handleInvoke } from './common/ipc'
 
 Logger.useDefaults();
 
@@ -43,3 +44,4 @@ handleInvoke('EXECUTE_COMMAND', executeCommand)
 handleInvoke('RESOLVE_PATH', resolvePath)
 handleInvoke('COPY_FILES', copyFiles)
 handleInvoke('NEXT_ID', generateNextId)
+handleInvoke('DELETE_FILES', deleteFiles)

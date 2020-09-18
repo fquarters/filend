@@ -41,28 +41,16 @@ const copySelectedFiles = () => async (
 ) => {
 
     const state = getState()
-    const {
-        side,
-        tab
-    } = Selectors.currentActiveState(state)
-
-    const {
-        selectedRows,
-        dirInfo
-    } = state[side].tabs[tab]
-
-    if (!dirInfo) {
-        return
-    }
-
-    const selectedFiles = dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
-    const otherSide = side === 'left' ? 'right' : 'left'
+  
+    const selectedFiles = Selectors.selectedFilesOnActiveTab(state)
+    const otherSide = state.left.active ? 'right' : 'left'
 
     const taskId = await ipcInvoke<string, NextIdMessage>(Message.nextId())
 
     const onConflict = getConflictHandler(taskId)
 
     const destination = Selectors.activeTabOfSide(otherSide)(state).path
+    
     const taskArgs = {
         destination,
         id: taskId,
@@ -81,26 +69,33 @@ const copySelectedFiles = () => async (
     ipcRenderer.on(copyConflictEmitEvent(taskId), onConflict)
     ipcRenderer.on(copyProgressEvent(taskId), onProgress)
 
-    dispatch(pushTask({
-        id: taskId,
-        args: taskArgs,
-        currentProgress: 0,
-        description: 'Copying files',
-        type: 'COPY'
-    }))
+    try {
 
-    await ipcInvoke(Message.copyFiles(taskArgs))
-
-    batch(() => {
-        dispatch(updateTabDirInfo({
-            side: otherSide,
-            tab: state[otherSide].activeTab
+        dispatch(pushTask({
+            id: taskId,
+            args: taskArgs,
+            currentProgress: 0,
+            description: 'Copying files',
+            type: 'COPY'
         }))
-        dispatch(removeTask(taskId))
-    })
+    
+        await ipcInvoke(Message.copyFiles(taskArgs))
+    
+        batch(() => {
+            dispatch(updateTabDirInfo({
+                side: otherSide,
+                tab: state[otherSide].activeTab
+            }))
+            dispatch(removeTask(taskId))
+        })
 
-    ipcRenderer.off(copyConflictEmitEvent(taskId), onConflict)
-    ipcRenderer.off(copyProgressEvent(taskId), onProgress)
+    } finally {
+
+        ipcRenderer.off(copyConflictEmitEvent(taskId), onConflict)
+        ipcRenderer.off(copyProgressEvent(taskId), onProgress)
+    }
+
+
 }
 
 export default copySelectedFiles

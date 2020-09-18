@@ -2,10 +2,10 @@ import { ipcMain } from "electron";
 import { once } from 'events';
 import { createReadStream, createWriteStream } from "original-fs";
 import path from "path";
-import { copyCancelEvent, copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent } from "../../common/ipc/dynamic-event";
+import { operationCancelEvent, copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent } from "../../common/ipc/dynamic-event";
 import { CopyArgs, CopyConflict, CopyConflictResult, HasDestination } from "../../common/ipc/protocol";
 import nextId from "../common/id-generator";
-import { ipcEmitDynamic } from "../common/ipc";
+import { expectReply, ipcEmitDynamic } from "../common/ipc";
 import { notifyOperationError } from "../common/operation";
 import checkFileExists from "../fs/check-file-exists";
 import collectFileInfos from "../fs/collect-file-info";
@@ -30,36 +30,16 @@ type CopyFilesArgs = {
 
 const logger = Logger.get('copy-files')
 
-const resolveConflict = ({
-    id,
-    conflictId,
-    ...args
-}: CopyConflict): Promise<CopyConflictResult> =>
-    new Promise((resolve, reject) => {
+const getConflictResolveResult = (args: CopyConflict): Promise<CopyConflictResult> => {
 
-        logger.debug('resolveConflict enter', id, args)
+    logger.debug('resolveConflict enter', args)
 
-        ipcMain.once(copyConflictReplyEvent({
-            conflictId,
-            id
-        }), (_, args) => {
+    const replyPromise = expectReply<CopyConflictResult>(copyConflictReplyEvent(args))
 
-            logger.debug('resolveConflict reply', args)
+    ipcEmitDynamic(copyConflictEmitEvent(args.id), Message.copyConflict(args))
 
-            const response = args[0] as CopyConflictResult
-
-            resolve(response)
-        })
-
-        ipcEmitDynamic(
-            copyConflictEmitEvent(id),
-            Message.copyConflict({
-                id,
-                conflictId,
-                ...args
-            })
-        )
-    })
+    return replyPromise
+}
 
 const getCopier = (id: string) => {
 
@@ -68,14 +48,42 @@ const getCopier = (id: string) => {
     let cancelled = false
     let overwriteAll = false
 
-    const copyFile = async ({
-        source,
-        destination,
-        name,
-        size
-    }: CopySingleFileArgs): Promise<void> => {
+    const resolveConflict = async (args: CopyFileArgs) => {
 
-        logger.debug('copyFile start', source, destination, name, id)
+        const {
+            destination,
+            name
+        } = args
+
+        try {
+
+            const response = await getConflictResolveResult({
+                destination,
+                id,
+                name,
+                conflictId: nextId()
+            })
+
+            cancelled = response === 'cancel'
+            overwriteAll = response === 'all'
+
+        } catch (e) {
+
+            logger.error('resolveConflict conflict resolve failed', args, id)
+            cancelled = true
+        }
+    }
+
+    const copyFile = async (args: CopySingleFileArgs): Promise<void> => {
+
+        const {
+            source,
+            destination,
+            name,
+            size
+        } = args
+
+        logger.debug('copyFile start', args, id)
 
         const destinationFile = path.resolve(destination, name)
 
@@ -87,16 +95,7 @@ const getCopier = (id: string) => {
 
         if (exists && !overwriteAll) {
 
-            const response = await resolveConflict({
-                destination,
-                id,
-                name,
-                conflictId: nextId()
-            })
-
-            cancelled = response === 'cancel'
-            overwriteAll = response === 'all'
-
+            await resolveConflict(args)
         }
 
         if (cancelled) {
@@ -154,13 +153,18 @@ const getCopier = (id: string) => {
 
         const destinationDir = path.resolve(destination, name)
 
+        if (destinationDir.indexOf(source) > 0) {
+
+            throw "A directory cannot be copied into itself or its subdirectory"
+        }
+
         logger.debug('copyDir will copy to', destinationDir)
 
         await makeDir(destinationDir)
 
         const dirInfo = await readDir(source)
 
-        return copyFileList({
+        await copyFileList({
             source: dirInfo.files.map((file) => file.path),
             destination: destinationDir
         })
@@ -209,9 +213,9 @@ const getCopier = (id: string) => {
         begin: copyFileList,
         cancel: () => {
 
-            logger.debug('cancelled', id)
+            logger.debug('copy cancelled', id)
 
-            return cancelled = true;
+            cancelled = true
         }
     }
 }
@@ -221,11 +225,11 @@ const copyFiles = async ({
     ...args
 }: CopyArgs): Promise<void> => {
 
-    logger.debug('copyFiles', id, args)
+    logger.debug('copyFiles enter', id, args)
 
     const copier = getCopier(id)
 
-    ipcMain.once(copyCancelEvent(id), copier.cancel)
+    ipcMain.once(operationCancelEvent(id), copier.cancel)
 
     try {
 
@@ -233,7 +237,7 @@ const copyFiles = async ({
 
     } catch (e) {
 
-        logger.error('copyFiles', e)
+        logger.error('copyFiles error', e)
 
         notifyOperationError({
             id,
@@ -242,7 +246,7 @@ const copyFiles = async ({
 
     } finally {
 
-        ipcMain.off(copyCancelEvent(id), copier.cancel)
+        ipcMain.off(operationCancelEvent(id), copier.cancel)
     }
 
 }

@@ -9,6 +9,7 @@ import Selectors from "../store/data/selectors"
 import GlobalContext from "../component/context/global-context"
 import addTabOnActiveSide from "../store/thunks/add-tab-on-active-side"
 import copySelectedFiles from "../store/thunks/copy-selected-files"
+import deleteSelectedFiles from "../store/thunks/delete-selected-files"
 
 const useGlobalHotkeysBind = () => {
 
@@ -76,6 +77,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "F5") {
 
             dispatch(copySelectedFiles())
+
+        } else if (e.key === "F8") {
+
+            dispatch(deleteSelectedFiles())
         }
 
     }, [dispatch, hotkeysDisabled, executeInputRef])

@@ -1,4 +1,4 @@
-import { CommandData as CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError } from "./protocol"
+import { CommandData as CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DeleteArgs, DirRemovalConfirm, DeleteProgress } from "./protocol"
 
 type RendererIpcMessageType = 'READ_DIR'
     | 'IS_DIR'
@@ -7,11 +7,15 @@ type RendererIpcMessageType = 'READ_DIR'
     | 'EXECUTE_COMMAND'
     | 'RESOLVE_PATH'
     | 'COPY_FILES'
+    | 'DELETE_FILES'
     | 'NEXT_ID'
 
+
 type MainIpcMessageType = 'COPY_PROGRESS'
+    | 'DELETE_PROGRESS'
     | 'COPY_CONFLICT'
     | 'OPERATION_ERROR'
+    | 'DIR_REMOVAL_CONFIRM'
 
 type MessageData<T> = {
     data: T
@@ -33,6 +37,7 @@ type ExecuteFileMessage = RendererIpcMessage<'EXECUTE_FILE'> & MessageData<strin
 type ExecuteCommandMessage = RendererIpcMessage<'EXECUTE_COMMAND'> & MessageData<CommandData>
 type InitInfoMessage = RendererIpcMessage<'GET_INIT_INFO'> & EmptyMessage
 type CopyFilesMessage = RendererIpcMessage<'COPY_FILES'> & MessageData<CopyArgs>
+type DeleteFilesMessage = RendererIpcMessage<'DELETE_FILES'> & MessageData<DeleteArgs>
 type NextIdMessage = RendererIpcMessage<'NEXT_ID'> & EmptyMessage
 
 type SomeRendererIpcMessage = RendererIpcMessage<any> & (
@@ -42,16 +47,21 @@ type SomeRendererIpcMessage = RendererIpcMessage<any> & (
     | ExecuteCommandMessage
     | ResolvePathMessage
     | CopyFilesMessage
+    | DeleteFilesMessage
 )
 
 type CopyProgressMessage = MainIpcMessage<'COPY_PROGRESS'> & MessageData<CopyProgress>
+type DeleteProgressMessage = MainIpcMessage<'DELETE_PROGRESS'> & MessageData<DeleteProgress>
 type CopyConflictMessage = MainIpcMessage<'COPY_CONFLICT'> & MessageData<CopyConflict>
+type DirRemovalConfirmMessage = MainIpcMessage<'DIR_REMOVAL_CONFIRM'> & MessageData<DirRemovalConfirm>
 type OperationErrorMessage = MainIpcMessage<'OPERATION_ERROR'> & MessageData<OperationError>
 
 type SomeMainIpcMessage = MainIpcMessage<any> & (
     CopyProgressMessage
+    | DeleteProgressMessage
     | CopyConflictMessage
     | OperationErrorMessage
+    | DirRemovalConfirmMessage
 )
 
 export type {
@@ -71,5 +81,8 @@ export type {
     CopyProgressMessage,
     CopyConflictMessage,
     OperationErrorMessage,
-    NextIdMessage
+    NextIdMessage,
+    DeleteFilesMessage,
+    DirRemovalConfirmMessage,
+    DeleteProgressMessage
 }

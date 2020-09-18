@@ -1,3 +1,4 @@
+import { FileInfo } from "../../../common/ipc/protocol"
 import memoized from "../../../common/memoized"
 import { MapFunction } from "../../../common/types"
 import { Side, SideState, State, TabState } from "./state"
@@ -24,6 +25,18 @@ type CurrentActiveState = {
     row: number
 }
 
+const currentActiveState = (state: State): CurrentActiveState => {
+
+    const sideName = activeSideName(state)
+    const sideState = sideByName(sideName)(state)
+    const tabState = activeTabOfSide(sideName)(state)
+
+    return {
+        row: tabState.rowInFocus,
+        side: sideName,
+        tab: sideState.activeTab
+    }
+}
 const Selectors = {
     sideByName,
     tabByIndex: memoizedTabStateSelector(({ side, index }: TabSelectorArg) =>
@@ -32,24 +45,31 @@ const Selectors = {
     activeSideName,
     currentActiveTabState,
     currentActiveSideState,
-    currentActiveState: (state: State): CurrentActiveState => {
-
-        const sideName = activeSideName(state)
-        const sideState = sideByName(sideName)(state)
-        const tabState = activeTabOfSide(sideName)(state)
-
-        return {
-            row: tabState.rowInFocus,
-            side: sideName,
-            tab: sideState.activeTab
-        }
-    },
+    currentActiveState,
     hotkeysDisabled: (state: State) => state.hotkeysDisabled,
     sidePanelWidths: (state: State) => ({
         left: state.left.width,
         right: state.right.width
     }),
-    tasks: (state: State) => state.tasks
+    tasks: (state: State) => state.tasks,
+    selectedFilesOnActiveTab: (state: State): FileInfo[] => {
+
+        const {
+            side,
+            tab
+        } = currentActiveState(state)
+    
+        const {
+            selectedRows,
+            dirInfo
+        } = state[side].tabs[tab]
+    
+        if (!dirInfo) {
+            return []
+        }
+    
+        return dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
+    }
 }
 
 export default Selectors

@@ -38,13 +38,16 @@ type HasDestination = {
     destination: string
 }
 
-type CopyArgs =  HasId
- & HasSourceFiles
- & HasDestination
+type CopyArgs = HasId
+    & HasSourceFiles
+    & HasDestination
 
 type MoveArgs = CopyArgs
 
-type DeleteArgs = HasId & HasSourceFiles
+type DeleteArgs = {
+    permanently: boolean
+} & HasId
+    & HasSourceFiles
 
 type CopyResult = {
     finished: boolean,
@@ -63,11 +66,22 @@ type CopyConflict = {
     conflictId: string
 } & HasId
 
+type DirRemovalConfirm = {
+    path: string,
+    confirmId: string
+} & HasId
+
+type DeleteProgress = {
+    currentFile: string
+} & HasId
+
 type OperationError = {
     message: string
 } & HasId
 
 type CopyConflictResult = 'ok' | 'all' | 'cancel'
+
+type DirRemovalConfirmResult = CopyConflictResult
 
 export type {
     FileInfo,
@@ -85,5 +99,8 @@ export type {
     HasSourceFiles,
     FileInfoStats,
     OperationError,
-    CopyConflictResult
+    CopyConflictResult,
+    DirRemovalConfirm,
+    DirRemovalConfirmResult,
+    DeleteProgress
 };

@@ -31,7 +31,9 @@ const updateTabDirInfo = ({
 
         const patch: Partial<TabState> = {
             dirInfo: dirInfo,
-            path: dirInfo.path
+            path: dirInfo.path,
+            selectedRows: [],
+            rowInFocus: 0
         }
 
         if (!tabState.named) {

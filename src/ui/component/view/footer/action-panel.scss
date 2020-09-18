@@ -12,13 +12,13 @@
         font-weight: 600;
         font-size: 1.05rem;
         background-color: theme.$bg-color;
-        border: 1px solid theme.$button__border-color;
+        border: 1px solid theme.$border-color--normal;
         color: theme.$fg-color;
         transition: background-color theme.$transition__color, color theme.$transition__color;
 
         &:hover {
             background-color: theme.$button--hover__bg-color;
-            color: theme.$button--hover__fg-color;
+            color: theme.$fg-color--active;
         }
     }
 }

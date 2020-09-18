@@ -2,17 +2,18 @@
 
 .tab {
     padding: 0.2rem 0.4rem;
-    border: 1px solid theme.$tabs__border-color;
     border-bottom-style: inset;
+    border: 1px solid theme.$border-color--weakest;       
     cursor: pointer;
-    color: theme.$tabs__tab__fg-color;
+    color: theme.$fg-color--weak;
     border-radius: 0.2rem;
     user-select: none;
 
     &.tab--active {
         border-bottom-style: none;
         font-weight: 600;
-        color: theme.$tabs__tab--active__fg-color;
+        color: theme.$fg-color;
+        border-color: theme.$border-color--normal;       
     }
 }
 

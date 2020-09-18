@@ -1,7 +1,7 @@
 @use "../../theme";
 
 $border-width: 1px;
-$main-border: $border-width solid theme.$directory-view__border-color;
+$main-border: $border-width solid theme.$border-color--weakest;
 
 .directory-view {
     height: 100%;
@@ -14,8 +14,8 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         padding: 0.2rem 0;
     }
 
-    .directory-view__stats {
-        border-bottom: $main-border;
+    .directory-view__path {
+        border-top: $main-border;
     }
 
     .directory-view__table-container {
@@ -23,7 +23,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         border: $main-border;
         border-width: $border-width 0;
         overflow-y: scroll;
-        background-color: theme.$directory-view__files__bg-color;
+        background-color: theme.$bg-color--interactive;
     }
 
     .directory-view__file-table__col {
@@ -31,8 +31,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
     }
 
     .directory-view__file {
-
-        color: theme.$directory-view__row__color;
+        color: theme.$fg-color--weakest;
 
         td {
             cursor: default;
@@ -54,13 +53,13 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         &.directory-view__file--in-focus {
             td {
                 border-style: dashed;
-                border-color: theme.$directory-view__row--in-focus__border-color;
+                border-color: theme.$border-color--weak;
                 border-width: $border-width;
             }
         }
 
         &.directory-view__file--selected {
-            color: theme.$directory-view__row--selected__color;
+            color: theme.$fg-color--active;
         }
     }
 
@@ -68,7 +67,7 @@ $main-border: $border-width solid theme.$directory-view__border-color;
         text-align: left;
         table-layout: fixed;
         width: 100%;
-        background-color: theme.$directory-view__files__bg-color;
+        background-color: theme.$bg-color--interactive;
 
         th {
             width: 25%;

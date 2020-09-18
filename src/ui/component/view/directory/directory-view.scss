@@ -26,10 +26,6 @@ $main-border: $border-width solid theme.$border-color--weakest;
         background-color: theme.$bg-color--interactive;
     }
 
-    .directory-view__file-table__col {
-        width: 25%;
-    }
-
     .directory-view__file {
         color: theme.$fg-color--weakest;
 

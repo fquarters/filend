@@ -1,5 +1,5 @@
-import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage, CopyFilesMessage, CopyProgressMessage, CopyConflictMessage, OperationErrorMessage, NextIdMessage, DirRemovalConfirmMessage, DeleteFilesMessage } from "./messages";
-import { CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DirRemovalConfirm, DeleteArgs } from "./protocol";
+import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage, CopyFilesMessage, CopyProgressMessage, CopyConflictMessage, OperationErrorMessage, NextIdMessage, DirRemovalConfirmMessage, DeleteFilesMessage, DeleteProgressMessage } from "./messages";
+import { CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DirRemovalConfirm, DeleteArgs, DeleteProgress } from "./protocol";
 
 const readDir = (path: string): ReadDirMessage => ({
     data: path,
@@ -41,6 +41,11 @@ const copyProgress = (data: CopyProgress): CopyProgressMessage => ({
     type: 'COPY_PROGRESS'
 })
 
+const deleteProgress = (data: DeleteProgress): DeleteProgressMessage => ({
+    data,
+    type: 'DELETE_PROGRESS'
+})
+
 const copyConflict = (data: CopyConflict): CopyConflictMessage => ({
     data,
     type: 'COPY_CONFLICT'
@@ -73,7 +78,8 @@ const Message = {
     operationError,
     nextId,
     dirRemovalConfirm,
-    deleteFiles
+    deleteFiles,
+    deleteProgress
 }
  
 export default Message;

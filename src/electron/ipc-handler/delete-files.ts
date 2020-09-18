@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 import Logger from "js-logger";
-import { dirRemovalConfirmEmitEvent, dirRemovalConfirmReplyEvent, operationCancelEvent } from "../../common/ipc/dynamic-event";
+import { deleteProgressEvent, dirRemovalConfirmEmitEvent, dirRemovalConfirmReplyEvent, operationCancelEvent } from "../../common/ipc/dynamic-event";
 import Message from "../../common/ipc/message-creators";
 import { DeleteArgs, DirRemovalConfirm, DirRemovalConfirmResult } from "../../common/ipc/protocol";
 import nextId from "../common/id-generator";
@@ -139,6 +139,11 @@ const getRemover = ({
 
                 break
             }
+
+            ipcEmitDynamic(deleteProgressEvent(id), Message.deleteProgress({
+                id,
+                currentFile: src.path
+            }))
 
             const nextArgs: DeleteFileArgs = {
                 source: src.path

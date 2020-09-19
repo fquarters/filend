@@ -11,8 +11,9 @@ const tryOpen = async (args: CommandData): Promise<boolean> => {
 
     if (fileExists) {
 
-        shell.openPath(filePath)
-        return true
+        const error = await shell.openPath(filePath)
+
+        return !error
 
     } else {
         return false

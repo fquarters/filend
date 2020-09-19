@@ -1,85 +1,10 @@
-import React, { CSSProperties, MutableRefObject, ReactChild, ReactChildren, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { CSSProperties, ReactChild, ReactChildren, useMemo, useRef } from "react"
 import { createPortal } from "react-dom"
 import { Consumer } from "../../../common/types"
+import useAppendModalContainer from "../../hook/use-append-modal-container"
+import useDismissHandler from "../../hook/use-dismiss-handler"
+import useModalVisibility from "../../hook/use-modal-visibility"
 import "./modal.scss"
-
-const modalRootId = "___modal-root"
-const modalRootClassname = "modal"
-const modalRootVisibleClassname = "modal--visible"
-const modalBackdropClassname = "modal__backdrop"
-const modalBackdropVisibleClassname = "modal__backdrop--visible"
-
-let modalsCount = 0
-
-const getModalRoot = (): HTMLElement => {
-
-    const root = document.getElementById(modalRootId)
-    if (!root) {
-
-        const root = document.createElement('div')
-        root.className = "modal"
-        root.id = "___modal-root"
-
-        const backdrop = document.createElement('div')
-        backdrop.className = modalBackdropClassname
-
-        root.appendChild(backdrop)
-        document.body.appendChild(root)
-
-        return root
-    }
-
-    return root
-}
-
-const useAppendModalContainer = (visible: boolean): HTMLDivElement | null => {
-
-    const [container, setContainer] = useState<HTMLDivElement | null>(null)
-
-    useLayoutEffect(() => {
-
-        if (visible) {
-            const root = getModalRoot()
-            const div = document.createElement('div')
-            div.className = "modal__container"
-
-            setContainer(div)
-            root.appendChild(div)
-
-            return () => {
-
-                setContainer(null)
-                root.removeChild(div)
-            }
-        }
-
-    }, [visible])
-
-    return container
-}
-
-const useModalVisibility = (visible: boolean) => {
-
-    useLayoutEffect(() => {
-
-        const root = getModalRoot()
-        const backdrop = root.getElementsByClassName(modalBackdropClassname)[0]
-
-        if (visible) {
-            modalsCount++
-            root.className = `${modalRootClassname} ${modalRootVisibleClassname}`
-            backdrop.className = `${modalBackdropClassname} ${modalBackdropVisibleClassname}`
-        } else {
-            modalsCount--
-
-            if (!modalsCount) {
-                root.className = `${modalRootClassname}`
-                backdrop.className = `${modalBackdropClassname}`
-            }
-        }
-
-    }, [visible])
-}
 
 type ModalProps = {
     children: ReactChildren | ReactChild,
@@ -90,46 +15,6 @@ type ModalProps = {
     dismissable?: boolean
     toggleVisibility?: Consumer<boolean>
 }
-
-type DismissHandlerArgs = {
-    dialogRef: MutableRefObject<HTMLDivElement | null>
-} & Pick<ModalProps, 'visible' | 'toggleVisibility' | 'dismissable'>
-
-const useDismissHandler = ({
-    toggleVisibility,
-    visible,
-    dialogRef,
-    dismissable
-}: DismissHandlerArgs) => {
-
-    useEffect(() => {
-
-        if (toggleVisibility && dismissable) {
-
-            const dismiss = (e: MouseEvent) => {
-
-                if (!e.target) {
-                    return
-                }
-
-                if (dialogRef.current === e.target
-                    || dialogRef.current?.contains(e.target as HTMLElement)) {
-
-                    toggleVisibility(false)
-                }
-            }
-
-            if (visible) {
-
-                document.addEventListener('click', dismiss)
-            }
-
-            return () => document.removeEventListener('click', dismiss)
-        }
-
-    }, [toggleVisibility, visible, dialogRef, dismissable])
-}
-
 
 const Modal = ({
     children,
@@ -144,7 +29,9 @@ const Modal = ({
     const dialogRef = useRef<HTMLDivElement | null>(null)
 
     const container = useAppendModalContainer(visible)
+
     useModalVisibility(visible)
+
     useDismissHandler({
         visible,
         toggleVisibility,

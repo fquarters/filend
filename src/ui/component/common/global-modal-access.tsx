@@ -70,6 +70,11 @@ const GlobalModalAccess = ({
 
         holder.setArgs = setArgs
 
+        return () => {
+
+            holder.setArgs === undefined
+        }
+
     }, [])
 
     return <React.Fragment>

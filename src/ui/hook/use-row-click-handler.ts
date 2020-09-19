@@ -1,6 +1,6 @@
-import { useContext, useCallback, SyntheticEvent } from "react"
-import SideContext from "../component/context/side-context"
+import { useCallback, useContext } from "react"
 import { useDispatch } from "react-redux"
+import SideContext from "../component/context/side-context"
 import focusRow from "../store/thunks/focus-row"
 import toggleRowInFocusSelection from "../store/thunks/toggle-row-in-focus-selection"
 
@@ -22,7 +22,7 @@ const useRowClickHandler = (index: number) => {
         if (e.button === 2 && index) {
 
             dispatch(toggleRowInFocusSelection())
-        } 
+        }
 
     }, [index, side])
 }

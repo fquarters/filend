@@ -1,13 +1,16 @@
 import { ipcRenderer } from "electron"
+import React from "react"
 import { batch } from "react-redux"
 import { AnyAction } from "redux"
 import { ThunkDispatch } from "redux-thunk"
-import { copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent, deleteProgressEvent, dirRemovalConfirmEmitEvent, dirRemovalConfirmReplyEvent } from "../../../common/ipc/dynamic-event"
+import { copyConflictEmitEvent, copyProgressEvent, deleteProgressEvent, dirRemovalConfirmEmitEvent, dirRemovalConfirmReplyEvent } from "../../../common/ipc/dynamic-event"
 import Message from "../../../common/ipc/message-creators"
-import { CopyConflictMessage, CopyProgressMessage, DeleteProgressMessage, DirRemovalConfirmMessage, NextIdMessage } from "../../../common/ipc/messages"
-import { CopyConflictResult, DeleteProgress, DirRemovalConfirmResult } from "../../../common/ipc/protocol"
+import { DeleteProgressMessage, DirRemovalConfirmMessage, NextIdMessage } from "../../../common/ipc/messages"
+import { DirRemovalConfirmResult, FileInfo } from "../../../common/ipc/protocol"
 import { Supplier } from "../../../common/types"
 import { ipcInvoke } from "../../common/ipc"
+import Strings from "../../common/strings"
+import { confirmDialog } from "../../component/common/global-modal-access"
 import Selectors from "../data/selectors"
 import { State } from "../data/state"
 import pushTask from "./push-task"
@@ -15,25 +18,53 @@ import removeTask from "./remove-task"
 import updateTabDirInfo from "./update-tab-dir-info"
 import updateTask from "./update-task"
 
+const confirmDirRemoval = async (path: string) =>
+    new Promise<DirRemovalConfirmResult>((resolve) => {
+
+        confirmDialog({
+            title: Strings.get('confirmDialogTitle'),
+            children: Strings.getTemplate('dirRemovalConfirmDialogMessage', {
+                dirName: path
+            }),
+            onCancel: () => resolve('cancel'),
+            onOk: () => resolve('ok'),
+            onOkAll: () => resolve('all'),
+        })
+    })
+
 const getConfirmHandler = (taskId: string) =>
-    (_: unknown, args: DirRemovalConfirmMessage) => {
+    async (_: unknown, args: DirRemovalConfirmMessage) => {
 
         const {
             confirmId,
-            id,
             path
         } = args.data
 
-        const result = confirm(`Directory ${path} is not empty. Are you sure you want to delete it?`)
-
-        const response: DirRemovalConfirmResult = result ? 'ok' : 'cancel'
+        const result = await confirmDirRemoval(path)
 
         ipcRenderer.send(dirRemovalConfirmReplyEvent({
             id: taskId,
             confirmId
-        }), response)
+        }), result)
     }
 
+const confirmDelete = async (selectedFiles: FileInfo[]) =>
+    new Promise<boolean>((resolve) => {
+
+        confirmDialog({
+            title: Strings.get('confirmDialogTitle'),
+            children: <React.Fragment>
+                {Strings.get('deleteConfirmDialogMessage')}
+                {
+                    selectedFiles.map((info) => <p key={name}>
+                        {info.name}
+                    </p>)
+                }
+            </React.Fragment>,
+            onCancel: () => resolve(false),
+            onOk: () => resolve(true)
+        })
+    })
 
 const deleteSelectedFiles = () => async (
     dispatch: ThunkDispatch<State, unknown, AnyAction>,
@@ -47,7 +78,12 @@ const deleteSelectedFiles = () => async (
     } = Selectors.currentActiveState(state)
 
     const selectedFiles = Selectors.selectedFilesOnActiveTab(state)
-    const otherSide = side === 'left' ? 'right' : 'left'
+
+    const confirmResult = await confirmDelete(selectedFiles)
+
+    if (!confirmResult) {
+        return
+    }
 
     const taskId = await ipcInvoke<string, NextIdMessage>(Message.nextId())
 
@@ -80,9 +116,9 @@ const deleteSelectedFiles = () => async (
             description: 'Deleting files',
             type: 'DELETE'
         }))
-    
+
         await ipcInvoke(Message.deleteFiles(taskArgs))
-    
+
         batch(() => {
             dispatch(updateTabDirInfo({
                 side,

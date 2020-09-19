@@ -7,7 +7,7 @@
     height: 100%;
     border: 1px solid theme.$border-color--weakest;
     transition: border-color theme.$transition__color;
-
+    box-shadow: theme.$box-shadow--right;
 
     .side-view__tabs {
         display: flex;

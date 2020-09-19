@@ -5,9 +5,11 @@ import { ThunkDispatch } from "redux-thunk"
 import { copyConflictEmitEvent, copyConflictReplyEvent, copyProgressEvent } from "../../../common/ipc/dynamic-event"
 import Message from "../../../common/ipc/message-creators"
 import { CopyConflictMessage, CopyProgressMessage, NextIdMessage } from "../../../common/ipc/messages"
-import { CopyConflictResult } from "../../../common/ipc/protocol"
+import { CopyConflict, CopyConflictResult } from "../../../common/ipc/protocol"
 import { Supplier } from "../../../common/types"
 import { ipcInvoke } from "../../common/ipc"
+import Strings from "../../common/strings"
+import { confirmDialog } from "../../component/common/global-modal-access"
 import Selectors from "../data/selectors"
 import { State } from "../data/state"
 import pushTask from "./push-task"
@@ -15,23 +17,37 @@ import removeTask from "./remove-task"
 import updateTabDirInfo from "./update-tab-dir-info"
 import updateTask from "./update-task"
 
+const resolveCopyConflict = async ({
+    destination,
+    name
+}: CopyConflict) =>
+    new Promise<CopyConflictResult>((resolve) => {
+
+        confirmDialog({
+            title: Strings.get('confirmDialogTitle'),
+            children: Strings.getTemplate('copyConflictDialogMessage', {
+                fileName: name,
+                destination
+            }),
+            onCancel: () => resolve('cancel'),
+            onOk: () => resolve('ok'),
+            onOkAll: () => resolve('all'),
+        })
+    })
+
 const getConflictHandler = (taskId: string) =>
-    (_: unknown, args: CopyConflictMessage) => {
+    async (_: unknown, args: CopyConflictMessage) => {
 
         const {
             conflictId,
-            destination,
-            name
         } = args.data
 
-        const result = confirm(`File ${name} already exists in ${destination}. Overwrite?`)
-
-        const response: CopyConflictResult = result ? 'ok' : 'cancel'
+        const result = await resolveCopyConflict(args.data)
 
         ipcRenderer.send(copyConflictReplyEvent({
             id: taskId,
             conflictId
-        }), response)
+        }), result)
     }
 
 
@@ -41,7 +57,7 @@ const copySelectedFiles = () => async (
 ) => {
 
     const state = getState()
-  
+
     const selectedFiles = Selectors.selectedFilesOnActiveTab(state)
     const otherSide = state.left.active ? 'right' : 'left'
 
@@ -50,7 +66,7 @@ const copySelectedFiles = () => async (
     const onConflict = getConflictHandler(taskId)
 
     const destination = Selectors.activeTabOfSide(otherSide)(state).path
-    
+
     const taskArgs = {
         destination,
         id: taskId,
@@ -78,9 +94,9 @@ const copySelectedFiles = () => async (
             description: 'Copying files',
             type: 'COPY'
         }))
-    
+
         await ipcInvoke(Message.copyFiles(taskArgs))
-    
+
         batch(() => {
             dispatch(updateTabDirInfo({
                 side: otherSide,

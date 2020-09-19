@@ -1,15 +1,16 @@
 import React from "react"
+import Button from "../../common/button"
 import "./action-panel.scss"
 
 const ActionPanel = () => {
 
     return <div className="action-panel">
-        <button>F3 View</button>
-        <button>F4 Edit</button>
-        <button>F5 Copy</button>
-        <button>F6 Move</button>
-        <button>F7 New</button>
-        <button>F8 Delete</button>
+        <Button>F3 View</Button>
+        <Button>F4 Edit</Button>
+        <Button>F5 Copy</Button>
+        <Button>F6 Move</Button>
+        <Button>F7 New</Button>
+        <Button>F8 Delete</Button>
     </div>
 }
 

@@ -64,6 +64,8 @@ const getCopier = (id: string) => {
                 conflictId: nextId()
             })
 
+            logger.debug('resolveConflict response', response)
+
             cancelled = response === 'cancel'
             overwriteAll = response === 'all'
 
@@ -211,7 +213,7 @@ const getCopier = (id: string) => {
 
     return {
         begin: copyFileList,
-        cancel: () => {
+        cancel() {
 
             logger.debug('copy cancelled', id)
 

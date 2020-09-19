@@ -8,5 +8,7 @@ $border-color--weakest: darken($fg-color, 25%);
 $border-color--weak: darken($fg-color, 15%);
 $border-color--normal: $fg-color;
 $font-family: "UbuntuMono", monospace;
-$button--hover__bg-color: lighten($bg-color, 5%);
 $transition__color: 200ms;
+$box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
+$box-shadow--right: 4px 0px 5px 0px rgba(0,0,0,0.75);
+$box-shadow--bottom: 0px -4px 5px 0px rgba(0,0,0,0.75);

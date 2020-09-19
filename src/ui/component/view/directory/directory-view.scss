@@ -24,6 +24,7 @@ $main-border: $border-width solid theme.$border-color--weakest;
         border-width: $border-width 0;
         overflow-y: scroll;
         background-color: theme.$bg-color--interactive;
+        box-shadow: inset theme.$box-shadow;
     }
 
     .directory-view__file {

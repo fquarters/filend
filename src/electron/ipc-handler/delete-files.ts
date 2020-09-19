@@ -168,7 +168,7 @@ const getRemover = ({
 
     return {
         begin: deleteFileList,
-        cancel: () => {
+        cancel() {
 
             logger.debug('delete cancelled', id)
 

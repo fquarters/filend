@@ -2,6 +2,7 @@
 
 .task-carousel {
     height: 100%;
+    box-shadow: inset theme.$box-shadow--bottom;
 
     .task-carousel__current {
         height: 100%;

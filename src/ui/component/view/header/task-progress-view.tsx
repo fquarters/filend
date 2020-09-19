@@ -32,19 +32,19 @@ const TaskProgressView = ({
     const progressValue = (task.currentProgress * 100).toFixed(2)
 
     return <div className="task-carousel__current">
-        <div className="task-carousel__current__progress-bar-back" />
-        <div className="task-carousel__current__progress-bar-front"
+        <div className="task-carousel__progress-bar-back" />
+        <div className="task-carousel__progress-bar-front"
             style={barFrontCss} />
-        <div className="task-carousel__current__description">
+        <div className="task-carousel__description">
             {
-                hasMoreTasks && <span className="task-carousel__current__description__button"
+                hasMoreTasks && <span className="task-carousel__description-button"
                     onClick={prevTask}>←</span>
             }
-            <span className="task-carousel__current__description__text">
+            <span className="task-carousel__description-text">
                 {task.description}: {progressValue}% completed. {hasMoreTasks ? `${taskCount - 1} more task${taskCount > 2 ? 's' : ''} in progress` : null}
             </span>
             {
-                hasMoreTasks && <span className="task-carousel__current__description__button"
+                hasMoreTasks && <span className="task-carousel__description-button"
                     onClick={nextTask}>→</span>
             }
         </div>

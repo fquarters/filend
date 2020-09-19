@@ -13,7 +13,8 @@
         border-bottom-style: none;
         font-weight: 600;
         color: theme.$fg-color;
-        border-color: theme.$border-color--normal;       
+        border-color: theme.$border-color--normal;
+        box-shadow: theme.$box-shadow--right;       
     }
 }
 

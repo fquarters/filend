@@ -58,16 +58,16 @@ const Selectors = {
             side,
             tab
         } = currentActiveState(state)
-    
+
         const {
             selectedRows,
             dirInfo
         } = state[side].tabs[tab]
-    
+
         if (!dirInfo) {
             return []
         }
-    
+
         return dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
     }
 }

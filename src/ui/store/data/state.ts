@@ -1,4 +1,4 @@
-import { CopyArgs, DeleteArgs, DirInfo, HasId, MoveArgs } from "../../../common/ipc/protocol";
+import { CopyArgs, CopyConflict, CopyConflictResult, DeleteArgs, DirInfo, DirRemovalConfirm as DirRemovalConfirmArgs, HasId, MoveArgs } from "../../../common/ipc/protocol";
 
 export type PageResult<T> = {
     data: Array<T>,
@@ -37,6 +37,20 @@ type MoveTask = Task<'MOVE', MoveArgs>
 type DeleteTask = Task<'DELETE', DeleteArgs>
 
 export type TaskState = CopyTask | MoveTask | DeleteTask
+
+export type HasResult<R> = {
+    result: R | null
+}
+
+export type DeleteConfirm = {
+    filenames: string[],
+} & HasResult<boolean>
+
+export type CopyConflictConfirm = CopyConflict
+    & HasResult<CopyConflictResult>
+
+export type DirRemovalConfirm = DirRemovalConfirmArgs
+    & HasResult<CopyConflictResult>
 
 export type State = {
     left: SideState,

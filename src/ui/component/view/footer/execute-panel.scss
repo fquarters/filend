@@ -17,5 +17,6 @@
         background-color: theme.$bg-color--interactive;
         color: theme.$fg-color;
         border: none;
+        box-shadow: inset theme.$box-shadow;
     }
 }

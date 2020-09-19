@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactChildren, useEffect, useState } from "react"
+import React, { ReactChild, ReactChildren, useEffect, useMemo, useState } from "react"
 import { replacingElement } from "../../../common/collections"
 import { Closure, Consumer, MapFunction } from "../../../common/types"
 import ConfirmDialog from "./confirm-dialog"
@@ -60,11 +60,19 @@ type GlobalModalAccessProps = {
     children: ReactChild | ReactChildren
 }
 
+type GlobalModalContextType = {
+    activeModals: number,
+    setActiveModals: Consumer<number | MapFunction<number, number>>
+}
+
+const GlobalModalContext = React.createContext<GlobalModalContextType | null>(null)
+
 const GlobalModalAccess = ({
     children
 }: GlobalModalAccessProps) => {
 
     const [args, setArgs] = useState<ConfirmDialogProps[]>([])
+    const [activeModals, setActiveModals] = useState<number>(0)
 
     useEffect(() => {
 
@@ -77,15 +85,23 @@ const GlobalModalAccess = ({
 
     }, [])
 
-    return <React.Fragment>
+    const context = useMemo(() => ({
+
+        activeModals,
+        setActiveModals
+
+    }), [activeModals])
+
+    return <GlobalModalContext.Provider value={context}>
         {children}
         {args.map((args, index) => <ConfirmDialog {...args}
             key={index} />)}
-    </React.Fragment>
+    </GlobalModalContext.Provider>
 }
 
 export default GlobalModalAccess
 
 export {
-    confirmDialog
+    confirmDialog,
+    GlobalModalContext
 }

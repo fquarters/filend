@@ -1,42 +1,46 @@
-import { useLayoutEffect, useState } from "react"
+import { useContext, useLayoutEffect, useState } from "react"
 import { getModalRoot, modalBackdropClassname, modalRootClassname, modalRootVisibleClassname, modalBackdropVisibleClassname } from "../common/modal"
+import { GlobalModalContext } from "../component/common/global-modal-access"
 
 const useModalVisibility = (visible: boolean) => {
 
-    const [modalsCount, setModalsCount] = useState(0)
+    const {
+        activeModals,
+        setActiveModals
+    } = useContext(GlobalModalContext)!
 
     useLayoutEffect(() => {
+
+        if (visible) {
+
+            setActiveModals((current) => current + 1)
+
+            return () => {
+
+                setActiveModals((current) => current - 1)
+            }
+        }
+
+    }, [visible, setActiveModals])
+
+    useLayoutEffect(() => {
+
+        console.log(activeModals)
 
         const root = getModalRoot()
         const backdrop = root.getElementsByClassName(modalBackdropClassname)[0]
 
-        if (visible) {
-
-            setModalsCount((current) => current + 1)
+        if (activeModals) {
 
             root.className = `${modalRootClassname} ${modalRootVisibleClassname}`
             backdrop.className = `${modalBackdropClassname} ${modalBackdropVisibleClassname}`
 
         } else {
-
-            setModalsCount((current) => current - 1)
-
-
-        }
-
-    }, [visible])
-
-    useLayoutEffect(() => {
-
-        const root = getModalRoot()
-        const backdrop = root.getElementsByClassName(modalBackdropClassname)[0]
-
-        if (!modalsCount) {
             root.className = `${modalRootClassname}`
             backdrop.className = `${modalBackdropClassname}`
         }
 
-    }, [modalsCount])
+    }, [activeModals])
 }
 
 export default useModalVisibility

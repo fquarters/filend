@@ -56,7 +56,7 @@ const confirmDelete = async (selectedFiles: FileInfo[]) =>
             children: <React.Fragment>
                 {Strings.get('deleteConfirmDialogMessage')}
                 {
-                    selectedFiles.map((info) => <p key={name}>
+                    selectedFiles.map((info) => <p key={info.name}>
                         {info.name}
                     </p>)
                 }

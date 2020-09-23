@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useContext, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import changeRowInFocus from "../store/thunks/change-row-in-focus"
+import moveRowFocus from "../store/thunks/move-row-focus"
 import switchActiveSide from "../store/thunks/switch-active-side"
 import openFileInFocus from "../store/thunks/open-file-in-focus"
 import openParentDirInCurrentTab from "../store/thunks/open-parent-dir-in-current-tab"
@@ -47,11 +47,11 @@ const useGlobalHotkeysBind = () => {
 
         } else if (e.key === "ArrowUp") {
 
-            dispatch(changeRowInFocus('up'))
+            dispatch(moveRowFocus('up'))
 
         } else if (e.key === "ArrowDown") {
 
-            dispatch(changeRowInFocus('down'))
+            dispatch(moveRowFocus('down'))
             e.preventDefault()
 
         } else if (e.key === "Enter") {

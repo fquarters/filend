@@ -53,6 +53,7 @@ $main-border: $border-width solid theme.$border-color--weakest;
             white-space: nowrap;
             overflow: hidden;
             transition: color theme.$transition__color;
+            user-select: none;
 
             &:not(:last-child) {
                 border-right: $main-border;

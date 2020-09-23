@@ -22,13 +22,13 @@ $main-border: $border-width solid theme.$border-color--weakest;
         flex: 1;
         border: $main-border;
         border-width: $border-width 0;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-color: theme.$bg-color--interactive;
         box-shadow: inset theme.$box-shadow;
     }
 
     .directory-view__file {
-        color: theme.$fg-color--weakest;
+        color: theme.$fg-color--weak;
 
         td {
             cursor: default;

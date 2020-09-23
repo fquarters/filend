@@ -43,3 +43,20 @@ html {
     src: ("../resources/Ubuntu_Mono/UbuntuMono-Italic.ttf");
     font-style: italic;
 }
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: theme.$bg-color--interactive;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: theme.$fg-color--weak;
+}
+ 
+::-webkit-scrollbar-track {
+    border-radius: 6px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+}

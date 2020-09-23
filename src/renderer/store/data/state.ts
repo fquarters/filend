@@ -67,7 +67,7 @@ export type TabId = {
 export type Side = 'left' | 'right'
 
 const defaultTabState: TabState = {
-    path: '/Users/dormouse/projects/dummy',
+    path: '.',
     name: '.',
     named: false,
     rowInFocus: 0,

@@ -10,8 +10,14 @@ import copyFiles from './ipc-handler/copy-files'
 import generateNextId from './ipc-handler/next-id'
 import deleteFiles from './ipc-handler/delete-files'
 import { handleInvoke } from './common/ipc'
+import { isProductionMode } from '../common/defined-values'
 
-Logger.useDefaults();
+Logger.useDefaults()
+
+if (isProductionMode()) {
+
+    Logger.setLevel(Logger.WARN)
+}
 
 const { app, BrowserWindow } = electron
 

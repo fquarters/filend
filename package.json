@@ -1,17 +1,16 @@
 {
-  "name": "webapp",
-  "version": "1.0.0",
-  "description": "",
+  "name": "filend",
+  "version": "0.0.1",
+  "description": "Basic file manager made with Electron and React",
   "main": "src/electron/entry.ts",
   "types": "./src",
   "scripts": {
-    "release": "webpack --config-name release",
-    "dev": "webpack --config-name dev",
-    "build": "webpack --config-name release",
-    "start": "tsc -p tsconfig.electron.json && electron ./build/electron/entry.js"
+    "start": "webpack --config-name rendererRelease && webpack --config-name mainRelease && electron ./build/entry.js",
+    "devRenderer": "webpack --config-name rendererDev",
+    "devMain": "webpack --config-name mainDev && electron ./build/entry.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ivan Ananyev",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.9.0",

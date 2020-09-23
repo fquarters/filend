@@ -4,19 +4,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const childProcess = require('child_process');
 
-const tsConfig = {
-    configFile: 'tsconfig.ui.json'
-}
-
-const getModuleRules = function () {
+const getRendererModuleRules = function () {
     return [
-        {
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader'
-            }
-        },
         {
             use: [
                 'style-loader',
@@ -29,7 +18,9 @@ const getModuleRules = function () {
             test: /\.(ts|tsx)$/,
             loader: 'ts-loader',
             exclude: /node_modules/,
-            options: tsConfig
+            options: {
+                configFile: 'tsconfig.renderer.json'
+            }
         },
         {
             test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -38,13 +29,32 @@ const getModuleRules = function () {
             ],
         }
     ]
-};
+}
 
-const getEntry = () => path.resolve(__dirname, 'src/ui/index.tsx');
+const getMainModuleRules = function () {
+    return [
+        {
+            test: /\.(ts|tsx)$/,
+            loader: 'ts-loader',
+            exclude: /node_modules/,
+            options: {
+                configFile: 'tsconfig.main.json'
+            }
+        }
+    ]
+}
 
-const getOutput = () => ({
+const getRendererEntry = () => path.resolve(__dirname, 'src/renderer/index.tsx');
+const getMainEntry = () => path.resolve(__dirname, 'src/main/entry.ts');
+
+const getRendererOutput = () => ({
     path: path.resolve(__dirname, './build'),
     filename: '[name].js'
+});
+
+const getMainOutput = () => ({
+    path: path.resolve(__dirname, './build'),
+    filename: 'entry.js'
 });
 
 const getVersion = function () {
@@ -54,57 +64,91 @@ const getVersion = function () {
 const htmlPluginConfig = new HtmlWebpackPlugin({
     hash: true,
     filename: path.resolve(__dirname, 'build/index.html'),
-    template: path.resolve(__dirname, 'src/ui/index.html')
+    template: path.resolve(__dirname, 'src/renderer/index.html')
 });
 
 module.exports = [
     {
-        name: 'dev',
+        name: 'rendererDev',
         mode: 'development',
-        devServer: {
-            contentBase: path.resolve(__dirname, './dist'),
-            compress: true,
-            port: 9001
-        },
-        entry: getEntry(),
-        output: getOutput(),
+        entry: getRendererEntry(),
+        output: getRendererOutput(),
         module: {
-            rules: getModuleRules()
+            rules: getRendererModuleRules()
         },
         devtool: 'eval-source-map',
         plugins: [
             htmlPluginConfig,
             new webpack.DefinePlugin({
-                CONTEXT_ROOT: JSON.stringify('http://localhost:8080'),
-                VERSION: JSON.stringify(getVersion())
+                VERSION: JSON.stringify(getVersion()),
+                MODE: JSON.stringify('DEVELOPMENT')
             })
         ],
         resolve: {
-            extensions: ['.tsx', '.ts', '.js'],
+            extensions: ['.tsx', '.ts', '.js']
         },
-        target: 'electron-main',
+        target: 'electron-renderer',
         watch: true
     },
     {
-        name: 'release',
+        name: 'rendererRelease',
         mode: 'production',
-        entry: getEntry(),
-        output: getOutput(),
+        entry: getRendererEntry(),
+        output: getRendererOutput(),
         module: {
-            rules: getModuleRules()
+            rules: getRendererModuleRules()
         },
-        devtool: 'source-map',
+        devtool: false,
         plugins: [
             htmlPluginConfig,
-            // new BundleAnalyzerPlugin(), // uncomment to analyze bundle content
             new webpack.DefinePlugin({
-                CONTEXT_ROOT: JSON.stringify('http://localhost:8080'),
-                VERSION: JSON.stringify(getVersion())
+                VERSION: JSON.stringify(getVersion()),
+                MODE: JSON.stringify('PRODUCTION')
+            })
+        ],
+        target: 'electron-renderer',
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js']
+        }
+    },
+    {
+        name: 'mainDev',
+        mode: 'development',
+        entry: getMainEntry(),
+        output: getMainOutput(),
+        module: {
+            rules: getMainModuleRules()
+        },
+        devtool: false,
+        plugins: [
+            new webpack.DefinePlugin({
+                VERSION: JSON.stringify(getVersion()),
+                MODE: JSON.stringify('DEVELOPMENT')
             })
         ],
         target: 'electron-main',
         resolve: {
-            extensions: ['.tsx', '.ts', '.js'],
+            extensions: ['.tsx', '.ts', '.js']
+        }
+    },
+    {
+        name: 'mainRelease',
+        mode: 'production',
+        entry: getMainEntry(),
+        output: getMainOutput(),
+        module: {
+            rules: getMainModuleRules()
+        },
+        devtool: false,
+        plugins: [
+            new webpack.DefinePlugin({
+                VERSION: JSON.stringify(getVersion()),
+                MODE: JSON.stringify('PRODUCTION')
+            })
+        ],
+        target: 'electron-main',
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js']
         }
     }
 ];

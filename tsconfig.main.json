@@ -6,6 +6,6 @@
     "outDir": "./build/"
   },
   "exclude": [
-    "./src/ui/**"
+    "./src/renderer/**"
   ]
 }

@@ -61,12 +61,22 @@ const LocalizedStringMap: LocalizedStringMapType = {
 
 const LocalizedTemplateMap: LocalizedTemplateMapType = {
     en: {
-        copyConflictDialogMessage: (args: CopyConflictTemplateArgs) => ``,
-        dirRemovalConfirmDialogMessage: (args: DirRemovalTemplateArgs) => ``
+        copyConflictDialogMessage: ({
+            destination,
+            fileName
+        }: CopyConflictTemplateArgs) => `File "${fileName}" already exists in ${destination}. Do you want to overwrite it?`,
+        dirRemovalConfirmDialogMessage: ({
+            dirName
+        }: DirRemovalTemplateArgs) => `Directory "${dirName}" is not empty. Are you sure you want to delete it?`
     },
     ru: {
-        copyConflictDialogMessage: (args: CopyConflictTemplateArgs) => ``,
-        dirRemovalConfirmDialogMessage: (args: DirRemovalTemplateArgs) => ``
+        copyConflictDialogMessage: ({
+            destination,
+            fileName
+        }: CopyConflictTemplateArgs) => `Файл ${fileName} уже существует в ${destination}. Хотите перезаписать его?`,
+        dirRemovalConfirmDialogMessage: ({
+            dirName
+        }: DirRemovalTemplateArgs) => `Директория ${dirName} не пустая. Уверены, что хотите удалить ее?`
     }
 }
 

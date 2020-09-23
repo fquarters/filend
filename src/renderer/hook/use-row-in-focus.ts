@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useLayoutEffect } from "react"
 import { elementVisibleInScrollableContainer } from "../common/dom-utils"
 import DirectoryContext from "../component/context/directory-context"
 
@@ -21,7 +21,7 @@ const useRowInFocus = ({
 
     const inFocus = rowInFocus === index
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         if (inFocus && row && containerRef.current) {
 

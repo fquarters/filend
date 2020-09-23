@@ -52,6 +52,7 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "ArrowDown") {
 
             dispatch(changeRowInFocus('down'))
+            e.preventDefault()
 
         } else if (e.key === "Enter") {
 

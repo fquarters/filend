@@ -45,16 +45,16 @@ const DirectoryView = ({
         updateRequired: !dirInfo
     })
 
-    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo} />, [
+    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo}/>, [
         dirInfo?.files
     ])
 
-    return <div className="directory-view"
-        ref={rowContainer}>
+    return <div className="directory-view">
         <div className="directory-view__path">
             {path}
         </div>
-        <div className="directory-view__table-container">
+        <div className="directory-view__table-container"
+            ref={rowContainer} >
             <DirectoryContext.Provider value={context}>
                 {fileTable}
             </DirectoryContext.Provider>

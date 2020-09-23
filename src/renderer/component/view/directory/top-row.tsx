@@ -1,10 +1,8 @@
-import React, { useCallback, useRef } from "react"
-import { useDispatch } from "react-redux"
-import useRowInFocus from "../../../hook/use-row-in-focus"
-import openFileInFocus from "../../../store/thunks/open-file-in-focus"
-import { RowProps } from "./types"
+import React, { useRef } from "react"
 import useRowClickHandler from "../../../hook/use-row-click-handler"
 import useRowFileOpen from "../../../hook/use-row-file-open"
+import useRowInFocus from "../../../hook/use-row-in-focus"
+import { RowProps } from "./types"
 
 const TopRow = ({
     index

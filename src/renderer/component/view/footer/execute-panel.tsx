@@ -1,24 +1,16 @@
 import React, { useCallback, useContext } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { patchRoot } from "../../../store/action/action-creators"
-import "./execute-panel.scss"
-import GlobalContext from "../../context/global-context"
-import { ipcInvoke } from "../../../common/ipc"
-import { ExecuteCommandMessage } from "../../../../common/ipc/messages"
-import Selectors from "../../../store/data/selectors"
+import { useSelector } from "react-redux"
 import Message from "../../../../common/ipc/message-creators"
+import { ExecuteCommandMessage } from "../../../../common/ipc/messages"
+import { ipcInvoke } from "../../../common/ipc"
+import useHotkeysToggle from "../../../hook/use-hotkeys-toggle"
+import Selectors from "../../../store/data/selectors"
+import GlobalContext from "../../context/global-context"
+import "./execute-panel.scss"
 
 const ExecutePanel = () => {
 
-    const dispatch = useDispatch()
-
-    const disableHotkeys = useCallback(() => dispatch(patchRoot({
-        hotkeysDisabled: true
-    })), [dispatch])
-
-    const enableHotkeys = useCallback(() => dispatch(patchRoot({
-        hotkeysDisabled: false
-    })), [dispatch])
+    const [disableHotkeys, enableHotkeys] = useHotkeysToggle()
 
     const {
         path

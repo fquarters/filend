@@ -6,6 +6,7 @@ import { Side } from "../../../store/data/state"
 import DirectoryContext, { DirectoryContextType } from "../../context/directory-context"
 import "./directory-view.scss"
 import FileTable from "./file-table"
+import PathInput from "./path-input"
 
 type DirectoryViewProps = {
     side: Side
@@ -45,13 +46,14 @@ const DirectoryView = ({
         updateRequired: !dirInfo
     })
 
-    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo}/>, [
+    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo} />, [
         dirInfo?.files
     ])
 
     return <div className="directory-view">
         <div className="directory-view__path">
-            {path}
+            <PathInput value={path}
+                side={side} />
         </div>
         <div className="directory-view__table-container"
             ref={rowContainer} >

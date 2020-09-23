@@ -21,7 +21,7 @@ const getInitInfo = (): InitInfoMessage => ({
     type: 'GET_INIT_INFO'
 })
 
-const resolvePath = (path: string[]): ResolvePathMessage => ({
+const resolvePath = (...path: string[]): ResolvePathMessage => ({
     data: path,
     type: 'RESOLVE_PATH'
 })

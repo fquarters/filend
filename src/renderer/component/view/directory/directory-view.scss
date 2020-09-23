@@ -16,6 +16,22 @@ $main-border: $border-width solid theme.$border-color--weakest;
 
     .directory-view__path {
         border-top: $main-border;
+
+        input {
+
+            border: none;
+            font-family: theme.$font-family;
+            font-size: 1rem;
+            background-color: theme.$bg-color--interactive;
+            color: theme.$fg-color;
+            box-shadow: inset theme.$box-shadow;
+            width: 100%;
+            
+            &:read-only {
+                background-color: theme.$bg-color;
+                box-shadow: none;
+            }
+        }
     }
 
     .directory-view__table-container {

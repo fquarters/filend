@@ -43,7 +43,7 @@ const TabsPanel = () => {
             name={name}
             index={index}
             key={index} />)}
-    </div>, [tabs])
+    </div>, [tabs, addTab])
 }
 
 export default TabsPanel

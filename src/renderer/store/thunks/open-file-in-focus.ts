@@ -42,7 +42,7 @@ const openFileInFocus = () => async (
         const fileName = file.name
 
         const resolvedPath = await ipcInvoke<string | null, ResolvePathMessage>(
-            Message.resolvePath([currentDirPath, fileName])
+            Message.resolvePath(currentDirPath, fileName)
         )
 
         if (resolvedPath) {

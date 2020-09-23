@@ -33,6 +33,7 @@ const addTabThunk = ({
             path: sourceTab.path,
             rowInFocus: 0,
             selectedRows: [],
+            creatingNewDir: false
         }
 
         batch(() => {

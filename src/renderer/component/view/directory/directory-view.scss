@@ -1,4 +1,5 @@
 @use "../../theme";
+@use "../../mixins";
 
 $border-width: 1px;
 $main-border: $border-width solid theme.$border-color--weakest;
@@ -18,20 +19,14 @@ $main-border: $border-width solid theme.$border-color--weakest;
         border-top: $main-border;
 
         input {
-
-            border: none;
-            font-family: theme.$font-family;
-            font-size: 1rem;
-            background-color: theme.$bg-color--interactive;
-            color: theme.$fg-color;
-            box-shadow: inset theme.$box-shadow;
+            @include mixins.editable;
             width: 100%;
-            
-            &:read-only {
-                background-color: theme.$bg-color;
-                box-shadow: none;
-            }
         }
+    }
+
+    .directory-view__new-dir-input {
+        @include mixins.editable;
+        width: 100%;
     }
 
     .directory-view__table-container {

@@ -10,6 +10,7 @@ import GlobalContext from "../component/context/global-context"
 import addTabOnActiveSide from "../store/thunks/add-tab-on-active-side"
 import copySelectedFiles from "../store/thunks/copy-selected-files"
 import deleteSelectedFiles from "../store/thunks/delete-selected-files"
+import initNewDirCreation from "../store/thunks/init-new-dir-creation"
 
 const useGlobalHotkeysBind = () => {
 
@@ -78,6 +79,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "F5") {
 
             dispatch(copySelectedFiles())
+
+        } else if (e.key === "F7") {
+
+            dispatch(initNewDirCreation())
 
         } else if (e.key === "F8") {
 

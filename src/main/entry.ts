@@ -11,6 +11,7 @@ import generateNextId from './ipc-handler/next-id'
 import deleteFiles from './ipc-handler/delete-files'
 import { handleInvoke } from './common/ipc'
 import { isProductionMode } from '../common/defined-values'
+import makeDirHandler from './ipc-handler/make-dir'
 
 Logger.useDefaults()
 
@@ -43,3 +44,4 @@ handleInvoke('RESOLVE_PATH', resolvePath)
 handleInvoke('COPY_FILES', copyFiles)
 handleInvoke('NEXT_ID', generateNextId)
 handleInvoke('DELETE_FILES', deleteFiles)
+handleInvoke('MAKE_DIR', makeDirHandler)

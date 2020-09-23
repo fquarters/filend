@@ -97,6 +97,8 @@ const copySelectedFiles = () => async (
 
         await ipcInvoke(Message.copyFiles(taskArgs))
 
+    } finally {
+
         batch(() => {
             dispatch(updateTabDirInfo({
                 side: otherSide,
@@ -104,8 +106,6 @@ const copySelectedFiles = () => async (
             }))
             dispatch(removeTask(taskId))
         })
-
-    } finally {
 
         ipcRenderer.off(copyConflictEmitEvent(taskId), onConflict)
         ipcRenderer.off(copyProgressEvent(taskId), onProgress)

@@ -1,7 +1,9 @@
 import { ipcMain } from "electron"
-import { RendererIpcMessageType, SomeMainIpcMessage } from "../../common/ipc/messages"
+import { RendererIpcMessageType, SomeMainIpcMessage, OperationErrorMessage } from "../../common/ipc/messages"
 import { MapFunction } from "../../common/types"
 import holder from "./renderer-holder"
+import { OperationError } from "../../common/ipc/protocol"
+import Message from "../../common/ipc/message-creators"
 
 const ipcEmit = <M extends SomeMainIpcMessage>({
     data,
@@ -34,9 +36,12 @@ const expectReply = <R>(event: string, timeout = 60 * 60 * 1000): Promise<R> => 
     }, timeout)
 })
 
+const notifyOperationError = (error: OperationError) => ipcEmit<OperationErrorMessage>(Message.operationError(error))
+
 export {
     ipcEmit,
     ipcEmitDynamic,
     handleInvoke,
-    expectReply
+    expectReply,
+    notifyOperationError
 }

@@ -24,7 +24,8 @@ const DirectoryView = ({
         rowInFocus,
         selectedRows,
         dirInfo,
-        path
+        path,
+        creatingNewDir
     } = useSelector(Selectors.tabByIndex({
         index: activeTab,
         side
@@ -46,8 +47,10 @@ const DirectoryView = ({
         updateRequired: !dirInfo
     })
 
-    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo} />, [
-        dirInfo?.files
+    const fileTable = useMemo(() => dirInfo && <FileTable dirInfo={dirInfo}
+        creatingNewDir={creatingNewDir} />, [
+        dirInfo?.files,
+        creatingNewDir
     ])
 
     return <div className="directory-view">

@@ -9,6 +9,7 @@ type DirRemovalConfirmReplyEventArgs = {
 } & HasId
 
 const operationCancelEvent = (id: string) => `OPERATION_CANCEL/${id}`
+const operationErrorEvent = (id: string) => `OPERATION_ERROR/${id}`
 
 const copyConflictEmitEvent = (id: string) => `COPY_CONFLICT/${id}`
 
@@ -30,6 +31,7 @@ const deleteProgressEvent = (id: string) => `DELETE_PROGRESS/${id}`
 
 export {
     operationCancelEvent,
+    operationErrorEvent,
     copyConflictEmitEvent,
     copyConflictReplyEvent,
     copyProgressEvent,

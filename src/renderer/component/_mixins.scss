@@ -1,0 +1,15 @@
+@use "./theme";
+
+@mixin editable {
+    border: none;
+    font-family: theme.$font-family;
+    font-size: 1rem;
+    background-color: theme.$bg-color--interactive;
+    color: theme.$fg-color;
+    box-shadow: inset theme.$box-shadow;
+
+    &:read-only {
+        background-color: theme.$bg-color;
+        box-shadow: none;
+    }
+}

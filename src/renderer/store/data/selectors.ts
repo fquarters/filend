@@ -8,14 +8,26 @@ type TabSelectorArg = {
     index: number
 }
 
+type SideComponentState = Pick<SideState, 'active' | 'activeTab'>
+
 const memoizedSideStateSelector = memoized<Side, MapFunction<State, SideState>>()
 const memoizedTabStateSelector = memoized<TabSelectorArg, MapFunction<State, TabState>>()
+const memoizedActiveTabIndexSelector = memoized<Side, MapFunction<State, number>>()
+const memoizedSideComponentStateSelector = memoized<Side, MapFunction<State, SideComponentState>>()
+const memoizedSideTabsSelector = memoized<Side, MapFunction<State, TabState[]>>()
 const memoizedActiveTabStateSelector = memoized<Side, MapFunction<State, TabState>>()
 
 const activeSideName = (state: State): Side => state.left.active ? 'left' : 'right'
 const activeTabOfSide = memoizedActiveTabStateSelector((side: Side) =>
     (state: State) => state[side].tabs[state[side].activeTab])
+const activeTabIndexOfSide = memoizedActiveTabIndexSelector((side: Side) =>
+    (state: State) => state[side].activeTab)
 const sideByName = memoizedSideStateSelector((side: Side) => (state: State) => state[side])
+const sideComponentState = memoizedSideComponentStateSelector((side: Side) => (state: State) => ({
+    active: state[side].active,
+    activeTab: state[side].activeTab
+}))
+const sideTabsSelector = memoizedSideTabsSelector((side: Side) => (state: State) => state[side].tabs)
 const currentActiveTabState = (state: State) => activeTabOfSide(activeSideName(state))(state)
 const currentActiveSideState = (state: State) => sideByName(activeSideName(state))(state)
 
@@ -39,9 +51,12 @@ const currentActiveState = (state: State): CurrentActiveState => {
 }
 const Selectors = {
     sideByName,
+    sideComponentState,
+    sideTabsSelector,
     tabByIndex: memoizedTabStateSelector(({ side, index }: TabSelectorArg) =>
         (state: State) => state[side].tabs[index]),
     activeTabOfSide,
+    activeTabIndexOfSide,
     activeSideName,
     currentActiveTabState,
     currentActiveSideState,
@@ -69,7 +84,8 @@ const Selectors = {
         }
 
         return dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
-    }
+    },
+    executePanelState: (state: State) => currentActiveTabState(state).path
 }
 
 export default Selectors

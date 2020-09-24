@@ -1,5 +1,5 @@
-import React, { useCallback, useContext, useMemo, useRef } from "react"
-import { batch, useDispatch, useSelector } from "react-redux"
+import React, { useCallback, useContext, useMemo, useRef, useEffect } from "react"
+import { batch, shallowEqual, useDispatch, useSelector } from "react-redux"
 import Selectors from "../../../store/data/selectors"
 import { TabState } from "../../../store/data/state"
 import addTabThunk from "../../../store/thunks/add-tab"
@@ -10,11 +10,7 @@ import Tab from "./tab"
 const TabsPanel = () => {
 
     const side = useContext(SideContext)!.side
-
-    const {
-        tabs
-    } = useSelector(Selectors.sideByName(side))
-
+    const tabs = useSelector(Selectors.sideTabsSelector(side), shallowEqual)
     const dispatch = useDispatch()
 
     const panelRef = useRef<HTMLDivElement | null>(null)

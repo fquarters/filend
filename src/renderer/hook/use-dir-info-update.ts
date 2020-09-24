@@ -14,9 +14,7 @@ const useDirInfoUpdate = ({
     updateRequired
 }: DirInfoUpdateArgs) => {
 
-    const {
-        activeTab
-    } = useSelector(Selectors.sideByName(side))
+    const activeTab = useSelector(Selectors.activeTabIndexOfSide(side))
 
     const dispatch = useDispatch()
 

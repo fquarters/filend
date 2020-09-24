@@ -12,9 +12,7 @@ const ExecutePanel = () => {
 
     const [disableHotkeys, enableHotkeys] = useHotkeysToggle()
 
-    const {
-        path
-    } = useSelector(Selectors.currentActiveTabState)
+    const path = useSelector(Selectors.executePanelState)
 
     const onKeyUp = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
 

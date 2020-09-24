@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, shallowEqual } from "react-redux"
 import useDirInfoUpdate from "../../../hook/use-dir-info-update"
 import Selectors from "../../../store/data/selectors"
 import { Side } from "../../../store/data/state"
@@ -16,9 +16,7 @@ const DirectoryView = ({
     side
 }: DirectoryViewProps) => {
 
-    const {
-        activeTab
-    } = useSelector(Selectors.sideByName(side))
+    const activeTab = useSelector(Selectors.activeTabIndexOfSide(side))
 
     const {
         rowInFocus,
@@ -29,7 +27,7 @@ const DirectoryView = ({
     } = useSelector(Selectors.tabByIndex({
         index: activeTab,
         side
-    }))
+    }), shallowEqual)
 
     const rowContainer = useRef<HTMLDivElement | null>(null)
 

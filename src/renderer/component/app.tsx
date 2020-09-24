@@ -1,4 +1,4 @@
-import React, { CSSProperties, MutableRefObject, useLayoutEffect, useRef } from "react";
+import React, { CSSProperties, MutableRefObject, useLayoutEffect, useRef, useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import useAppInit from "../hook/use-app-init";
 import useMouseDragTracking from "../hook/use-mouse-drag-tracking";

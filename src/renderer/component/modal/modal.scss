@@ -1,0 +1,81 @@
+@use "../../theme";
+
+@mixin fullscreen {
+    position: fixed;
+    height: 100%;
+    top: 0;
+    width: 100%;
+}
+
+.modal {
+    @include fullscreen();
+    height: 0;
+    width: 0;
+
+    &.modal--visible {
+        height: 100%;
+        width: 100%;
+    }
+
+    .modal__backdrop {
+        @include fullscreen();
+        background: rgba(0, 0, 0, 0.5);
+        height: 0;
+        width: 0;
+        opacity: 0;
+
+        &.modal__backdrop--visible {
+            height: 100%;
+            width: 100%;
+            opacity: 1;
+            transition: opacity 400ms;
+        }
+    }
+
+    .modal__container {
+        @include fullscreen();
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        .modal__dialog {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: theme.$bg-color;
+            z-index: 10;
+            border: 1px solid theme.$border-color--normal;
+            box-shadow: theme.$box-shadow;
+
+            .modal__header {
+                width: 100%;
+                padding: 0.5rem;
+                font-size: 1.2rem;
+            }
+
+            .modal__body {
+                flex-grow: 1;
+                padding: 0.7rem 0.5rem;
+                border: 1px solid theme.$border-color--weak;
+                border-width: 1px 0px;
+                background-color: theme.$bg-color--interactive;
+                box-shadow: inset theme.$box-shadow;
+            }
+
+            .modal__footer {
+                width: 100%;
+                padding: 0.5rem;
+
+                .modal__footer-content {
+                    display: flex;
+                    justify-content: flex-end;
+
+                    .button {
+                        margin-left: 0.4rem;
+                    }
+                }
+            }
+        }
+    }
+}

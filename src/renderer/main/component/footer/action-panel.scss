@@ -1,0 +1,12 @@
+@use "../../../theme";
+
+.action-panel {
+    height: 1.5rem;
+    display: flex;
+    flex-flow: row wrap;
+
+    .button {
+        display: block;
+        flex: 1;
+    }
+}

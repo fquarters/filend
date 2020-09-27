@@ -1,0 +1,15 @@
+@use "../../theme";
+
+.viewer {
+    background-color: theme.$bg-color--interactive;
+    height: 100%;
+    overflow-y: auto;
+
+    .viewer__content {
+        font-family: inherit;
+    }
+}
+
+#root {
+    height: 100%;
+}

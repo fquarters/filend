@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Main from "./component/main";
+import Main from "./main/component/main";
 import Logger from 'js-logger';
 import { isProductionMode } from '../common/defined-values';
 

@@ -1,4 +1,4 @@
-import { CommandData as CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DeleteArgs, DirRemovalConfirm, DeleteProgress } from "./protocol"
+import { CommandData as CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DeleteArgs, DirRemovalConfirm, DeleteProgress, ViewFileArgs, ViewFileChunkArgs } from "./protocol"
 
 type RendererIpcMessageType = 'READ_DIR'
     | 'IS_DIR'
@@ -9,6 +9,9 @@ type RendererIpcMessageType = 'READ_DIR'
     | 'COPY_FILES'
     | 'DELETE_FILES'
     | 'NEXT_ID'
+    | 'VIEW_FILE'
+    | 'VIEW_FILE_CHUNK'
+    | 'VIEW_FILE_CANCEL'
 
 
 type MainIpcMessageType = 'COPY_PROGRESS'
@@ -39,6 +42,9 @@ type InitInfoMessage = RendererIpcMessage<'GET_INIT_INFO'> & EmptyMessage
 type CopyFilesMessage = RendererIpcMessage<'COPY_FILES'> & MessageData<CopyArgs>
 type DeleteFilesMessage = RendererIpcMessage<'DELETE_FILES'> & MessageData<DeleteArgs>
 type NextIdMessage = RendererIpcMessage<'NEXT_ID'> & EmptyMessage
+type ViewFileMessage = RendererIpcMessage<'VIEW_FILE'> & MessageData<ViewFileArgs>
+type ViewFileChunkMessage = RendererIpcMessage<'VIEW_FILE_CHUNK'> & MessageData<ViewFileChunkArgs>
+type ViewFileCancelMessage = RendererIpcMessage<'VIEW_FILE_CANCEL'> & MessageData<string>
 
 type SomeRendererIpcMessage = RendererIpcMessage<any> & (
     ReadDirMessage
@@ -48,6 +54,8 @@ type SomeRendererIpcMessage = RendererIpcMessage<any> & (
     | ResolvePathMessage
     | CopyFilesMessage
     | DeleteFilesMessage
+    | ViewFileMessage
+    | ViewFileChunkMessage
 )
 
 type CopyProgressMessage = MainIpcMessage<'COPY_PROGRESS'> & MessageData<CopyProgress>
@@ -84,5 +92,8 @@ export type {
     NextIdMessage,
     DeleteFilesMessage,
     DirRemovalConfirmMessage,
-    DeleteProgressMessage
+    DeleteProgressMessage,
+    ViewFileMessage,
+    ViewFileChunkMessage,
+    ViewFileCancelMessage
 }

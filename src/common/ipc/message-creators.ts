@@ -1,5 +1,5 @@
-import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage, CopyFilesMessage, CopyProgressMessage, CopyConflictMessage, OperationErrorMessage, NextIdMessage, DirRemovalConfirmMessage, DeleteFilesMessage, DeleteProgressMessage } from "./messages";
-import { CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DirRemovalConfirm, DeleteArgs, DeleteProgress } from "./protocol";
+import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage, CopyFilesMessage, CopyProgressMessage, CopyConflictMessage, OperationErrorMessage, NextIdMessage, DirRemovalConfirmMessage, DeleteFilesMessage, DeleteProgressMessage, ViewFileMessage, ViewFileCancelMessage, ViewFileChunkMessage } from "./messages";
+import { CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DirRemovalConfirm, DeleteArgs, DeleteProgress, ViewFileArgs, ViewFileChunkArgs } from "./protocol";
 
 const readDir = (path: string): ReadDirMessage => ({
     data: path,
@@ -66,6 +66,21 @@ const dirRemovalConfirm = (data: DirRemovalConfirm): DirRemovalConfirmMessage =>
     type: 'DIR_REMOVAL_CONFIRM'
 })
 
+const viewFile = (data: ViewFileArgs): ViewFileMessage => ({
+    data,
+    type: 'VIEW_FILE'
+})
+
+const viewFileChunk = (data: ViewFileChunkArgs): ViewFileChunkMessage => ({
+    data,
+    type: 'VIEW_FILE_CHUNK'
+})
+
+const viewFileCancel = (data: string): ViewFileCancelMessage => ({
+    data,
+    type: 'VIEW_FILE_CANCEL'
+})
+
 const Message = {
     readDir,
     executeFile,
@@ -79,7 +94,10 @@ const Message = {
     nextId,
     dirRemovalConfirm,
     deleteFiles,
-    deleteProgress
+    deleteProgress,
+    viewFile,
+    viewFileChunk,
+    viewFileCancel
 }
  
-export default Message;
+export default Message

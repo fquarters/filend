@@ -7,6 +7,7 @@
   "scripts": {
     "start": "webpack --config-name rendererRelease && webpack --config-name mainRelease && electron ./build/entry.js",
     "devRenderer": "webpack --config-name rendererDev",
+    "devViewer": "webpack --config-name viewerDev",
     "devMain": "webpack --config-name mainDev && electron ./build/entry.js"
   },
   "keywords": [],

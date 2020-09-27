@@ -44,12 +44,12 @@ const getMainModuleRules = function () {
     ]
 }
 
-const getRendererEntry = () => path.resolve(__dirname, 'src/renderer/index.tsx');
+const getRendererEntry = (name) => path.resolve(__dirname, `src/renderer/${name}.tsx`);
 const getMainEntry = () => path.resolve(__dirname, 'src/main/entry.ts');
 
-const getRendererOutput = () => ({
+const getRendererOutput = (bundleName) => ({
     path: path.resolve(__dirname, './build'),
-    filename: '[name].js'
+    filename: `${bundleName}.js`
 });
 
 const getMainOutput = () => ({
@@ -61,56 +61,82 @@ const getVersion = function () {
     return childProcess.execSync('git rev-list HEAD --count').toString();
 };
 
-const htmlPluginConfig = new HtmlWebpackPlugin({
+const getHtmlPluginConfig = (outputFile) => new HtmlWebpackPlugin({
     hash: true,
-    filename: path.resolve(__dirname, 'build/index.html'),
+    filename: path.resolve(__dirname, `build/${outputFile}.html`),
     template: path.resolve(__dirname, 'src/renderer/index.html')
 });
 
+const getDefinePluginConfig = (mode) => new webpack.DefinePlugin({
+    VERSION: JSON.stringify(getVersion()),
+    MODE: JSON.stringify(mode)
+})
+
+const getRendererConfig = ({
+    name,
+    mode,
+    entryName,
+    watch,
+    outputFile,
+    MODE,
+    bundleName
+}) => ({
+    name,
+    mode,
+    entry: getRendererEntry(entryName),
+    output: getRendererOutput(bundleName),
+    module: {
+        rules: getRendererModuleRules()
+    },
+    devtool: 'eval-source-map',
+    plugins: [
+        getHtmlPluginConfig(outputFile),
+        getDefinePluginConfig(MODE)
+    ],
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    },
+    target: 'electron-renderer',
+    watch
+})
+
 module.exports = [
-    {
+    getRendererConfig({
         name: 'rendererDev',
         mode: 'development',
-        entry: getRendererEntry(),
-        output: getRendererOutput(),
-        module: {
-            rules: getRendererModuleRules()
-        },
-        devtool: 'eval-source-map',
-        plugins: [
-            htmlPluginConfig,
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(getVersion()),
-                MODE: JSON.stringify('DEVELOPMENT')
-            })
-        ],
-        resolve: {
-            extensions: ['.tsx', '.ts', '.js']
-        },
-        target: 'electron-renderer',
-        watch: true
-    },
-    {
+        MODE: 'DEVELOPMENT',
+        watch: true,
+        entryName: 'index',
+        outputFile: 'index',
+        bundleName: 'main'
+    }),
+    getRendererConfig({
         name: 'rendererRelease',
         mode: 'production',
-        entry: getRendererEntry(),
-        output: getRendererOutput(),
-        module: {
-            rules: getRendererModuleRules()
-        },
-        devtool: false,
-        plugins: [
-            htmlPluginConfig,
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(getVersion()),
-                MODE: JSON.stringify('PRODUCTION')
-            })
-        ],
-        target: 'electron-renderer',
-        resolve: {
-            extensions: ['.tsx', '.ts', '.js']
-        }
-    },
+        MODE: 'PRODUCTION',
+        watch: false,
+        entryName: 'index',
+        outputFile: 'index',
+        bundleName: 'main'
+    }),
+    getRendererConfig({
+        name: 'viewerDev',
+        mode: 'development',
+        MODE: 'DEVELOPMENT',
+        watch: true,
+        entryName: 'viewer',
+        outputFile: 'viewer',
+        bundleName: 'viewer'
+    }),
+    getRendererConfig({
+        name: 'viewerRelease',
+        mode: 'production',
+        MODE: 'PRODUCTION',
+        watch: false,
+        entryName: 'viewer',
+        outputFile: 'viewer',
+        bundleName: 'viewer'
+    }),
     {
         name: 'mainDev',
         mode: 'development',
@@ -121,10 +147,7 @@ module.exports = [
         },
         devtool: false,
         plugins: [
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(getVersion()),
-                MODE: JSON.stringify('DEVELOPMENT')
-            })
+            getDefinePluginConfig('DEVELOPMENT')
         ],
         target: 'electron-main',
         resolve: {
@@ -141,10 +164,7 @@ module.exports = [
         },
         devtool: false,
         plugins: [
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(getVersion()),
-                MODE: JSON.stringify('PRODUCTION')
-            })
+            getDefinePluginConfig('PRODUCTION')
         ],
         target: 'electron-main',
         resolve: {

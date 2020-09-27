@@ -1,15 +1,27 @@
 import { ipcMain } from "electron"
 import { RendererIpcMessageType, SomeMainIpcMessage } from "../../common/ipc/messages"
 import { MapFunction } from "../../common/types"
-import holder from "./renderer-holder"
+import windowHolder, { WindowName } from "./renderer-holder"
+
+type HasReceiver = {
+    receiver?: WindowName
+}
+
+type HasAddress = {
+    address: string
+}
 
 const ipcEmit = <M extends SomeMainIpcMessage>({
     data,
-    type
-}: M) => holder.value!.send(type, data)
+    type,
+    receiver = 'main'
+}: M & HasReceiver) => windowHolder[receiver]!.send(type, data)
 
-const ipcEmitDynamic = <M extends SomeMainIpcMessage>(address: string,
-    event: M) => holder.value!.send(address, event)
+const ipcEmitDynamic = <M extends SomeMainIpcMessage>({
+    receiver = 'main',
+    address,
+    ...event
+}: M & HasReceiver & HasAddress) => windowHolder[receiver]!.send(address, event.data)
 
 type IpcHandler = MapFunction<any, Promise<any>>
 
@@ -23,7 +35,7 @@ const expectReply = <R>(event: string, timeout = 60 * 60 * 1000): Promise<R> => 
 
         resolve(args[0] as R)
     }
-    
+
     ipcMain.once(event, handler)
 
     setTimeout(() => {

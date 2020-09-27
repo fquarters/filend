@@ -36,7 +36,10 @@ const getConflictResolveResult = (args: CopyConflict): Promise<CopyConflictResul
 
     const replyPromise = expectReply<CopyConflictResult>(copyConflictReplyEvent(args))
 
-    ipcEmitDynamic(copyConflictEmitEvent(args.id), Message.copyConflict(args))
+    ipcEmitDynamic({
+        address: copyConflictEmitEvent(args.id),
+        ...Message.copyConflict(args)
+    })
 
     return replyPromise
 }
@@ -124,12 +127,15 @@ const getCopier = (id: string) => {
                 break
             }
 
-            ipcEmitDynamic(copyProgressEvent(id), Message.copyProgress({
-                id,
-                currentCopied: writer.bytesWritten,
-                currentFile: source,
-                currentSize: size
-            }))
+            ipcEmitDynamic({
+                address: copyProgressEvent(id),
+                ...Message.copyProgress({
+                    id,
+                    currentCopied: writer.bytesWritten,
+                    currentFile: source,
+                    currentSize: size
+                })
+            })
         }
 
         writer.end()

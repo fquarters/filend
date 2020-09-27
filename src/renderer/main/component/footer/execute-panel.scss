@@ -1,0 +1,22 @@
+@use "../../../theme";
+
+.execute-panel {
+    display: flex;
+    height: 1.5rem;
+    align-items: center;
+
+    label {
+        padding-right: 0.5rem;
+    }
+
+    input {
+        flex: 1;
+        height: 100%;
+        font-family: theme.$font-family;
+        font-size: 1.2rem;
+        background-color: theme.$bg-color--interactive;
+        color: theme.$fg-color;
+        border: none;
+        box-shadow: inset theme.$box-shadow;
+    }
+}

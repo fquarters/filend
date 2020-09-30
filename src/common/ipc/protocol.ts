@@ -91,7 +91,8 @@ type ViewFileChunkArgs = {
 
 type ViewFileChunkResponse = {
     content: string,
-    size: number
+    size: number,
+    totalSize: number
 }
 
 type CopyConflictResult = 'ok' | 'all' | 'cancel'

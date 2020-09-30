@@ -145,6 +145,17 @@ const replacingElement = <T>(elements: T[], element: T, predicate: MapFunction<T
     return elements
 }
 
+const repeating = <T>(value: T, times: number, startWith: T[] = []): T[] => {
+
+    if (times <= 0 || startWith.length >= times) {
+
+        return startWith
+    }
+
+    return repeating(value, times, [value, ...startWith])
+}
+
+
 export {
     all,
     first,
@@ -157,5 +168,6 @@ export {
     equalSets,
     arrayToObject,
     indexOfElement,
-    replacingElement
+    replacingElement,
+    repeating
 }

@@ -5,7 +5,7 @@
   "main": "src/electron/entry.ts",
   "types": "./src",
   "scripts": {
-    "start": "webpack --config-name rendererRelease && webpack --config-name mainRelease && electron ./build/entry.js",
+    "start": "webpack --config-name rendererRelease && webpack --config-name viewerRelease && webpack --config-name mainRelease && electron ./build/entry.js",
     "devRenderer": "webpack --config-name rendererDev",
     "devViewer": "webpack --config-name viewerDev",
     "devMain": "webpack --config-name mainDev && electron ./build/entry.js"

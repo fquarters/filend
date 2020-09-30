@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react"
-import { viewFileChunkEmitEvent } from "../../../common/ipc/dynamic-event"
+import { ipcRenderer } from "electron"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { repeating } from "../../../common/collections"
+import { VIEWER_CHUNK_SIZE } from "../../../common/constants"
+import { viewFileCancelEmitEvent, viewFileChunkEmitEvent } from "../../../common/ipc/dynamic-event"
 import Message from "../../../common/ipc/message-creators"
 import { ViewFileChunkMessage } from "../../../common/ipc/messages"
 import { ViewFileChunkResponse } from "../../../common/ipc/protocol"
-import { ipcInvoke, ipcInvokeDynamic } from "../../common/ipc"
+import { ipcInvokeDynamic } from "../../common/ipc"
 import "../../main.scss"
+import FileFragment from "./file-fragment"
 import "./viewer.scss"
 
 type ViewerAppProps = {
@@ -17,33 +21,107 @@ const ViewerApp = ({
     path
 }: ViewerAppProps) => {
 
-    const [content, setContent] = useState('')
+    const [chunksContent, setChunksContent] = useState<string[]>([])
+    const [totalSize, setTotalSize] = useState(0)
+    const idRef = useRef(id)
+    const containers = useRef<(HTMLPreElement | null)[]>([])
+    const [chunkHeight, setChunkHeight] = useState(0)
+    const [scrollTop, setScrollTop] = useState(0)
+    const viewerRef = useRef<HTMLDivElement | null>(null)
 
-    useEffect(() => {
+    const getChunkContent = useCallback(async (chunkIndex: number) => {
 
-        const getFirstChunk = async () => {
-
-            const chunk = await ipcInvokeDynamic<ViewFileChunkResponse, ViewFileChunkMessage>({
-                address: viewFileChunkEmitEvent(id),
-                ...Message.viewFileChunk({
-                    id,
-                    path,
-                    start: 0,
-                    encoding: 'utf-8'
-                })
+        const chunk = await ipcInvokeDynamic<ViewFileChunkResponse, ViewFileChunkMessage>({
+            address: viewFileChunkEmitEvent(id),
+            ...Message.viewFileChunk({
+                id,
+                path,
+                start: chunkIndex * VIEWER_CHUNK_SIZE,
+                encoding: 'utf-8'
             })
+        })
 
-            setContent(chunk.content)
-        }
+        setTotalSize(chunk.totalSize)
 
-        getFirstChunk()
+        return chunk
 
     }, [id, path])
 
-    return <div className="viewer">
-        <pre className="viewer__content">
-            {content}
-        </pre>
+    useEffect(() => {
+
+        const doInit = async () => {
+
+            const chunk = await getChunkContent(0)
+
+            const chunksCount = Math.ceil(chunk.totalSize / VIEWER_CHUNK_SIZE)
+            const initialChunks: string[] = repeating('', chunksCount)
+
+            initialChunks[0] = chunk.content
+
+            setChunksContent(initialChunks)
+            containers.current = repeating(null, chunksCount)
+        }
+
+        doInit()
+
+        const cancel = () => {
+
+            ipcRenderer.send(viewFileCancelEmitEvent(idRef.current))
+        }
+
+        window.onbeforeunload = cancel
+
+        return cancel
+
+    }, [id, path, getChunkContent])
+
+    const setRefByIndex = useCallback((index: number) =>
+        (ref: HTMLPreElement | null) => {
+
+            containers.current[index] = ref
+
+            if (!index && ref) {
+
+                setChunkHeight(ref.offsetHeight)
+            }
+        }, [])
+
+    const onScroll = useCallback((e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+
+        if (viewerRef.current) {
+
+            setScrollTop(viewerRef.current.scrollTop)
+        }
+
+    }, [])
+
+    const requestContent = useCallback(async (index) => {
+
+        const chunk = await getChunkContent(index)
+
+        setChunksContent((current) => {
+
+            const next = current.slice()
+            next[index] = chunk.content
+
+            return next
+        })
+
+    }, [getChunkContent])
+
+    return <div className="viewer"
+        ref={viewerRef}
+        onScroll={onScroll}>
+        {
+            chunksContent.map((chunk, index) => <FileFragment content={chunk}
+                index={index}
+                setRef={setRefByIndex(index)}
+                height={chunkHeight}
+                key={index}
+                viewerScrollTop={scrollTop}
+                viewerRef={viewerRef}
+                requestContent={requestContent} />)
+        }
     </div>
 }
 

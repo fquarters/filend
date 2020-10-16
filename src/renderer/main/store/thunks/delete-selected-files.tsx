@@ -114,6 +114,8 @@ const deleteSelectedFiles = () => async (
 
         await ipcInvoke(Message.deleteFiles(taskArgs))
 
+    } finally {
+
         batch(() => {
             dispatch(updateTabDirInfo({
                 side,
@@ -121,8 +123,6 @@ const deleteSelectedFiles = () => async (
             }))
             dispatch(removeTask(taskId))
         })
-
-    } finally {
 
         ipcRenderer.off(copyConflictEmitEvent(taskId), onConfirm)
         ipcRenderer.off(copyProgressEvent(taskId), onProgress)

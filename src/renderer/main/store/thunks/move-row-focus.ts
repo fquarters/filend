@@ -7,7 +7,7 @@ import { State } from "../data/state"
 
 type RowChange = 'up' | 'down' | number
 
-const changeRowInFocus = (change: RowChange) => (
+const moveRowFocus = (change: RowChange) => (
     dispatch: Dispatch<AnyAction>,
     getState: Supplier<State>
 ) => {
@@ -54,4 +54,4 @@ const changeRowInFocus = (change: RowChange) => (
 
 }
 
-export default changeRowInFocus
+export default moveRowFocus

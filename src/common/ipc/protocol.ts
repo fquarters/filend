@@ -103,6 +103,10 @@ type CopyConflictResult = 'ok' | 'all' | 'cancel'
 
 type DirRemovalConfirmResult = CopyConflictResult
 
+type MakeDir = {
+    path: string[]
+} & HasId
+
 export type {
     FileInfo,
     DirInfo,
@@ -126,5 +130,6 @@ export type {
     ViewFileArgs,
     ViewFileChunkArgs,
     ViewFileChunkResponse,
-    EditFileArgs
+    EditFileArgs,
+    MakeDir
 };

@@ -1,18 +1,18 @@
-import { useCallback, useContext, useEffect, useRef } from "react"
+import { useContext, useRef, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import GlobalContext from "../context/global-context"
+import initNewDirCreation from "../../store/thunks/init-new-dir-creation"
 import Selectors from "../../store/data/selectors"
 import addTabOnActiveSide from "../../store/thunks/add-tab-on-active-side"
-import changeRowInFocus from "../../store/thunks/change-row-in-focus"
+import moveRowFocus from "../../store/thunks/move-row-focus"
 import copySelectedFiles from "../../store/thunks/copy-selected-files"
 import deleteSelectedFiles from "../../store/thunks/delete-selected-files"
+import editFileInFocus from "../../store/thunks/edit-file-in-focus"
 import openFileInFocus from "../../store/thunks/open-file-in-focus"
 import openParentDirInCurrentTab from "../../store/thunks/open-parent-dir-in-current-tab"
 import switchActiveSide from "../../store/thunks/switch-active-side"
 import toggleRowInFocusSelection from "../../store/thunks/toggle-row-in-focus-selection"
 import viewFileInFocus from "../../store/thunks/view-file-in-focus"
-import editFileInFocus from "../../store/thunks/edit-file-in-focus"
-
+import GlobalContext from "../context/global-context"
 
 const useGlobalHotkeysBind = () => {
 
@@ -50,11 +50,11 @@ const useGlobalHotkeysBind = () => {
 
         } else if (e.key === "ArrowUp") {
 
-            dispatch(changeRowInFocus('up'))
+            dispatch(moveRowFocus('up'))
 
         } else if (e.key === "ArrowDown") {
 
-            dispatch(changeRowInFocus('down'))
+            dispatch(moveRowFocus('down'))
             e.preventDefault()
 
         } else if (e.key === "Enter") {
@@ -89,6 +89,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "F5") {
 
             dispatch(copySelectedFiles())
+
+        } else if (e.key === "F7") {
+
+            dispatch(initNewDirCreation())
 
         } else if (e.key === "F8") {
 

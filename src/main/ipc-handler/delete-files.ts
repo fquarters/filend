@@ -4,8 +4,7 @@ import { deleteProgressEvent, dirRemovalConfirmEmitEvent, dirRemovalConfirmReply
 import Message from "../../common/ipc/message-creators";
 import { DeleteArgs, DirRemovalConfirm, DirRemovalConfirmResult } from "../../common/ipc/protocol";
 import nextId from "../common/id-generator";
-import { expectReply, ipcEmitDynamic } from "../common/ipc";
-import { notifyOperationError } from "../common/operation";
+import { expectReply, ipcEmitDynamic, notifyOperationError } from "../common/ipc";
 import collectFileInfos from "../fs/collect-file-info";
 import moveToTrash from "../fs/move-to-trash";
 import removeDir from "../fs/remove-dir";

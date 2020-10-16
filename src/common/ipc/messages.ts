@@ -1,4 +1,4 @@
-import { CommandData as CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DeleteArgs, DirRemovalConfirm, DeleteProgress, ViewFileArgs, ViewFileChunkArgs, EditFileArgs } from "./protocol"
+import { CommandData as CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DeleteArgs, DirRemovalConfirm, DeleteProgress, ViewFileArgs, ViewFileChunkArgs, EditFileArgs, MakeDir } from "./protocol"
 
 type RendererIpcMessageType = 'READ_DIR'
     | 'IS_DIR'
@@ -13,6 +13,7 @@ type RendererIpcMessageType = 'READ_DIR'
     | 'VIEW_FILE'
     | 'VIEW_FILE_CHUNK'
     | 'VIEW_FILE_CANCEL'
+    | 'MAKE_DIR'
 
 
 type MainIpcMessageType = 'COPY_PROGRESS'
@@ -36,6 +37,7 @@ type MainIpcMessage<T extends MainIpcMessageType> = {
 }
 
 type ResolvePathMessage = RendererIpcMessage<'RESOLVE_PATH'> & MessageData<string[]>
+type MakeDirMessage = RendererIpcMessage<'MAKE_DIR'> & MessageData<MakeDir>
 type ReadDirMessage = RendererIpcMessage<'READ_DIR'> & MessageData<string>
 type ExecuteFileMessage = RendererIpcMessage<'EXECUTE_FILE'> & MessageData<string>
 type ExecuteCommandMessage = RendererIpcMessage<'EXECUTE_COMMAND'> & MessageData<CommandData>
@@ -59,6 +61,7 @@ type SomeRendererIpcMessage = RendererIpcMessage<any> & (
     | ViewFileMessage
     | ViewFileChunkMessage
     | EditFileMessage
+    | MakeDirMessage
 )
 
 type CopyProgressMessage = MainIpcMessage<'COPY_PROGRESS'> & MessageData<CopyProgress>
@@ -99,5 +102,6 @@ export type {
     ViewFileMessage,
     ViewFileChunkMessage,
     ViewFileCancelMessage,
-    EditFileMessage
+    EditFileMessage,
+    MakeDirMessage
 }

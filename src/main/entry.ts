@@ -13,6 +13,7 @@ import { handleInvoke } from './common/ipc'
 import { isProductionMode } from '../common/defined-values'
 import viewFileHandler from './ipc-handler/view-file'
 import editFileHandler from './ipc-handler/edit-file'
+import makeDirHandler from './ipc-handler/make-dir'
 
 Logger.useDefaults()
 
@@ -47,3 +48,4 @@ handleInvoke('NEXT_ID', generateNextId)
 handleInvoke('DELETE_FILES', deleteFiles)
 handleInvoke('VIEW_FILE', viewFileHandler)
 handleInvoke('EDIT_FILE', editFileHandler)
+handleInvoke('MAKE_DIR', makeDirHandler)

@@ -11,7 +11,8 @@ export type TabState = {
     named: boolean,
     dirInfo: DirInfo | null,
     rowInFocus: number,
-    selectedRows: number[]
+    selectedRows: number[],
+    creatingNewDir: boolean
 }
 
 export type SideState = {
@@ -72,7 +73,8 @@ const defaultTabState: TabState = {
     named: false,
     rowInFocus: 0,
     dirInfo: null,
-    selectedRows: []
+    selectedRows: [],
+    creatingNewDir: false
 }
 
 const defaultSideState: SideState = {

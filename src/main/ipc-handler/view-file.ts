@@ -21,7 +21,6 @@ const getFileReader = (args: ViewFileArgs) => {
 
     reinit()
 
-
     const handleChunkRequest = async (_: unknown, args: ViewFileChunkArgs): Promise<ViewFileChunkResponse> => {
 
         const reader = createReadStream(args.path, {

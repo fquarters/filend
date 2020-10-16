@@ -80,6 +80,10 @@ type OperationError = {
 } & HasId
 
 
+type EditFileArgs = {
+    path: string
+} & HasId
+
 type ViewFileArgs = {
     path: string
 } & HasId
@@ -121,5 +125,6 @@ export type {
     DeleteProgress,
     ViewFileArgs,
     ViewFileChunkArgs,
-    ViewFileChunkResponse
+    ViewFileChunkResponse,
+    EditFileArgs
 };

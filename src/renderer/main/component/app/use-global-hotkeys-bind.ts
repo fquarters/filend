@@ -11,6 +11,7 @@ import openParentDirInCurrentTab from "../../store/thunks/open-parent-dir-in-cur
 import switchActiveSide from "../../store/thunks/switch-active-side"
 import toggleRowInFocusSelection from "../../store/thunks/toggle-row-in-focus-selection"
 import viewFileInFocus from "../../store/thunks/view-file-in-focus"
+import editFileInFocus from "../../store/thunks/edit-file-in-focus"
 
 
 const useGlobalHotkeysBind = () => {
@@ -80,6 +81,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "F3") {
 
             dispatch(viewFileInFocus())
+
+        } else if (e.key === "F4") {
+
+            dispatch(editFileInFocus())
 
         } else if (e.key === "F5") {
 

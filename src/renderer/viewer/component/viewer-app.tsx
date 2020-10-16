@@ -16,22 +16,30 @@ type ViewerAppProps = {
     path: string
 }
 
+const maxChunksInMemory = Math.floor(1024 * 1024 * 4 / VIEWER_CHUNK_SIZE)
+
 const ViewerApp = ({
     id,
     path
 }: ViewerAppProps) => {
 
     const [chunksContent, setChunksContent] = useState<string[]>([])
-    const [totalSize, setTotalSize] = useState(0)
-    const idRef = useRef(id)
-    const containers = useRef<(HTMLPreElement | null)[]>([])
+    const [chunksInMemory, setChunksInMemory] = useState(0)
     const [chunkHeight, setChunkHeight] = useState(0)
     const [scrollTop, setScrollTop] = useState(0)
+
+    const pendingChunks = useRef(new Map<number, Promise<ViewFileChunkResponse>>())
+    const containers = useRef<(HTMLPreElement | null)[]>([])
     const viewerRef = useRef<HTMLDivElement | null>(null)
 
-    const getChunkContent = useCallback(async (chunkIndex: number) => {
+    const getChunkContent = useCallback(async (chunkIndex: number): Promise<ViewFileChunkResponse> => {
 
-        const chunk = await ipcInvokeDynamic<ViewFileChunkResponse, ViewFileChunkMessage>({
+        if (pendingChunks.current.has(chunkIndex)) {
+
+            return await pendingChunks.current.get(chunkIndex)!
+        }
+
+        const chunkPromise = ipcInvokeDynamic<ViewFileChunkResponse, ViewFileChunkMessage>({
             address: viewFileChunkEmitEvent(id),
             ...Message.viewFileChunk({
                 id,
@@ -41,7 +49,9 @@ const ViewerApp = ({
             })
         })
 
-        setTotalSize(chunk.totalSize)
+        pendingChunks.current.set(chunkIndex, chunkPromise)
+
+        const chunk = await chunkPromise
 
         return chunk
 
@@ -59,6 +69,7 @@ const ViewerApp = ({
             initialChunks[0] = chunk.content
 
             setChunksContent(initialChunks)
+            setChunksInMemory(current => current + 1)
             containers.current = repeating(null, chunksCount)
         }
 
@@ -66,7 +77,7 @@ const ViewerApp = ({
 
         const cancel = () => {
 
-            ipcRenderer.send(viewFileCancelEmitEvent(idRef.current))
+            ipcRenderer.send(viewFileCancelEmitEvent(id))
         }
 
         window.onbeforeunload = cancel
@@ -106,8 +117,30 @@ const ViewerApp = ({
 
             return next
         })
+        setChunksInMemory(current => current + 1)
 
     }, [getChunkContent])
+
+    const clearContent = useCallback((index) => {
+
+        if (chunksInMemory <= maxChunksInMemory) {
+
+            return
+        }
+
+        console.log('clearing chunk', index)
+
+        setChunksContent((current) => {
+
+            const next = current.slice()
+            next[index] = ''
+
+            return next
+        })
+        setChunksInMemory(current => current - 1)
+        pendingChunks.current.delete(index)
+
+    }, [chunksInMemory])
 
     return <div className="viewer"
         ref={viewerRef}
@@ -120,7 +153,8 @@ const ViewerApp = ({
                 key={index}
                 viewerScrollTop={scrollTop}
                 viewerRef={viewerRef}
-                requestContent={requestContent} />)
+                requestContent={requestContent}
+                clearContent={clearContent} />)
         }
     </div>
 }

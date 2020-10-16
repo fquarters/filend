@@ -1,4 +1,5 @@
-import React, { CSSProperties, MutableRefObject, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { repeating } from "../../../common/collections"
 import { Consumer } from "../../../common/types"
 
 type FileFragmentProps = {
@@ -8,7 +9,8 @@ type FileFragmentProps = {
     height: number,
     viewerScrollTop: number,
     viewerRef: MutableRefObject<HTMLDivElement | null>,
-    requestContent: Consumer<number>
+    requestContent: Consumer<number>,
+    clearContent: Consumer<number>
 }
 
 const FileFragment = ({
@@ -18,7 +20,8 @@ const FileFragment = ({
     height,
     viewerScrollTop,
     viewerRef,
-    requestContent
+    requestContent,
+    clearContent
 }: FileFragmentProps) => {
 
     const ownRef = useRef<HTMLPreElement | null>()
@@ -31,33 +34,38 @@ const FileFragment = ({
             const viewerBounds = viewerRef.current.getBoundingClientRect()
             const visible = bounds.top <= viewerBounds.bottom && bounds.bottom >= viewerBounds.top
 
-            if (visible) {
+            if (visible && !content) {
 
-                if (!content) {
+                requestContent(index)
 
-                    requestContent(index)
+            } 
+            
+            if (content && !visible) {
 
-                } else {
-
-                    // TODO display hidden content
-                }
-
-            } else {
-
-                if (content) {
-
-                    // TODO hide content
-                }
+                clearContent(index)
             }
 
         }
 
-    }, [viewerScrollTop, viewerRef, content, requestContent, index])
+    }, [viewerScrollTop, viewerRef, content, requestContent, index, clearContent])
+
+    const lines = useMemo(() => content.split('\n'), [content])
+
+    const [placeholder, setPlacehodler] = useState('')
+
+    useEffect(() => {
+
+        if (content) {
+
+            setPlacehodler(repeating('\n', content.split('\n').length).join(''))
+        }
+
+    }, [content])
 
     const cssProps = useMemo<CSSProperties>(() => {
 
-    
-        if (!content) {
+
+        if (!(content || placeholder)) {
 
             return {
 
@@ -67,7 +75,7 @@ const FileFragment = ({
 
         return {}
 
-    }, [height, content])
+    }, [height, content, placeholder])
 
     const refSetter = useCallback((ref) => {
 
@@ -76,12 +84,16 @@ const FileFragment = ({
 
     }, [setRef])
 
-    return <pre className="viewer__content"
+    return <div className="viewer__content"
         key={index}
         ref={refSetter}
         style={cssProps}>
-        {content}
-    </pre>
+        {
+            content
+                ? lines.map((line, index) => <pre key={index}>{line}</pre>)
+                : <pre>{placeholder}</pre>
+        }
+    </div>
 }
 
 export default FileFragment

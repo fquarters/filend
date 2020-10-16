@@ -1,13 +1,13 @@
 import React, { CSSProperties, MutableRefObject, useLayoutEffect, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import useAppInit from "./hook/use-app-init";
-import useMouseDragTracking from "../../hook/use-mouse-drag-tracking";
-import { patchSide } from "../store/action/action-creators";
-import Selectors from "../store/data/selectors";
+import useMouseDragTracking from "../../../hook/use-mouse-drag-tracking";
+import { patchSide } from "../../store/action/action-creators";
+import Selectors from "../../store/data/selectors";
+import FooterView from "../footer/footer-view";
+import TaskCarouselView from "../header/task-carousel-view";
+import SideView from "../side-panel/side-view";
 import "./app.scss";
-import FooterView from "./footer/footer-view";
-import TaskCarouselView from "./header/task-carousel-view";
-import SideView from "./side-panel/side-view";
+import useAppInit from "./use-app-init";
 
 const dividerWidth = "0.5rem"
 

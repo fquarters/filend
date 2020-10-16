@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from "react";
 import { Provider } from "react-redux";
 import GlobalModalAccess from "../../component/modal/global-modal-access";
 import configureStore from "../store/store-configuration";
-import App from "./app";
+import App from "./app/app";
 import GlobalContext, { GlobalContextType } from "./context/global-context";
 import '../../main.scss';
 

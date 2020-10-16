@@ -1,11 +1,11 @@
 import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { repeating } from "../../../common/collections"
-import { Consumer } from "../../../common/types"
+import { repeat } from "../../../common/collections"
+import { BiConsumer, Consumer } from "../../../common/types"
 
 type FileFragmentProps = {
     content: string,
     index: number,
-    setRef: Consumer<HTMLPreElement | null>,
+    setRef: BiConsumer<number, HTMLPreElement | null>,
     height: number,
     viewerScrollTop: number,
     viewerRef: MutableRefObject<HTMLDivElement | null>,
@@ -57,7 +57,7 @@ const FileFragment = ({
 
         if (content) {
 
-            setPlacehodler(repeating('\n', content.split('\n').length).join(''))
+            setPlacehodler(repeat('\n', content.split('\n').length).join(''))
         }
 
     }, [content])
@@ -79,10 +79,10 @@ const FileFragment = ({
 
     const refSetter = useCallback((ref) => {
 
-        setRef(ref)
+        setRef(index, ref)
         ownRef.current = ref
 
-    }, [setRef])
+    }, [setRef, index])
 
     return <div className="viewer__content"
         key={index}

@@ -127,17 +127,14 @@ const indexOfElement = <T>(elements: T[], predicate: MapFunction<T, boolean>): n
     return -1
 }
 
-const replacingElement = <T>(elements: T[], element: T, predicate: MapFunction<T, boolean>) => {
+const replaceElement = <T>(elements: T[], element: T, predicate: MapFunction<T, boolean>) => {
 
     const index = indexOfElement(elements, predicate)
 
     if (index >= 0) {
 
-        const withReplaced = [
-            ...elements.slice(0, index),
-            element,
-            ...elements.slice(index + 1, elements.length)
-        ]
+        const withReplaced = elements.slice()
+        withReplaced[index] = element
 
         return withReplaced
     }
@@ -145,14 +142,27 @@ const replacingElement = <T>(elements: T[], element: T, predicate: MapFunction<T
     return elements
 }
 
-const repeating = <T>(value: T, times: number, startWith: T[] = []): T[] => {
+const replaceElementByIndex = <T>(elements: T[], element: T, index: number) => {
+
+    if (index >= 0) {
+
+        const withReplaced = elements.slice()
+        withReplaced[index] = element
+
+        return withReplaced
+    }
+
+    return elements
+}
+
+const repeat = <T>(value: T, times: number, startWith: T[] = []): T[] => {
 
     if (times <= 0 || startWith.length >= times) {
 
         return startWith
     }
 
-    return repeating(value, times, [value, ...startWith])
+    return repeat(value, times, [value, ...startWith])
 }
 
 
@@ -168,6 +178,7 @@ export {
     equalSets,
     arrayToObject,
     indexOfElement,
-    replacingElement,
-    repeating
+    replaceElement,
+    replaceElementByIndex,
+    repeat
 }

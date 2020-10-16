@@ -1,6 +1,6 @@
 import { AnyAction } from "redux"
 import { ThunkDispatch } from "redux-thunk"
-import { first, replacingElement } from "../../../../common/collections"
+import { first, replaceElement } from "../../../../common/collections"
 import { Supplier } from "../../../../common/types"
 import { patchRoot } from "../action/action-creators"
 import { State, TaskState } from "../data/state"
@@ -21,7 +21,7 @@ const updateTask = (update: TaskUpdate) => (
 
     if (current) {
 
-        const nextTasks = replacingElement(tasks, {
+        const nextTasks = replaceElement(tasks, {
             ...current,
             ...update
         }, matchById)

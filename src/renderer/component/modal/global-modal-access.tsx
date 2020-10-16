@@ -1,5 +1,5 @@
 import React, { ReactChild, ReactChildren, useEffect, useMemo, useState } from "react"
-import { replacingElement } from "../../../common/collections"
+import { replaceElement } from "../../../common/collections"
 import { Closure, Consumer, MapFunction } from "../../../common/types"
 import ConfirmDialog from "./confirm-dialog"
 import { ModalProps } from "./modal"
@@ -46,7 +46,7 @@ const confirmDialog = (args: ConfirmDialogArgs) => {
         }
 
         const update = (visible: boolean) => holder.setArgs && holder
-            .setArgs(current => replacingElement(current, {
+            .setArgs(current => replaceElement(current, {
                 ...newDialogProps,
                 visible
             }, (item) => item === newDialogProps))

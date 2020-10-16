@@ -81,6 +81,7 @@ $main-border: $border-width solid theme.$border-color--weakest;
         th {
             width: 25%;
             border: $main-border;
+            user-select: none;
         }
 
         tr {

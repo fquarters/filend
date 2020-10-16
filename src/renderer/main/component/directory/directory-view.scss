@@ -1,0 +1,94 @@
+@use "../../../theme";
+@use "../../../mixins";
+
+$border-width: 1px;
+$main-border: $border-width solid theme.$border-color--weakest;
+
+.directory-view {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+
+    .directory-view__path,
+    .directory-view__stats {
+        padding: 0.2rem 0;
+    }
+
+    .directory-view__path {
+        border-top: $main-border;
+
+        input {
+            @include mixins.editable;
+            width: 100%;
+        }
+    }
+
+    .directory-view__new-dir-input {
+        @include mixins.editable;
+        width: 100%;
+    }
+
+    .directory-view__table-container {
+        flex: 1;
+        border: $main-border;
+        border-width: $border-width 0;
+        overflow-y: auto;
+        background-color: theme.$bg-color--interactive;
+        box-shadow: inset theme.$box-shadow;
+    }
+
+    .directory-view__file {
+        color: theme.$fg-color--weak;
+
+        td {
+            cursor: default;
+            padding: 0 0.2rem;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: color theme.$transition__color;
+            user-select: none;
+
+            &:not(:last-child) {
+                border-right: $main-border;
+            }
+
+            &:not(:first-child) {
+                border-left: $main-border;
+            }
+        }
+
+        &.directory-view__file--in-focus {
+            td {
+                border-style: dashed;
+                border-color: theme.$border-color--weak;
+                border-width: $border-width;
+            }
+        }
+
+        &.directory-view__file--selected {
+            color: theme.$fg-color--active;
+        }
+    }
+
+    table {
+        text-align: left;
+        table-layout: fixed;
+        width: 100%;
+        background-color: theme.$bg-color--interactive;
+
+        th {
+            width: 25%;
+            border: $main-border;
+        }
+
+        tr {
+            border: $border-width dashed rgba(0, 0, 0, 0);
+
+            &:last-child {
+                border-bottom: $main-border;
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import electron from 'electron'
-import { createWindow } from './create-window'
+import { createMainWindow } from './create-window'
 import executeFile from './ipc-handler/execute-file'
 import readDir from './ipc-handler/read-dir'
 import getInitInfo from './ipc-handler/init-info'
@@ -11,6 +11,8 @@ import generateNextId from './ipc-handler/next-id'
 import deleteFiles from './ipc-handler/delete-files'
 import { handleInvoke } from './common/ipc'
 import { isProductionMode } from '../common/defined-values'
+import viewFileHandler from './ipc-handler/view-file'
+import editFileHandler from './ipc-handler/edit-file'
 import makeDirHandler from './ipc-handler/make-dir'
 
 Logger.useDefaults()
@@ -22,7 +24,7 @@ if (isProductionMode()) {
 
 const { app, BrowserWindow } = electron
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createMainWindow)
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -32,7 +34,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow()
+        createMainWindow()
     }
 })
 
@@ -44,4 +46,6 @@ handleInvoke('RESOLVE_PATH', resolvePath)
 handleInvoke('COPY_FILES', copyFiles)
 handleInvoke('NEXT_ID', generateNextId)
 handleInvoke('DELETE_FILES', deleteFiles)
+handleInvoke('VIEW_FILE', viewFileHandler)
+handleInvoke('EDIT_FILE', editFileHandler)
 handleInvoke('MAKE_DIR', makeDirHandler)

@@ -1,16 +1,16 @@
 const elementVisibleInScrollableContainer = (element: HTMLElement,
     container: HTMLElement): boolean => {
 
-    const rowTop = element.offsetTop
-    const rowHeight = element.clientHeight
-    const rowBottom = rowTop + rowHeight
+    const elementTop = element.offsetTop
+    const elementHeight = element.clientHeight
+    const elementBottom = elementTop + elementHeight
     
     const containerTop = container.scrollTop
     const containerHeight = container.clientHeight
     const containerBottom = containerTop + containerHeight
 
-    const tooLow = rowBottom > containerBottom
-    const tooHigh = rowTop < containerTop
+    const tooLow = elementBottom > containerBottom
+    const tooHigh = elementTop < containerTop
 
     return !(tooHigh || tooLow)
 }

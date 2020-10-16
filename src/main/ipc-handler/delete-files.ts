@@ -32,7 +32,10 @@ const getConfirmResult = async (args: DirRemovalConfirm): Promise<DirRemovalConf
 
     const replyPromise = expectReply<DirRemovalConfirmResult>(dirRemovalConfirmReplyEvent(args))
 
-    ipcEmitDynamic(dirRemovalConfirmEmitEvent(args.id), Message.dirRemovalConfirm(args))
+    ipcEmitDynamic({
+        address: dirRemovalConfirmEmitEvent(args.id),
+        ...Message.dirRemovalConfirm(args)
+    })
 
     return replyPromise
 }
@@ -68,7 +71,7 @@ const getRemover = ({
         }
     }
 
-    const confirmRemoval = async ({source, name}: DeleteDirArgs) => {
+    const confirmRemoval = async ({ source, name }: DeleteDirArgs) => {
 
         try {
 
@@ -139,10 +142,13 @@ const getRemover = ({
                 break
             }
 
-            ipcEmitDynamic(deleteProgressEvent(id), Message.deleteProgress({
-                id,
-                currentFile: src.path
-            }))
+            ipcEmitDynamic({
+                address: deleteProgressEvent(id),
+                ...Message.deleteProgress({
+                    id,
+                    currentFile: src.path
+                })
+            })
 
             const nextArgs: DeleteFileArgs = {
                 source: src.path

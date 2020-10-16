@@ -1,11 +1,14 @@
 import { WebContents } from "electron";
 
+export type WindowName = 'main' | string
+
 type RendererHolder = {
-    value: WebContents | null
+    [K in WindowName]: WebContents | null
 }
 
-const holder: RendererHolder = {
-    value: null
+const windowHolder: RendererHolder = {
+    main: null,
+    viewer: null
 }
 
-export default holder
+export default windowHolder

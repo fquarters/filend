@@ -29,6 +29,9 @@ const dirRemovalConfirmReplyEvent = ({
 
 const deleteProgressEvent = (id: string) => `DELETE_PROGRESS/${id}` 
 
+const viewFileChunkEmitEvent = (id: string) => `VIEW_FILE_CHUNK/${id}`
+const viewFileCancelEmitEvent = (id: string) => `VIEW_FILE_CANCEL/${id}`
+
 export {
     operationCancelEvent,
     operationErrorEvent,
@@ -37,5 +40,7 @@ export {
     copyProgressEvent,
     dirRemovalConfirmEmitEvent,
     dirRemovalConfirmReplyEvent,
-    deleteProgressEvent
+    deleteProgressEvent,
+    viewFileChunkEmitEvent,
+    viewFileCancelEmitEvent
 }

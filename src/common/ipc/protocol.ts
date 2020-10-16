@@ -79,6 +79,26 @@ type OperationError = {
     message: string
 } & HasId
 
+
+type EditFileArgs = {
+    path: string
+} & HasId
+
+type ViewFileArgs = {
+    path: string
+} & HasId
+
+type ViewFileChunkArgs = {
+    start: number,
+    encoding: BufferEncoding
+} & ViewFileArgs
+
+type ViewFileChunkResponse = {
+    content: string,
+    size: number,
+    totalSize: number
+}
+
 type CopyConflictResult = 'ok' | 'all' | 'cancel'
 
 type DirRemovalConfirmResult = CopyConflictResult
@@ -107,5 +127,9 @@ export type {
     DirRemovalConfirm,
     DirRemovalConfirmResult,
     DeleteProgress,
+    ViewFileArgs,
+    ViewFileChunkArgs,
+    ViewFileChunkResponse,
+    EditFileArgs,
     MakeDir
 };

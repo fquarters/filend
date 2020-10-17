@@ -1,4 +1,4 @@
-import { CopyArgs, CopyConflict, CopyConflictResult, DeleteArgs, DirInfo, DirRemovalConfirm as DirRemovalConfirmArgs, HasId, MoveArgs } from "../../../../common/ipc/protocol";
+import { CopyArgs, CopyConflict, CopyConflictResult, DeleteArgs, DirInfo, DirRemovalConfirm as DirRemovalConfirmArgs, FileInfo, HasId, MoveArgs } from "../../../../common/ipc/protocol";
 
 export type PageResult<T> = {
     data: Array<T>,
@@ -53,12 +53,18 @@ export type CopyConflictConfirm = CopyConflict
 export type DirRemovalConfirm = DirRemovalConfirmArgs
     & HasResult<CopyConflictResult>
 
+export type MoveRequest = {
+    sources: FileInfo[],
+    destination: string
+}
+
 export type State = {
     left: SideState,
     right: SideState,
     hotkeysDisabled: boolean,
-    tasks: TaskState[]
-};
+    tasks: TaskState[],
+    moveRequest: MoveRequest
+}
 
 export type TabId = {
     side: Side,
@@ -91,5 +97,9 @@ export const initialState: State = {
     },
     right: defaultSideState,
     hotkeysDisabled: false,
-    tasks: []
-};
+    tasks: [],
+    moveRequest: {
+        destination: '',
+        sources: []
+    }
+}

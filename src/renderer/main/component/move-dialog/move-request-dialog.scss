@@ -1,0 +1,25 @@
+@use "../../../mixins";
+
+.move-request-dialog {
+
+    .move-request-dialog__inputs {
+
+        input {
+            @include mixins.editable--nonfocus-bordered;
+            height: 100%;
+            flex-grow: 1;
+        }
+
+        label {
+            padding-right: 0.5rem;
+        }
+
+        .move-request-dialog__input-row {
+
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            height: 2.2rem;
+        }
+    }
+}

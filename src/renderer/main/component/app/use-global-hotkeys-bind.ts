@@ -13,6 +13,7 @@ import switchActiveSide from "../../store/thunks/switch-active-side"
 import toggleRowInFocusSelection from "../../store/thunks/toggle-row-in-focus-selection"
 import viewFileInFocus from "../../store/thunks/view-file-in-focus"
 import GlobalContext from "../context/global-context"
+import createMoveRequest from "../../store/thunks/create-move-request"
 
 const useGlobalHotkeysBind = () => {
 
@@ -89,6 +90,10 @@ const useGlobalHotkeysBind = () => {
         } else if (e.key === "F5") {
 
             dispatch(copySelectedFiles())
+
+        } else if (e.key === "F6") {
+
+            dispatch(createMoveRequest())
 
         } else if (e.key === "F7") {
 

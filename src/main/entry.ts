@@ -14,6 +14,7 @@ import { isProductionMode } from '../common/defined-values'
 import viewFileHandler from './ipc-handler/view-file'
 import editFileHandler from './ipc-handler/edit-file'
 import makeDirHandler from './ipc-handler/make-dir'
+import renameFileHandler from './ipc-handler/rename-file'
 
 Logger.useDefaults()
 
@@ -49,3 +50,4 @@ handleInvoke('DELETE_FILES', deleteFiles)
 handleInvoke('VIEW_FILE', viewFileHandler)
 handleInvoke('EDIT_FILE', editFileHandler)
 handleInvoke('MAKE_DIR', makeDirHandler)
+handleInvoke('RENAME_FILE', renameFileHandler)

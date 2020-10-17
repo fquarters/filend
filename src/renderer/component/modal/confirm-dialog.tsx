@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { Closure } from "../../../common/types"
+import Strings from "../../common/strings"
 import Button from "../button"
 import Modal, { ModalProps } from "./modal"
 
@@ -17,19 +18,25 @@ const ConfirmDialog = ({
     ...props
 }: ConfirmDialogProps) => {
 
-    return <Modal {...props} footer={<React.Fragment>
+    const footer = useMemo(() => <React.Fragment>
         <Button onClick={onOk}>
-            Yes
+            {Strings.get('yesButton')}
         </Button>
         {
             onOkAll && <Button onClick={onOkAll}>
-                Yes to All
-        </Button>
+                {Strings.get('yesToAllButton')}
+            </Button>
         }
         <Button onClick={onCancel}>
-            Cancel
+            {Strings.get('cancelButton')}
         </Button>
-    </React.Fragment>}>
+    </React.Fragment>, [
+        onCancel,
+        onOk,
+        onOkAll
+    ])
+
+    return <Modal {...props} footer={footer}>
         {children}
     </Modal>
 }

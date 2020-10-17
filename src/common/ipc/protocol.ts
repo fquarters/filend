@@ -107,6 +107,11 @@ type MakeDir = {
     path: string[]
 } & HasId
 
+type RenameFileArgs = {
+    oldPath: string,
+    newPath: string
+}
+
 export type {
     FileInfo,
     DirInfo,
@@ -131,5 +136,6 @@ export type {
     ViewFileChunkArgs,
     ViewFileChunkResponse,
     EditFileArgs,
-    MakeDir
-};
+    MakeDir,
+    RenameFileArgs
+}

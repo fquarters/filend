@@ -7,9 +7,20 @@
     background-color: theme.$bg-color--interactive;
     color: theme.$fg-color;
     box-shadow: inset theme.$box-shadow;
+    transition: border-color theme.$transition__color;
+    border: 1px solid transparent;
 
     &:read-only {
         background-color: theme.$bg-color;
         box-shadow: none;
     }
+
+    &:focus:not(:read-only) {
+        border: 1px solid theme.$fg-color--active;
+    }
+}
+
+@mixin editable--nonfocus-bordered {
+    @include editable();
+    border: 1px solid theme.$fg-color--weak;
 }

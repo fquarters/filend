@@ -1,5 +1,6 @@
 import React from "react"
 import Button from "../../../component/button"
+import Modal from "../../../component/modal/modal"
 import "./action-panel.scss"
 
 const ActionPanel = () => {

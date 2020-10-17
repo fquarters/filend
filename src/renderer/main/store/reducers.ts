@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { AppAction } from "./action/actions";
-import { initialState } from "./data/state";
 import type { State } from "./data/state";
+import { initialState } from "./data/state";
 import handlePatchSide from './handler/patch-side-handler';
 import handlePatchTab from './handler/patch-tab-handler';
 
@@ -28,8 +28,18 @@ const rootReducer: Reducer<State, AppAction> = (state, action) => {
         case 'PATCH_TAB':
 
             return handlePatchTab(action, state)
+
+        case 'PATCH_MOVE_REQUEST':
+
+            return {
+                ...state,
+                moveRequest: {
+                    ...state.moveRequest,
+                    ...action.data
+                }
+            }
     }
 
-};
+}
 
-export { rootReducer };
+export { rootReducer }

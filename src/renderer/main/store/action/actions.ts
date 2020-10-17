@@ -1,9 +1,10 @@
 import { Action } from "redux";
-import { State, Side, TabState, SideState, TabId } from "../data/state";
+import { State, Side, TabState, SideState, TabId, MoveRequest } from "../data/state";
 
 export type ActionType = 'PATCH_ROOT'
     | 'PATCH_SIDE'
-    | 'PATCH_TAB';
+    | 'PATCH_TAB'
+    | 'PATCH_MOVE_REQUEST'
 
 export type SidePatch = {
     side: Side,
@@ -26,9 +27,14 @@ export type PatchTab = Action<'PATCH_TAB'> & {
     data: TabPatch
 }
 
+export type PatchMoveRequest = Action<'PATCH_MOVE_REQUEST'> & {
+    data: Partial<MoveRequest>
+}
+
 export type AppAction = Action<ActionType> &
     (
         PatchRoot
         | PatchSide
         | PatchTab
+        | PatchMoveRequest
     )

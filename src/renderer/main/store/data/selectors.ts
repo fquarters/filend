@@ -1,5 +1,5 @@
+import caching from "../../../../common/caching"
 import { FileInfo } from "../../../../common/ipc/protocol"
-import memoized from "../../../../common/memoized"
 import { MapFunction } from "../../../../common/types"
 import { Side, SideState, State, TabState } from "./state"
 
@@ -10,24 +10,24 @@ type TabSelectorArg = {
 
 type SideComponentState = Pick<SideState, 'active' | 'activeTab'>
 
-const memoizedSideStateSelector = memoized<Side, MapFunction<State, SideState>>()
-const memoizedTabStateSelector = memoized<TabSelectorArg, MapFunction<State, TabState>>()
-const memoizedActiveTabIndexSelector = memoized<Side, MapFunction<State, number>>()
-const memoizedSideComponentStateSelector = memoized<Side, MapFunction<State, SideComponentState>>()
-const memoizedSideTabsSelector = memoized<Side, MapFunction<State, TabState[]>>()
-const memoizedActiveTabStateSelector = memoized<Side, MapFunction<State, TabState>>()
+const cachingSideStateSelector = caching<Side, MapFunction<State, SideState>>()
+const cachingTabStateSelector = caching<TabSelectorArg, MapFunction<State, TabState>>()
+const cachingActiveTabIndexSelector = caching<Side, MapFunction<State, number>>()
+const cachingSideComponentStateSelector = caching<Side, MapFunction<State, SideComponentState>>()
+const cachingSideTabsSelector = caching<Side, MapFunction<State, TabState[]>>()
+const cachingActiveTabStateSelector = caching<Side, MapFunction<State, TabState>>()
 
 const activeSideName = (state: State): Side => state.left.active ? 'left' : 'right'
-const activeTabOfSide = memoizedActiveTabStateSelector((side: Side) =>
+const activeTabOfSide = cachingActiveTabStateSelector((side: Side) =>
     (state: State) => state[side].tabs[state[side].activeTab])
-const activeTabIndexOfSide = memoizedActiveTabIndexSelector((side: Side) =>
+const activeTabIndexOfSide = cachingActiveTabIndexSelector((side: Side) =>
     (state: State) => state[side].activeTab)
-const sideByName = memoizedSideStateSelector((side: Side) => (state: State) => state[side])
-const sideComponentState = memoizedSideComponentStateSelector((side: Side) => (state: State) => ({
+const sideByName = cachingSideStateSelector((side: Side) => (state: State) => state[side])
+const sideComponentState = cachingSideComponentStateSelector((side: Side) => (state: State) => ({
     active: state[side].active,
     activeTab: state[side].activeTab
 }))
-const sideTabsSelector = memoizedSideTabsSelector((side: Side) => (state: State) => state[side].tabs)
+const sideTabsSelector = cachingSideTabsSelector((side: Side) => (state: State) => state[side].tabs)
 const currentActiveTabState = (state: State) => activeTabOfSide(activeSideName(state))(state)
 const currentActiveSideState = (state: State) => sideByName(activeSideName(state))(state)
 
@@ -53,7 +53,7 @@ const Selectors = {
     sideByName,
     sideComponentState,
     sideTabsSelector,
-    tabByIndex: memoizedTabStateSelector(({ side, index }: TabSelectorArg) =>
+    tabByIndex: cachingTabStateSelector(({ side, index }: TabSelectorArg) =>
         (state: State) => state[side].tabs[index]),
     activeTabOfSide,
     activeTabIndexOfSide,
@@ -85,7 +85,8 @@ const Selectors = {
 
         return dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
     },
-    executePanelState: (state: State) => currentActiveTabState(state).path
+    executePanelState: (state: State) => currentActiveTabState(state).path,
+    moveRequest: (state: State) => state.moveRequest
 }
 
 export default Selectors

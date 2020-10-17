@@ -1,5 +1,5 @@
-import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage, CopyFilesMessage, CopyProgressMessage, CopyConflictMessage, OperationErrorMessage, NextIdMessage, DirRemovalConfirmMessage, DeleteFilesMessage, DeleteProgressMessage, ViewFileMessage, ViewFileCancelMessage, ViewFileChunkMessage, EditFileMessage, MakeDirMessage } from "./messages";
-import { CommandData, CopyArgs, CopyProgress, CopyConflict, OperationError, DirRemovalConfirm, DeleteArgs, DeleteProgress, ViewFileArgs, ViewFileChunkArgs, EditFileArgs, MakeDir } from "./protocol";
+import { ExecuteFileMessage, ReadDirMessage, InitInfoMessage, ExecuteCommandMessage, ResolvePathMessage, CopyFilesMessage, CopyProgressMessage, CopyConflictMessage, OperationErrorMessage, NextIdMessage, DirRemovalConfirmMessage, DeleteFilesMessage, DeleteProgressMessage, ViewFileMessage, ViewFileCancelMessage, ViewFileChunkMessage, EditFileMessage, MakeDirMessage, RenameFileMessage } from "./messages";
+import { CommandData, CopyArgs, CopyProgress as CopyProgress, CopyConflict as CopyConflict, OperationError, DirRemovalConfirm as DirRemovalConfirmArgs, DeleteArgs, DeleteProgress as DeleteProgress, ViewFileArgs, ViewFileChunkArgs, EditFileArgs, MakeDir as MakeDirArgs, RenameFileArgs as RenameFileArgs } from "./protocol";
 
 const readDir = (path: string): ReadDirMessage => ({
     data: path,
@@ -26,7 +26,7 @@ const resolvePath = (...path: string[]): ResolvePathMessage => ({
     type: 'RESOLVE_PATH'
 })
 
-const makeDir = (data: MakeDir): MakeDirMessage => ({
+const makeDir = (data: MakeDirArgs): MakeDirMessage => ({
     data,
     type: 'MAKE_DIR'
 })
@@ -66,7 +66,7 @@ const nextId = (): NextIdMessage => ({
     type: 'NEXT_ID'
 })
 
-const dirRemovalConfirm = (data: DirRemovalConfirm): DirRemovalConfirmMessage => ({
+const dirRemovalConfirm = (data: DirRemovalConfirmArgs): DirRemovalConfirmMessage => ({
     data,
     type: 'DIR_REMOVAL_CONFIRM'
 })
@@ -91,6 +91,11 @@ const viewFileCancel = (data: string): ViewFileCancelMessage => ({
     type: 'VIEW_FILE_CANCEL'
 })
 
+const renameFile = (data: RenameFileArgs): RenameFileMessage => ({
+    data,
+    type: 'RENAME_FILE'
+})
+
 const Message = {
     readDir,
     executeFile,
@@ -109,7 +114,8 @@ const Message = {
     viewFileChunk,
     viewFileCancel,
     editFile,
-    makeDir
+    makeDir,
+    renameFile
 }
  
 export default Message

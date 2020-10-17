@@ -9,6 +9,14 @@ If you want to run it:
 
 How it looks like:
 
+Main screen - 2 panels for file system navigation and management:
+
 ![Main screen](pics/main.png)
 
+File copy conflict resolution dialog:
+
 ![Copy files conflict dialog](pics/copy_overwrite.png)
+
+Custom file content viewer with lazy load implementation allowing to view large files:
+
+![File viewer](pics/viewer.png)

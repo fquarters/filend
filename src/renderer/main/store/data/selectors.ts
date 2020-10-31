@@ -31,6 +31,19 @@ const sideTabsSelector = cachingSideTabsSelector((side: Side) => (state: State) 
 const currentActiveTabState = (state: State) => activeTabOfSide(activeSideName(state))(state)
 const currentActiveSideState = (state: State) => sideByName(activeSideName(state))(state)
 
+const filterSelectedFiles = ({
+    dirInfo,
+    selectedRows
+}: TabState) => {
+
+    if (!dirInfo) {
+        return []
+    }
+
+    return dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
+
+}
+
 type CurrentActiveState = {
     side: Side,
     tab: number,
@@ -74,19 +87,14 @@ const Selectors = {
             tab
         } = currentActiveState(state)
 
-        const {
-            selectedRows,
-            dirInfo
-        } = state[side].tabs[tab]
-
-        if (!dirInfo) {
-            return []
-        }
-
-        return dirInfo.files.filter((_, index) => selectedRows.indexOf(index + 1) > -1)
+        return filterSelectedFiles(state[side].tabs[tab])
     },
     executePanelState: (state: State) => currentActiveTabState(state).path,
     moveRequest: (state: State) => state.moveRequest
 }
 
 export default Selectors
+
+export {
+    filterSelectedFiles
+}

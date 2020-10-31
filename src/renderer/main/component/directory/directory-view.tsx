@@ -7,6 +7,8 @@ import FileTable from "./file-table"
 import PathInput from "./path-input"
 import useDirInfoUpdate from "./use-dir-info-update"
 import "./directory-view.scss"
+import Strings from "../../../common/strings"
+import StatsRow from "./stats-row"
 
 type DirectoryViewProps = {
     side: Side
@@ -63,7 +65,7 @@ const DirectoryView = ({
             </DirectoryContext.Provider>
         </div>
         <div className="directory-view__stats">
-            stats
+            <StatsRow side={side} tab={activeTab}/>
         </div>
     </div>
 }

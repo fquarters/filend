@@ -38,7 +38,7 @@ const updateTabDirInfo = ({
         }
 
         if (!tabState.named) {
-            tabState.name = dirInfo.name
+            patch.name = dirInfo.name
         }
 
         dispatch(patchTab({

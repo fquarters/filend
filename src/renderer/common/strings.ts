@@ -1,4 +1,5 @@
-import { MapFunction } from "../../common/types"
+import { Locales } from "./locales"
+import LocalizedTemplateMap, { TemplateMapKeys, TemplateMapType } from "./string-templates"
 
 type StringMapKeys = 'confirmDialogTitle'
     | 'deleteConfirmDialogMessage'
@@ -8,58 +9,12 @@ type StringMapKeys = 'confirmDialogTitle'
     | 'cancelButton'
     | 'yesToAllButton'
 
-type TemplateMapKeys = 'dirRemovalConfirmDialogMessage'
-    | 'copyConflictDialogMessage'
-    | 'copyTaskDescription'
-    | 'moveTaskDescription'
-
-type DirRemovalTemplateArgs = {
-    dirName: string
-}
-
-type CopyConflictTemplateArgs = {
-    fileName: string,
-    destination: string
-}
-
-type CopyTaskDescriptionArgs = CopyConflictTemplateArgs
-type MoveTaskDescriptionArgs = CopyTaskDescriptionArgs
-
-type SomeTemplateArgs = DirRemovalTemplateArgs | CopyConflictTemplateArgs
-
-type TemplateResolver<A extends SomeTemplateArgs> = MapFunction<A, string>
-
-type DirRemovalTemplate = TemplateResolver<DirRemovalTemplateArgs>
-type CopyConflictTemplate = TemplateResolver<CopyConflictTemplateArgs>
-type CopyTaskDescriptionTemplate = TemplateResolver<CopyTaskDescriptionArgs>
-type MoveTaskDescriptionTemplate = TemplateResolver<MoveTaskDescriptionArgs>
-
-type SomeTemplateResolver<A extends SomeTemplateArgs> = TemplateResolver<A> & (
-    DirRemovalTemplate
-    | CopyConflictTemplate
-)
-
 type StringMapType = {
     [K in StringMapKeys]: string
 }
 
-type TemplateMapType = {
-    [K in TemplateMapKeys]: SomeTemplateResolver<any>
-} & {
-    dirRemovalConfirmDialogMessage: DirRemovalTemplate,
-    copyConflictDialogMessage: CopyConflictTemplate,
-    copyTaskDescription: CopyTaskDescriptionTemplate,
-    moveTaskDescription: MoveTaskDescriptionTemplate
-}
-
-type Locales = 'en' | 'ru'
-
 type LocalizedStringMapType = {
     [K in Locales]: StringMapType
-}
-
-type LocalizedTemplateMapType = {
-    [K in Locales]: TemplateMapType
 }
 
 const LocalizedStringMap: LocalizedStringMapType = {
@@ -83,43 +38,6 @@ const LocalizedStringMap: LocalizedStringMapType = {
     }
 }
 
-const LocalizedTemplateMap: LocalizedTemplateMapType = {
-    en: {
-        copyConflictDialogMessage: ({
-            destination,
-            fileName
-        }: CopyConflictTemplateArgs) => `File "${fileName}" already exists in ${destination}. Do you want to overwrite it?`,
-        dirRemovalConfirmDialogMessage: ({
-            dirName
-        }: DirRemovalTemplateArgs) => `Directory "${dirName}" is not empty. Are you sure you want to delete it?`,
-        copyTaskDescription: ({
-            fileName,
-            destination
-        }: CopyTaskDescriptionArgs) => `Copying ${fileName} to ${destination}`,
-        moveTaskDescription: ({
-            fileName,
-            destination
-        }: MoveTaskDescriptionArgs) => `Moving ${fileName} to ${destination}`
-    },
-    ru: {
-        copyConflictDialogMessage: ({
-            destination,
-            fileName
-        }: CopyConflictTemplateArgs) => `Файл ${fileName} уже существует в ${destination}. Хотите перезаписать его?`,
-        dirRemovalConfirmDialogMessage: ({
-            dirName
-        }: DirRemovalTemplateArgs) => `Директория ${dirName} не пустая. Уверены, что хотите удалить ее?`,
-        copyTaskDescription: ({
-            fileName,
-            destination
-        }: CopyTaskDescriptionArgs) => `Копирование ${fileName} в ${destination}`,
-        moveTaskDescription: ({
-            fileName,
-            destination
-        }: MoveTaskDescriptionArgs) => `Перемещение ${fileName} в ${destination}`
-    }
-}
-
 const Strings = (() => {
 
     let locale: Locales = 'en';
@@ -138,9 +56,3 @@ const Strings = (() => {
 })()
 
 export default Strings
-
-export type {
-    CopyConflictTemplateArgs,
-    DirRemovalTemplateArgs,
-    TemplateMapKeys
-}

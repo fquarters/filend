@@ -12,8 +12,8 @@ const getInitInfoThunk = () => async () => {
 
     moment.locale(info.locale)
 
-    //Strings.setLocale(info.locale.split('-')[0] as Locales)
-    Strings.setLocale('ru')
+    Strings.setLocale(info.locale.split('-')[0] as Locales)
+    // Strings.setLocale('ru')
 }
 
 export default getInitInfoThunk

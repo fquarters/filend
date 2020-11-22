@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const childProcess = require('child_process');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const getRendererModuleRules = function () {
     return [
@@ -40,6 +41,10 @@ const getMainModuleRules = function () {
             options: {
                 configFile: 'tsconfig.main.json'
             }
+        },
+        {
+            test: /\.node$/,
+            loader: 'node-loader',
         }
     ]
 }
@@ -147,12 +152,19 @@ module.exports = [
         },
         devtool: false,
         plugins: [
-            getDefinePluginConfig('DEVELOPMENT')
+            getDefinePluginConfig('DEVELOPMENT'),
+            // TODO there should be a proper way to do this
+            new CopyWebpackPlugin({
+                patterns: [
+                    { from: "./node_modules/drivelist/build" }
+                ]
+            })
         ],
         target: 'electron-main',
         resolve: {
             extensions: ['.tsx', '.ts', '.js']
-        }
+        },
+
     },
     {
         name: 'mainRelease',

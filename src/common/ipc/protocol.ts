@@ -18,7 +18,8 @@ type DirInfo = {
 } & FileInfo
 
 type InitInfo = {
-    locale: string
+    locale: string,
+    mountpoints: string[]
 }
 
 type CommandData = {

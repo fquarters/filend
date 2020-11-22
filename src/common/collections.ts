@@ -165,6 +165,15 @@ const repeat = <T>(value: T, times: number, startWith: T[] = []): T[] => {
     return repeat(value, times, [value, ...startWith])
 }
 
+const unique = <T>(values: T[]) : T[] => {
+
+    const set = new Set<T>(values)
+    const result: T[] = []
+
+    set.forEach((item: T) => result.push(item))
+
+    return result
+}
 
 export {
     all,
@@ -180,5 +189,6 @@ export {
     indexOfElement,
     replaceElement,
     replaceElementByIndex,
-    repeat
+    repeat,
+    unique
 }

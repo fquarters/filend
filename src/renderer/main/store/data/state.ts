@@ -1,4 +1,5 @@
 import { CopyArgs, CopyConflict, CopyConflictResult, DeleteArgs, DirInfo, DirRemovalConfirm as DirRemovalConfirmArgs, FileInfo, HasId, MoveArgs } from "../../../../common/ipc/protocol";
+import { Locales } from "../../../common/locales";
 
 export type PageResult<T> = {
     data: Array<T>,
@@ -63,7 +64,9 @@ export type State = {
     right: SideState,
     hotkeysDisabled: boolean,
     tasks: TaskState[],
-    moveRequest: MoveRequest
+    moveRequest: MoveRequest,
+    mountpoints: string[],
+    locale: Locales
 }
 
 export type TabId = {
@@ -101,5 +104,7 @@ export const initialState: State = {
     moveRequest: {
         destination: '',
         sources: []
-    }
+    },
+    mountpoints: [],
+    locale: 'en'
 }

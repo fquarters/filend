@@ -90,7 +90,8 @@ const Selectors = {
         return filterSelectedFiles(state[side].tabs[tab])
     },
     executePanelState: (state: State) => currentActiveTabState(state).path,
-    moveRequest: (state: State) => state.moveRequest
+    moveRequest: (state: State) => state.moveRequest,
+    locale: (state: State) => state.locale
 }
 
 export default Selectors

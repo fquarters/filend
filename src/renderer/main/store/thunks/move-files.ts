@@ -5,6 +5,7 @@ import Message from "../../../../common/ipc/message-creators"
 import { RenameFileMessage } from "../../../../common/ipc/messages"
 import { Supplier } from "../../../../common/types"
 import { ipcInvoke } from "../../../common/ipc"
+import { Locales } from "../../../common/locales"
 import Strings from "../../../common/strings"
 import { patchMoveRequest } from "../action/action-creators"
 import Selectors from "../data/selectors"
@@ -41,7 +42,8 @@ const moveFiles = () => async (
     const invokeMove = async () => {
 
         await copyImpl({
-            getTaskDescription: (args) => Strings.getTemplate('moveTaskDescription', args)
+            getTaskDescription: (locale: Locales) =>
+                (args) => Strings.getTemplate(locale)('moveTaskDescription', args)
         })(dispatch, getState)
 
         await deleteImpl({
@@ -72,7 +74,7 @@ const moveFiles = () => async (
                         tab: state[otherSide].activeTab
                     }))
                     clearRequest()
-                    
+
                 })
 
             } else {

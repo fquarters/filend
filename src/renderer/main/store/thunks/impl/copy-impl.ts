@@ -8,6 +8,7 @@ import { NextIdMessage } from "../../../../../common/ipc/messages"
 import { CopyConflict, CopyConflictResult, CopyProgress } from "../../../../../common/ipc/protocol"
 import { MapFunction, Supplier } from "../../../../../common/types"
 import { ipcInvoke } from "../../../../common/ipc"
+import { Locales } from "../../../../common/locales"
 import Strings from "../../../../common/strings"
 import { confirmDialog } from "../../../../component/modal/global-modal-access"
 import Selectors from "../../data/selectors"
@@ -17,15 +18,15 @@ import removeTask from "../remove-task"
 import updateTabDirInfo from "../update-tab-dir-info"
 import updateTask from "../update-task"
 
-const resolveCopyConflict = async ({
+const resolveCopyConflict = (locale: Locales) => async ({
     destination,
     name
 }: CopyConflict) =>
     new Promise<CopyConflictResult>((resolve) => {
 
         confirmDialog({
-            title: Strings.get('confirmDialogTitle'),
-            children: Strings.getTemplate('copyConflictDialogMessage', {
+            title: Strings.get(locale)('confirmDialogTitle'),
+            children: Strings.getTemplate(locale)('copyConflictDialogMessage', {
                 fileName: name,
                 destination
             }),
@@ -35,10 +36,10 @@ const resolveCopyConflict = async ({
         })
     })
 
-const getConflictHandler = (taskId: string) =>
+const getConflictHandler = (locale: Locales) => (taskId: string) =>
     async (_: unknown, data: CopyConflict) => {
 
-        const result = await resolveCopyConflict(data)
+        const result = await resolveCopyConflict(locale)(data)
 
         ipcRenderer.send(copyConflictReplyEvent({
             id: taskId,
@@ -52,75 +53,75 @@ type TaskDescriptionArgs = {
 }
 
 type CopyImplArgs = {
-    getTaskDescription: MapFunction<TaskDescriptionArgs, string>
+    getTaskDescription: MapFunction<Locales, MapFunction<TaskDescriptionArgs, string>>
 }
 
 const copyImpl = ({
     getTaskDescription
- }: CopyImplArgs) => async (
+}: CopyImplArgs) => async (
     dispatch: ThunkDispatch<State, unknown, AnyAction>,
     getState: Supplier<State>
 ) => {
 
-    const state = getState()
+        const state = getState()
 
-    const selectedFiles = Selectors.selectedFilesOnActiveTab(state)
-    const otherSide = state.left.active ? 'right' : 'left'
+        const selectedFiles = Selectors.selectedFilesOnActiveTab(state)
+        const otherSide = state.left.active ? 'right' : 'left'
 
-    const taskId = await ipcInvoke<string, NextIdMessage>(Message.nextId())
+        const taskId = await ipcInvoke<string, NextIdMessage>(Message.nextId())
 
-    const onConflict = getConflictHandler(taskId)
+        const onConflict = getConflictHandler(state.locale)(taskId)
 
-    const destination = Selectors.activeTabOfSide(otherSide)(state).path
+        const destination = Selectors.activeTabOfSide(otherSide)(state).path
 
-    const taskArgs = {
-        destination,
-        id: taskId,
-        source: selectedFiles.map((file) => file.path)
-    }
-
-    const onProgress = (_: unknown, data: CopyProgress) => {
-
-        dispatch(updateTask({
+        const taskArgs = {
+            destination,
             id: taskId,
-            currentProgress: data.currentCopied / data.currentSize,
-            description: getTaskDescription({
-                destination,
-                fileName: data.currentFile
-            })
-        }))
-    }
+            source: selectedFiles.map((file) => file.path)
+        }
 
-    ipcRenderer.on(copyConflictEmitEvent(taskId), onConflict)
-    ipcRenderer.on(copyProgressEvent(taskId), onProgress)
+        const onProgress = (_: unknown, data: CopyProgress) => {
 
-    try {
-
-        dispatch(pushTask({
-            id: taskId,
-            args: taskArgs,
-            currentProgress: 0,
-            description: 'Copying files',
-            type: 'COPY'
-        }))
-
-        await ipcInvoke(Message.copyFiles(taskArgs))
-
-    } finally {
-
-        batch(() => {
-            dispatch(updateTabDirInfo({
-                side: otherSide,
-                tab: state[otherSide].activeTab
+            dispatch(updateTask({
+                id: taskId,
+                currentProgress: data.currentCopied / data.currentSize,
+                description: getTaskDescription(state.locale)({
+                    destination,
+                    fileName: data.currentFile
+                })
             }))
-            dispatch(removeTask(taskId))
-        })
+        }
 
-        ipcRenderer.off(copyConflictEmitEvent(taskId), onConflict)
-        ipcRenderer.off(copyProgressEvent(taskId), onProgress)
+        ipcRenderer.on(copyConflictEmitEvent(taskId), onConflict)
+        ipcRenderer.on(copyProgressEvent(taskId), onProgress)
+
+        try {
+
+            dispatch(pushTask({
+                id: taskId,
+                args: taskArgs,
+                currentProgress: 0,
+                description: 'Copying files',
+                type: 'COPY'
+            }))
+
+            await ipcInvoke(Message.copyFiles(taskArgs))
+
+        } finally {
+
+            batch(() => {
+                dispatch(updateTabDirInfo({
+                    side: otherSide,
+                    tab: state[otherSide].activeTab
+                }))
+                dispatch(removeTask(taskId))
+            })
+
+            ipcRenderer.off(copyConflictEmitEvent(taskId), onConflict)
+            ipcRenderer.off(copyProgressEvent(taskId), onProgress)
+        }
+
+
     }
-
-
-}
 
 export default copyImpl

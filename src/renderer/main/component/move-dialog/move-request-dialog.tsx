@@ -3,6 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import Strings from "../../../common/strings"
 import Button from "../../../component/button"
 import Modal from "../../../component/modal/modal"
+import useLocale from "../../../hook/use-locale"
 import { patchMoveRequest } from "../../store/action/action-creators"
 import Selectors from "../../store/data/selectors"
 import moveFiles from "../../store/thunks/move-files"
@@ -26,7 +27,7 @@ const MoveRequestDialog = () => {
 
         dispatch(moveFiles())
 
-     }, [dispatch])
+    }, [dispatch])
 
     const onCancel = useCallback(() => {
 
@@ -35,20 +36,22 @@ const MoveRequestDialog = () => {
             sources: []
         }))
 
-     }, [dispatch])
+    }, [dispatch])
 
-
+    const locale = useLocale()
+    const stringProvider = useMemo(() => Strings.get(locale), [locale])
 
     const footer = useMemo(() => <React.Fragment>
         <Button onClick={onOk}>
-            {Strings.get('yesButton')}
+            {stringProvider('yesButton')}
         </Button>
         <Button onClick={onCancel}>
-            {Strings.get('cancelButton')}
+            {stringProvider('cancelButton')}
         </Button>
     </React.Fragment>, [
         onCancel,
         onOk,
+        stringProvider
     ])
 
     const visible = !!moveRequest.sources.length
@@ -58,7 +61,7 @@ const MoveRequestDialog = () => {
     useEffect(() => {
 
         if (visible) {
-            
+
             disableHotkeys()
 
             return () => {
@@ -70,15 +73,15 @@ const MoveRequestDialog = () => {
     }, [visible, disableHotkeys, enableHotkeys])
 
     return <Modal visible={visible}
-        title={Strings.get('confirmDialogTitle')}
+        title={stringProvider('confirmDialogTitle')}
         footer={footer}>
         <div className="move-request-dialog">
             <div>
-                {Strings.get('moveRequestDialogMessage')}
+                {stringProvider('moveRequestDialogMessage')}
             </div>
             <div className="move-request-dialog__inputs">
                 <div className="move-request-dialog__input-row">
-                    <label>{Strings.get('moveToLabel')}:</label>
+                    <label>{stringProvider('moveToLabel')}:</label>
                     <input value={moveRequest.destination}
                         onChange={onDestinationChange} />
                 </div>

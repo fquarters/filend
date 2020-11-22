@@ -38,21 +38,13 @@ const LocalizedStringMap: LocalizedStringMapType = {
     }
 }
 
-const Strings = (() => {
-
-    let locale: Locales = 'en';
-
-    return {
-        setLocale(value: Locales) {
-            locale = value
-        },
-        get(key: StringMapKeys) {
-            return LocalizedStringMap[locale][key]
-        },
-        getTemplate<K extends TemplateMapKeys>(key: K, args: Parameters<TemplateMapType[K]>[0]) {
-            return LocalizedTemplateMap[locale][key](args)
-        }
-    }
-})()
+const Strings = {
+    get: (locale: Locales) =>
+        (key: StringMapKeys) =>
+            LocalizedStringMap[locale][key],
+    getTemplate: (locale: Locales) =>
+        <K extends TemplateMapKeys>(key: K, args: Parameters<TemplateMapType[K]>[0]) =>
+            LocalizedTemplateMap[locale][key](args)
+}
 
 export default Strings

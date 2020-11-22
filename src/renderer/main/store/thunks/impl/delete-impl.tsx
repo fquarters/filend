@@ -9,6 +9,7 @@ import { NextIdMessage } from "../../../../../common/ipc/messages"
 import { DeleteProgress, DirRemovalConfirm, DirRemovalConfirmResult, FileInfo } from "../../../../../common/ipc/protocol"
 import { Supplier } from "../../../../../common/types"
 import { ipcInvoke } from "../../../../common/ipc"
+import { Locales } from "../../../../common/locales"
 import Strings from "../../../../common/strings"
 import { confirmDialog } from "../../../../component/modal/global-modal-access"
 import Selectors from "../../data/selectors"
@@ -19,12 +20,12 @@ import updateTabDirInfo from "../update-tab-dir-info"
 import updateTask from "../update-task"
 
 
-const confirmDirRemoval = async (path: string) =>
+const confirmDirRemoval = (locale: Locales) => async (path: string) =>
     new Promise<DirRemovalConfirmResult>((resolve) => {
 
         confirmDialog({
-            title: Strings.get('confirmDialogTitle'),
-            children: Strings.getTemplate('dirRemovalConfirmDialogMessage', {
+            title: Strings.get(locale)('confirmDialogTitle'),
+            children: Strings.getTemplate(locale)('dirRemovalConfirmDialogMessage', {
                 dirName: path
             }),
             onCancel: () => resolve('cancel'),
@@ -33,10 +34,10 @@ const confirmDirRemoval = async (path: string) =>
         })
     })
 
-const getConfirmHandler = (taskId: string) =>
+const getConfirmHandler = (locale: Locales) => (taskId: string) =>
     async (_: unknown, data: DirRemovalConfirm) => {
 
-        const result = await confirmDirRemoval(data.path)
+        const result = await confirmDirRemoval(locale)(data.path)
 
         ipcRenderer.send(dirRemovalConfirmReplyEvent({
             id: taskId,
@@ -44,13 +45,13 @@ const getConfirmHandler = (taskId: string) =>
         }), result)
     }
 
-const confirmDelete = async (selectedFiles: FileInfo[]) =>
+const confirmDelete = (locale: Locales) => async (selectedFiles: FileInfo[]) =>
     new Promise<boolean>((resolve) => {
 
         confirmDialog({
-            title: Strings.get('confirmDialogTitle'),
+            title: Strings.get(locale)('confirmDialogTitle'),
             children: <React.Fragment>
-                {Strings.get('deleteConfirmDialogMessage')}
+                {Strings.get(locale)('deleteConfirmDialogMessage')}
                 {
                     selectedFiles.map((info) => <p key={info.name}>
                         {info.name}
@@ -82,7 +83,7 @@ const deleteImpl = ({
         const selectedFiles = Selectors.selectedFilesOnActiveTab(state)
 
         if (askConfirm) {
-            const confirmResult = await confirmDelete(selectedFiles)
+            const confirmResult = await confirmDelete(state.locale)(selectedFiles)
 
             if (!confirmResult) {
                 return
@@ -91,7 +92,7 @@ const deleteImpl = ({
 
         const taskId = await ipcInvoke<string, NextIdMessage>(Message.nextId())
 
-        const onConfirm = getConfirmHandler(taskId)
+        const onConfirm = getConfirmHandler(state.locale)(taskId)
 
         const taskArgs = {
             id: taskId,

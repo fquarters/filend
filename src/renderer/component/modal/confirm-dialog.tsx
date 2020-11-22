@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"
 import { Closure } from "../../../common/types"
 import Strings from "../../common/strings"
+import useLocale from "../../hook/use-locale"
 import Button from "../button"
 import Modal, { ModalProps } from "./modal"
 
@@ -18,22 +19,28 @@ const ConfirmDialog = ({
     ...props
 }: ConfirmDialogProps) => {
 
-    const footer = useMemo(() => <React.Fragment>
-        <Button onClick={onOk}>
-            {Strings.get('yesButton')}
-        </Button>
-        {
-            onOkAll && <Button onClick={onOkAll}>
-                {Strings.get('yesToAllButton')}
+    const locale = useLocale()
+
+    const footer = useMemo(() => {
+
+        const stringsProvider = Strings.get(locale)
+
+        return <React.Fragment>
+            <Button onClick={onOk}>
+                {stringsProvider('yesButton')}
             </Button>
-        }
-        <Button onClick={onCancel}>
-            {Strings.get('cancelButton')}
-        </Button>
-    </React.Fragment>, [
+            {onOkAll && <Button onClick={onOkAll}>
+                {stringsProvider('yesToAllButton')}
+            </Button>}
+            <Button onClick={onCancel}>
+                {stringsProvider('cancelButton')}
+            </Button>
+        </React.Fragment>
+    }, [
         onCancel,
         onOk,
-        onOkAll
+        onOkAll,
+        locale
     ])
 
     return <Modal {...props} footer={footer}>

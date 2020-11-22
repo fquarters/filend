@@ -9,19 +9,15 @@ $main-border: $border-width solid theme.$border-color--weakest;
     overflow: hidden;
     display: flex;
     flex-flow: column;
-
+    
     .directory-view__path,
     .directory-view__stats {
         padding: 0.2rem 0;
     }
-
+    
     .directory-view__path {
         border-top: $main-border;
-
-        input {
-            @include mixins.editable;
-            width: 100%;
-        }
+        display: flex;
     }
 
     .directory-view__new-dir-input {

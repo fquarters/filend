@@ -23,11 +23,11 @@ const rootReducer: Reducer<State, AppAction> = (state, action) => {
 
         case 'PATCH_SIDE':
 
-            return handlePatchSide(action, state)
+            return handlePatchSide(action.data, state)
 
         case 'PATCH_TAB':
 
-            return handlePatchTab(action, state)
+            return handlePatchTab(action.data, state)
 
         case 'PATCH_MOVE_REQUEST':
 
@@ -38,8 +38,21 @@ const rootReducer: Reducer<State, AppAction> = (state, action) => {
                     ...action.data
                 }
             }
+
+        case 'PATCH_DRIVE_SELECT':
+
+            return handlePatchSide({
+                side: action.data.side,
+                patch: {
+                    driveSelectState: {
+                        ...state[action.data.side].driveSelectState,
+                        ...action.data.patch
+                    }
+                }
+            }, state)
     }
 
 }
 
-export { rootReducer }
+export { rootReducer };
+

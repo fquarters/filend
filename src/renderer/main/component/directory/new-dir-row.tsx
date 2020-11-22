@@ -17,7 +17,7 @@ const NewDirRow = () => {
         }
     }, [])
 
-    const [disableHotkeys, enableHotkeys] = useHotkeysToggle()
+    const { disableHotkeys, enableHotkeys } = useHotkeysToggle()
 
     useEffect(() => {
 

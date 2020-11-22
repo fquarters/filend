@@ -1,15 +1,15 @@
-import { PatchTab } from "../action/actions"
-import { State, TabState, SideState } from "../data/state"
+import { TabPatch } from "../action/actions"
+import { State, TabState } from "../data/state"
+import handlePatchSide from "./patch-side-handler"
 
-const handlePatchTab = ({
-    data
-}: PatchTab, state: State): State => {
+const handlePatchTab = (data: TabPatch, state: State): State => {
 
     const {
         side,
         index,
         patch
     } = data
+
     const tabSide = state[side]
 
     if (tabSide.tabs.length <= index) {
@@ -23,19 +23,12 @@ const handlePatchTab = ({
     const newTabs = tabSide.tabs.slice()
     newTabs[index] = newTabState
 
-    const rootTabPatch = {} as Partial<State>
-
-    const sideTabPatch: SideState = {
-        ...tabSide,
-        tabs: newTabs
-    }
-
-    rootTabPatch[side] = sideTabPatch
-
-    return {
-        ...state,
-        ...rootTabPatch
-    }
+    return handlePatchSide({
+        side,
+        patch: {
+            tabs: newTabs
+        }
+    }, state)
 }
 
 export default handlePatchTab

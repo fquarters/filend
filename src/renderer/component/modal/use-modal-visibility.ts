@@ -25,8 +25,6 @@ const useModalVisibility = (visible: boolean) => {
 
     useLayoutEffect(() => {
 
-        console.log(activeModals)
-
         const root = getModalRoot()
         const backdrop = root.getElementsByClassName(modalBackdropClassname)[0]
 

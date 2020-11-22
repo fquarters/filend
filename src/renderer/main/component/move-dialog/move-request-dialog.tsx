@@ -56,7 +56,7 @@ const MoveRequestDialog = () => {
 
     const visible = !!moveRequest.sources.length
 
-    const [disableHotkeys, enableHotkeys] = useHotkeysToggle()
+    const { disableHotkeys, enableHotkeys } = useHotkeysToggle()
 
     useEffect(() => {
 

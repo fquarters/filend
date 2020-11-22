@@ -13,14 +13,16 @@ export type TabState = {
     dirInfo: DirInfo | null,
     rowInFocus: number,
     selectedRows: number[],
-    creatingNewDir: boolean
+    creatingNewDir: boolean,
+    drive: string
 }
 
 export type SideState = {
     tabs: TabState[],
     activeTab: number,
     active: boolean,
-    width: number | null
+    width: number | null,
+    driveSelectState: DriveSelectState
 }
 
 export type TaskType = 'COPY' | 'MOVE' | 'DELETE'
@@ -76,6 +78,11 @@ export type TabId = {
 
 export type Side = 'left' | 'right'
 
+export type DriveSelectState = {
+    selecting: boolean,
+    value: string
+}
+
 const defaultTabState: TabState = {
     path: '.',
     name: '.',
@@ -83,14 +90,19 @@ const defaultTabState: TabState = {
     rowInFocus: 0,
     dirInfo: null,
     selectedRows: [],
-    creatingNewDir: false
+    creatingNewDir: false,
+    drive: '/'
 }
 
 const defaultSideState: SideState = {
     tabs: [defaultTabState],
     activeTab: 0,
     active: false,
-    width: null
+    width: null,
+    driveSelectState: {
+        selecting: false,
+        value: '/'
+    }
 }
 
 export const initialState: State = {

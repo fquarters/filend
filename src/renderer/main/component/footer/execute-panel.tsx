@@ -10,7 +10,7 @@ import "./execute-panel.scss"
 
 const ExecutePanel = () => {
 
-    const [disableHotkeys, enableHotkeys] = useHotkeysToggle()
+    const { disableHotkeys, enableHotkeys } = useHotkeysToggle()
 
     const path = useSelector(Selectors.executePanelState)
 

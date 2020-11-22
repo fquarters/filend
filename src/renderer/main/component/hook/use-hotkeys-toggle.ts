@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { useDispatch } from "react-redux"
 import { patchRoot } from "../../store/action/action-creators"
 
@@ -14,7 +14,8 @@ const useHotkeysToggle = () => {
         hotkeysDisabled: false
     })), [dispatch])
 
-    return [disableHotkeys, enableHotkeys]
+    return useMemo(() => ({ disableHotkeys, enableHotkeys }),
+        [disableHotkeys, enableHotkeys])
 }
 
 export default useHotkeysToggle

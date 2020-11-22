@@ -1,7 +1,7 @@
 import caching from "../../../../common/caching"
 import { FileInfo } from "../../../../common/ipc/protocol"
 import { MapFunction } from "../../../../common/types"
-import { Side, SideState, State, TabState } from "./state"
+import { DriveSelectState, Side, SideState, State, TabState } from "./state"
 
 type TabSelectorArg = {
     side: Side,
@@ -11,6 +11,7 @@ type TabSelectorArg = {
 type SideComponentState = Pick<SideState, 'active' | 'activeTab'>
 
 const cachingSideStateSelector = caching<Side, MapFunction<State, SideState>>()
+const cachingSideSelectingDriveSelector = caching<Side, MapFunction<State, DriveSelectState>>()
 const cachingTabStateSelector = caching<TabSelectorArg, MapFunction<State, TabState>>()
 const cachingActiveTabIndexSelector = caching<Side, MapFunction<State, number>>()
 const cachingSideComponentStateSelector = caching<Side, MapFunction<State, SideComponentState>>()
@@ -30,6 +31,8 @@ const sideComponentState = cachingSideComponentStateSelector((side: Side) => (st
 const sideTabsSelector = cachingSideTabsSelector((side: Side) => (state: State) => state[side].tabs)
 const currentActiveTabState = (state: State) => activeTabOfSide(activeSideName(state))(state)
 const currentActiveSideState = (state: State) => sideByName(activeSideName(state))(state)
+const sideDriveSelectState = cachingSideSelectingDriveSelector((side) =>
+    (state) => state[side].driveSelectState)
 
 const filterSelectedFiles = ({
     dirInfo,
@@ -91,7 +94,11 @@ const Selectors = {
     },
     executePanelState: (state: State) => currentActiveTabState(state).path,
     moveRequest: (state: State) => state.moveRequest,
-    locale: (state: State) => state.locale
+    locale: (state: State) => state.locale,
+    sideDriveSelectState,
+    selectingDrive: (state: State) => state.left.driveSelectState.selecting
+        || state.right.driveSelectState.selecting,
+    mountpoints: (state: State) => state.mountpoints
 }
 
 export default Selectors

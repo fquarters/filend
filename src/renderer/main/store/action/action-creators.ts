@@ -1,6 +1,6 @@
 import { MapFunction } from "../../../../common/types";
-import { MoveRequest, State } from "../data/state";
-import { PatchMoveRequest, PatchRoot, PatchSide, PatchTab, SidePatch, TabPatch } from "./actions";
+import { DriveSelectState, MoveRequest, State } from "../data/state";
+import { DriveSelectPatch, PatchDriveSelect, PatchMoveRequest, PatchRoot, PatchSide, PatchTab, SidePatch, TabPatch } from "./actions";
 
 const patchRoot: MapFunction<Partial<State>, PatchRoot> = (data): PatchRoot => ({
     type: 'PATCH_ROOT',
@@ -22,9 +22,15 @@ const patchMoveRequest: MapFunction<Partial<MoveRequest>, PatchMoveRequest> = (d
     data
 })
 
+const patchDriveSelect: MapFunction<DriveSelectPatch, PatchDriveSelect> = (data): PatchDriveSelect => ({
+    type: 'PATCH_DRIVE_SELECT',
+    data
+})
+
 export {
     patchRoot,
     patchSide,
     patchTab,
-    patchMoveRequest
+    patchMoveRequest,
+    patchDriveSelect
 }

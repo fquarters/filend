@@ -1,14 +1,14 @@
 import React, { useMemo, useRef } from "react"
-import { useSelector, shallowEqual } from "react-redux"
+import { shallowEqual, useSelector } from "react-redux"
 import Selectors from "../../store/data/selectors"
 import { Side } from "../../store/data/state"
 import DirectoryContext, { DirectoryContextType } from "../context/directory-context"
+import "./directory-view.scss"
+import DriveSelect from "./drive-select"
 import FileTable from "./file-table"
 import PathInput from "./path-input"
-import useDirInfoUpdate from "./use-dir-info-update"
-import "./directory-view.scss"
-import Strings from "../../../common/strings"
 import StatsRow from "./stats-row"
+import useDirInfoUpdate from "./use-dir-info-update"
 
 type DirectoryViewProps = {
     side: Side
@@ -55,6 +55,7 @@ const DirectoryView = ({
 
     return <div className="directory-view">
         <div className="directory-view__path">
+            <DriveSelect side={side} />
             <PathInput value={path}
                 side={side} />
         </div>
@@ -65,7 +66,7 @@ const DirectoryView = ({
             </DirectoryContext.Provider>
         </div>
         <div className="directory-view__stats">
-            <StatsRow side={side} tab={activeTab}/>
+            <StatsRow side={side} tab={activeTab} />
         </div>
     </div>
 }

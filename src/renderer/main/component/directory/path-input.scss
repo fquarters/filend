@@ -1,0 +1,6 @@
+@use "../../../mixins";
+
+.path-input {
+    @include mixins.editable;
+    width: 100%;
+}

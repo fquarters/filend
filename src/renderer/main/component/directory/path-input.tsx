@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import useHotkeysToggle from "../hook/use-hotkeys-toggle"
 import { Side } from "../../store/data/state"
 import openDirInCurrentTab from "../../store/thunks/open-dir-in-current-tab"
+import useHotkeysToggle from "../hook/use-hotkeys-toggle"
+import "./path-input.scss"
 
 type PathInputProps = {
     value: string,
@@ -42,7 +43,7 @@ const PathInput = ({
 
     }, [side, dispatch, innerValue, value])
 
-    const [disableHotkeys, enableHotkeys] = useHotkeysToggle()
+    const { disableHotkeys, enableHotkeys } = useHotkeysToggle()
 
     useEffect(() => {
 
@@ -64,6 +65,7 @@ const PathInput = ({
     }, [])
 
     return <input value={displayValue}
+        className={'path-input'}
         readOnly={!editing}
         onDoubleClick={startEdit}
         onBlur={cancelEdit}

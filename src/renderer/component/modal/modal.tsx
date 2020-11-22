@@ -8,7 +8,7 @@ import useDismissHandler from "./use-dismiss-handler"
 import useModalVisibility from "./use-modal-visibility"
 
 type ModalProps = {
-    children: ReactChildren | ReactChild | ReactChild[],
+    children: ReactChild | ReactChild[],
     title: string,
     width?: number | string,
     footer?: JSX.Element,

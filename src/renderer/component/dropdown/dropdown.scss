@@ -1,0 +1,18 @@
+@use "../../mixins";
+@use "../../theme";
+
+.dropdown {
+
+    position: relative;
+
+    .dropdown__content {
+        position: absolute;
+        z-index: 5;
+        background-color: theme.$bg-color;
+        box-shadow: theme.$box-shadow;
+    }
+
+    &.dropdown--hidden {
+        display: none;
+    }
+}

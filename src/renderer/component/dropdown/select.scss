@@ -1,0 +1,51 @@
+@use "../../mixins";
+@use "../../theme";
+
+.select {
+
+    .select__input-wrapper {
+        display: flex;
+        border: 1px solid theme.$border-color--weakest;
+        align-items: center;
+    }
+
+    .select__trigger {
+        font-family: theme.$font-family;
+        font-weight: 600;
+        background-color: theme.$bg-color;
+        color: theme.$fg-color;
+        transition: background-color theme.$transition__color, color theme.$transition__color;
+        padding: 0.1rem 0.4rem;
+        cursor: pointer;
+        user-select: none;
+        border: none;
+    
+        &:hover {
+            color: theme.$fg-color--active;
+        }
+    }
+
+    .select__current-value {
+        width: 100%;
+        cursor: default;
+        white-space: nowrap;
+    }
+
+    .select__option {
+
+        border: 1px solid transparent;
+        white-space: nowrap;
+        transition: border-color theme.$transition__color;
+
+        &.select__option--focused {
+            border-color: theme.$border-color--weak;
+        }
+
+        &.select__option--selected {
+            color: theme.$fg-color--active;
+        }
+
+        padding: 0.2rem 0.4rem;
+        cursor: pointer;
+    }
+}

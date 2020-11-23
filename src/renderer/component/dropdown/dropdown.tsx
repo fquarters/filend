@@ -1,4 +1,5 @@
-import React, { MutableRefObject, ReactChild } from "react"
+import React, { ReactChild, useLayoutEffect, useState } from "react"
+import useVisiblityTransition from "../../hook/use-visibility-transition"
 import "./dropdown.scss"
 
 type DropdownProps = {
@@ -9,11 +10,22 @@ type DropdownProps = {
 const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(({
     open,
     children
-}: DropdownProps, ref) => <div className={`dropdown ${open ? '' : 'dropdown--hidden'}`}
-    ref={ref}>
+}: DropdownProps, ref) => {
+
+    const visiblityClasses = useVisiblityTransition({
+        fadingInClass: 'dropdown--fading-in',
+        fadingOutClass: 'dropdown--fading-out',
+        hiddenClass: 'dropdown--hidden',
+        visibleClass: '',
+        visible: open
+    })
+
+    return <div className={`dropdown ${visiblityClasses}`}
+        ref={ref}>
         <div className={'dropdown__content'}>
             {children}
         </div>
-    </div>)
+    </div>
+})
 
 export default Dropdown

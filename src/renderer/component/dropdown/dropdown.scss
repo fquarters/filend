@@ -4,15 +4,29 @@
 .dropdown {
 
     position: relative;
+    transition: opacity 0.4s;
+    opacity: 1;
+    z-index: 5;
 
+   
     .dropdown__content {
         position: absolute;
-        z-index: 5;
         background-color: theme.$bg-color;
         box-shadow: theme.$box-shadow;
     }
 
     &.dropdown--hidden {
         display: none;
+        opacity: 0;
     }
+
+    &.dropdown--fading-out {
+        opacity: 0;
+    }
+
+    &.dropdown--fading-in {
+        opacity: 0;
+        display: block;
+    }
+    
 }

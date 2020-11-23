@@ -1,5 +1,6 @@
 import React, { ReactChild, useCallback, useContext, useMemo } from "react"
-import { OptionContext, OptionContextType, SelectContext, SelectContextType } from "./select"
+import { SelectContext, SelectContextType } from "./select"
+import { OptionContext, OptionContextType } from "./select-option-wrapper"
 
 type OptionProps<V> = {
     children?: ReactChild,

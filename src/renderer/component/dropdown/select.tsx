@@ -3,10 +3,12 @@ import { difference, union } from "../../../common/collections"
 import { BiConsumer, Closure, Consumer } from "../../../common/types"
 import { isChildOfElement } from "../../common/dom-utils"
 import Dropdown from "./dropdown"
+import OptionWrapper from "./select-option-wrapper"
 import "./select.scss"
 
 type SelectProps<V> = {
     open?: boolean,
+    onOutsideClick?: Closure,
     onTriggerClick?: Closure,
     children: ReactChild | ReactChild[],
     onOpen?: Closure,
@@ -22,15 +24,14 @@ export type SelectContextType<V> = {
     focusedOption: number
 }
 
-export type OptionContextType = {
-    index: number
-}
+
 
 const SelectContext = React.createContext<SelectContextType<any> | null>(null)
-const OptionContext = React.createContext<OptionContextType | null>(null)
+
 
 const Select = <V,>({
     open,
+    onOutsideClick,
     onTriggerClick,
     children,
     multiple = false,
@@ -57,10 +58,13 @@ const Select = <V,>({
     const resolvedChangeHandler = useMemo(() => onSelect || setInnerValue,
         [onSelect])
 
-    const onFocus = useCallback(() => setInnerOpen(true), [])
+    const resolvedOutsideClickHandler = useCallback(() => onOutsideClick
+        ? onOutsideClick()
+        : setInnerOpen(false),
+        [onOutsideClick])
 
     const onOptionSelect = useCallback((value: V, index: number) => {
-        
+
         setFocusedOption(index)
         setInnerOpen(false)
 
@@ -80,7 +84,11 @@ const Select = <V,>({
             resolvedChangeHandler([value])
         }
 
-    }, [multiple, resolvedChangeHandler, resolvedValue])
+    }, [
+        multiple,
+        resolvedChangeHandler,
+        resolvedValue
+    ])
 
     const context = useMemo<SelectContextType<V>>(() => ({
         onOptionClick: onOptionSelect,
@@ -103,7 +111,7 @@ const Select = <V,>({
 
     const handleKeyEvents = useCallback((e: KeyboardEvent) => {
 
-        const childrenCount = Array.isArray(children)? children.length : 1
+        const childrenCount = Array.isArray(children) ? children.length : 1
 
         if (e.key === "ArrowUp") {
 
@@ -135,7 +143,7 @@ const Select = <V,>({
                 selectChild(children)
             }
 
-        } 
+        }
 
     }, [children, focusedOption, onOptionSelect])
 
@@ -153,7 +161,7 @@ const Select = <V,>({
 
                 if (shouldHide) {
 
-                    setInnerOpen(false)
+                    resolvedOutsideClickHandler()
                 }
             }
 
@@ -164,7 +172,7 @@ const Select = <V,>({
             }
         }
 
-    }, [resolvedOpen])
+    }, [resolvedOpen, resolvedOutsideClickHandler])
 
     useEffect(() => {
 
@@ -193,16 +201,19 @@ const Select = <V,>({
 
     }, [resolvedOpen, onOpen, onClose])
 
+    const setFocus = useCallback((index: number) => setFocusedOption(index), [])
+    const removeFocus = useCallback((index: number) => setFocusedOption(current => current == index ? -1 : current), [])
+
     return <div className="select">
         <SelectContext.Provider value={context}>
             <div className="select__input-wrapper"
                 ref={wrapperRef}>
                 <div ref={inputRef}
                     className="select__current-value"
-                    onFocus={onFocus}>
+                    onClick={handleTriggerClick}>
                     {resolvedValue.length ? resolvedValue.join('; ') : 'placeholder'}
                 </div>
-                <button className="select__trigger"
+                <button className={`select__trigger ${open ? 'select__trigger--open' : ''}`}
                     onClick={handleTriggerClick}>▼</button>
             </div>
             <Dropdown open={resolvedOpen}
@@ -211,21 +222,22 @@ const Select = <V,>({
                     (Array.isArray(children)
                         ? children
                         : [children])
-                        .map((child, index) =>
-                            <OptionContext.Provider value={{
-                                index
-                            }} key={index}>
-                                {child}
-                            </OptionContext.Provider>)
+                        .map((child, index) => <OptionWrapper key={index}
+                            setFocus={setFocus}
+                            removeFocus={removeFocus}
+                            index={index}>
+                            {child}
+                        </OptionWrapper>
+                        )
                 }
             </Dropdown>
         </SelectContext.Provider>
     </div>
 }
 
+
 export default Select
 
 export {
-    SelectContext,
-    OptionContext
+    SelectContext
 }

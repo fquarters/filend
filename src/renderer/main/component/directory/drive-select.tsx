@@ -23,16 +23,20 @@ const DriveSelect = ({
     const mountpoints = useSelector(Selectors.mountpoints)
 
     const dispatch = useDispatch()
-    const doOpen = useCallback(() => {
+
+    const toggleOpenState = useCallback((open: boolean) => {
 
         dispatch(patchDriveSelect({
             side,
             patch: {
-                selecting: true
+                selecting: open
             }
         }))
 
     }, [dispatch, side])
+
+    const doOpen = useCallback(() => toggleOpenState(true), [toggleOpenState])
+    const doClose = useCallback(() => toggleOpenState(false), [toggleOpenState])
 
     const onSelect = useCallback((value: string[]) => {
 
@@ -66,6 +70,7 @@ const DriveSelect = ({
         <Select open={selecting}
             value={[value]}
             onSelect={onSelect}
+            onOutsideClick={doClose}
             onTriggerClick={doOpen}>
             {
                 mountpoints.map((value, index) => <SelectOption value={value} key={index}>

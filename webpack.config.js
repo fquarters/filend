@@ -4,6 +4,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const childProcess = require('child_process');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 const getRendererModuleRules = function () {
     return [
@@ -176,8 +177,15 @@ module.exports = [
         },
         devtool: false,
         plugins: [
-            getDefinePluginConfig('PRODUCTION')
+            getDefinePluginConfig('PRODUCTION'),
+            // TODO there should be a proper way to do this
+            new CopyWebpackPlugin({
+                patterns: [
+                    { from: "./node_modules/drivelist/build" }
+                ]
+            })
         ],
+        externals: [nodeExternals()],
         target: 'electron-main',
         resolve: {
             extensions: ['.tsx', '.ts', '.js']

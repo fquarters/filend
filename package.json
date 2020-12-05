@@ -6,6 +6,7 @@
   "types": "./src",
   "scripts": {
     "start": "webpack --config-name rendererRelease && webpack --config-name viewerRelease && webpack --config-name mainRelease && electron ./build/entry.js",
+    "quickStart": "electron ./build/entry.js",
     "devRenderer": "webpack --config-name rendererDev",
     "devViewer": "webpack --config-name viewerDev",
     "devMain": "webpack --config-name mainDev && electron ./build/entry.js"
@@ -71,6 +72,7 @@
     "react-dom": "16.12.0",
     "react-redux": "7.1.3",
     "redux": "4.0.5",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.3.0",
+    "webpack-node-externals": "^2.5.2"
   }
 }

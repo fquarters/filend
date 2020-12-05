@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react"
+import React, { useCallback, useEffect, useRef } from "react"
 import { VIEWER_CHUNK_SIZE } from "../../../common/constants"
 import "../../main.scss"
 import FileFragment from "./file-fragment"
@@ -14,12 +14,15 @@ type ViewerAppProps = {
 
 const maxChunksInMemory = Math.floor(1024 * 1024 * 4 / VIEWER_CHUNK_SIZE)
 
+//TODO load all chunks in selection range
+
 const ViewerApp = ({
     id,
     path
 }: ViewerAppProps) => {
 
     const [state, dispatch] = useViewerReducer()
+    const selecting = state.selection[1] - state.selection[0] > 0
 
     const viewerRef = useRef<HTMLDivElement | null>(null)
 
@@ -66,7 +69,7 @@ const ViewerApp = ({
 
     const clearContent = useCallback((index) => {
 
-        if (state.chunksInMemory <= maxChunksInMemory) {
+        if (state.chunksInMemory <= maxChunksInMemory || selecting) {
 
             return
         }
@@ -78,7 +81,27 @@ const ViewerApp = ({
 
         pendingChunks.current.delete(index)
 
-    }, [state.chunksInMemory, pendingChunks])
+    }, [state.chunksInMemory, pendingChunks, selecting])
+
+    const selection = window.getSelection()
+    const range = selection?.rangeCount ? selection?.getRangeAt(0) : null
+
+    useEffect(() => {
+
+        if (range) {
+
+            dispatch({
+                type: 'SET_SELECTION',
+                data: [range.startOffset, range.endOffset]
+            })
+
+            return () => dispatch({
+                type: 'SET_SELECTION',
+                data: [0, 0]
+            })
+        }
+
+    }, [range])
 
     return <div className="viewer"
         ref={viewerRef}

@@ -5,7 +5,8 @@ type ViewerState = {
     chunksContent: string[],
     chunksInMemory: number,
     chunkHeight: number,
-    scrollTop: number
+    scrollTop: number,
+    selection: [number, number]
 }
 
 export type ViewerActionType = 'SET_INITIAL_CHUNK'
@@ -13,6 +14,7 @@ export type ViewerActionType = 'SET_INITIAL_CHUNK'
     | 'SET_CHUNK'
     | 'CLEAR_CHUNK'
     | 'SET_SCROLL_TOP'
+    | 'SET_SELECTION'
 
 type ViewerAction<A extends ViewerActionType> = {
     type: A
@@ -44,12 +46,17 @@ type SetScrollTop = ViewerAction<'SET_SCROLL_TOP'> & {
     data: number
 }
 
+type SetSelecting = ViewerAction<'SET_SELECTION'> & {
+    data: [number, number]
+}
+
 export type SomeViewerAction<A extends ViewerActionType> = ViewerAction<A> & (
     SetInitialChunk
     | SetChunk
     | SetChunkHeight
     | ClearChunk
     | SetScrollTop
+    | SetSelecting
 )
 
 const reducer: Reducer<ViewerState, SomeViewerAction<ViewerActionType>> = (state, action) => {
@@ -84,6 +91,10 @@ const reducer: Reducer<ViewerState, SomeViewerAction<ViewerActionType>> = (state
             ...state,
             scrollTop: action.data
         }
+        case 'SET_SELECTION': return {
+            ...state,
+            selection: action.data
+        }
     }
 }
 
@@ -91,7 +102,8 @@ const defaultState: ViewerState = {
     chunkHeight: 0,
     chunksContent: [],
     chunksInMemory: 0,
-    scrollTop: 0
+    scrollTop: 0,
+    selection: [0, 0]
 }
 
 const useViewerReducer = () => useReducer(reducer, defaultState)

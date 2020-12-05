@@ -17,7 +17,7 @@ const SelectOption = <V,>({
     const selectContext = useContext<SelectContextType<V> | null>(SelectContext)!
     const optionContext = useContext<OptionContextType | null>(OptionContext)!
 
-    const onClick = useCallback(() => selectContext.onOptionClick(value, optionContext.index),
+    const onClick = useCallback(() => selectContext.onOptionClick(optionContext.index),
         [selectContext.onOptionClick, optionContext.index])
 
     const isSelected = useMemo<boolean>(() => selectContext.selected.indexOf(value) > -1,
